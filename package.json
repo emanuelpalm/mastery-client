@@ -1,0 +1,12 @@
+{
+  "name": "Mastery",
+  "description": "HTML5 2D platform game where you fight the undead as a wizard.",
+  "dependencies": {},
+  "devDependencies": {
+    "browserify": "^6.2.0",
+    "uglifyjs": "^2.3.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
