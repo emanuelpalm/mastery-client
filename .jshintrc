@@ -1,0 +1,22 @@
+{
+  "browser": true,
+  "camelcase": true,
+  "curly": true,
+  "devel": true,
+  "eqeqeq": true,
+  "freeze": true,
+  "indent": 2,
+  "latedef": "nofunc",
+  "newcap": true,
+  "noarg": true,
+  "node": true,
+  "nonbsp": true,
+  "nonew": true,
+  "quotmark": "double",
+  "undef": true,
+  "unused": true,
+  "strict": true,
+  "maxparams": 3,
+  "maxdepth": 4,
+  "maxlen": 100
+}
