@@ -1,10 +1,11 @@
 {
   "name": "Mastery",
-  "description": "HTML5 2D platform game where you fight the undead as a wizard.",
+  "description": "An HTML5 platform game where you take on the role as a wizard fighting the undead.",
   "dependencies": {},
   "devDependencies": {
-    "browserify": "^6.2.0",
-    "uglifyjs": "^2.3.6"
+    "browserify": ">= 6.2.0 < 7.0.0",
+    "uglify-js": ">= 2.4.0 < 3.0.0",
+    "nodeunit": ">= 0.9.0 < 1.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
