@@ -5,7 +5,7 @@ BUNDLE_DIR   = $(dir $(BUNDLE))
 
 # Code optimization.
 MINIFIER     = ./$(NODE_MODULES)/.bin/uglifyjs
-MINIFIED     = $(BUNDLE_DIR)/mastery.$(VERSION).min.js
+MINIFIED     = $(BUNDLE_DIR)mastery.$(VERSION).min.js
 
 # Compile-time template.
 TEMPL_INPUT  = templates/index.t.html
@@ -77,10 +77,14 @@ $(TEMPL_OUTPUT): $(TEMPL_INPUT) $(TEMPL_DIR)
 $(BUNDLE_DIR):
 	$(MKDIR) $@
 
-$(BUNDLE): $(SOURCE_FILES) $(ASSET_FILES) $(TEMPL_OUTPUT) $(BUNDLE_DIR) $(NODE_MODULES)
+$(BUNDLER): $(NODE_MODULES)
+
+$(BUNDLE): $(SOURCE_FILES) $(ASSET_FILES) $(TEMPL_OUTPUT) $(BUNDLE_DIR) $(BUNDLER)
 	$(BUNDLER) $(SOURCE_MAIN) $(BFLAGS) -o $@
 
-$(MINIFIED): $(BUNDLE) $(NODE_MODULES)
+$(MINIFIER): $(NODE_MODULES)
+
+$(MINIFIED): $(BUNDLE) $(MINIFIER)
 	$(MINIFIER) $< --mangle --compress "drop_console=true,warnings=false" -o $@
 
 .PHONY: auto-debug auto-release auto-clean debug release clean version test
