@@ -19,7 +19,21 @@ For your convenience, here is the proper installation command for __Ubuntu__:
 $ sudo apt-get install git nodejs
 ```
 
-### Commands
+### Development Environment (Optional)
+
+If you lack a suitable development environment for editing .js files, then using
+the following commands will install the Atom editor with some useful plugins for
+you.
+
+__Ubuntu:__
+```sh
+$ sudo add-apt-repository ppa:webupd8team/atom
+$ sudo apt-get update
+$ sudo apt-get install atom
+$ apm install jsformat linter linter-jshint
+```
+
+## Commands
 
 To list all available build commands, use the following command in the project
 root folder:
