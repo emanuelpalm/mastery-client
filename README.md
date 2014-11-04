@@ -11,7 +11,7 @@ build the Mastery project.
 
 - git
 - npm (node.js)
-- POSIX tools (find, sed, awk, make)
+- POSIX tools (find, sed, awk, make, cp, mkdir, rm)
 
 For your convenience, here is the proper installation command for __Ubuntu__:
 
