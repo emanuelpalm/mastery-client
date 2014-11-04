@@ -61,9 +61,9 @@ auto-debug: $(BUNDLE)
 auto-clean:
 	$(RM) $(TEMPL_OUTPUT) $(BUNDLE) $(MINIFIED)
 
-$(PATH_BASE)assets/%:
+$(PATH_BASE)assets/%: assets/%
 	@$(MKDIR) $(dir $@)
-	@$(CP) $(subst $(PATH_BASE),,$@) $@
+	$(CP) $(subst $(PATH_BASE),,$@) $@
 
 $(NODE_MODULES):
 	npm install
