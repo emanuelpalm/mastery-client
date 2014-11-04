@@ -1,1 +1,6 @@
-console.log("Hello, world!");
+(function () {
+  "use strict";
+
+  console.log("Hello, world!");
+
+}());
