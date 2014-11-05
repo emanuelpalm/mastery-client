@@ -9,7 +9,13 @@
    * @class
    */
   function GameLooper() {
-    this._request = null;
+    var request = null;
+    this._getRequest = function () {
+      return request;
+    };
+    this._setRequest = function (r) {
+      request = r;
+    };
   }
 
   /**
@@ -20,24 +26,27 @@
   GameLooper.prototype.loop = function (f) {
     this.stop();
 
+    var setRequest = this._setRequest;
+
     var timeElapsed = 0.0,
       timeBefore;
-    (function tick(that) {
-      that._request = context.requestAnimationFrame(tick);
+    (function tick() {
+      setRequest(context.requestAnimationFrame(tick));
 
       timeBefore = context.getMonotonicTime();
       f(timeElapsed);
       timeElapsed = context.getMonotonicTime() - timeBefore;
-    }(this));
+    }());
   };
 
   /**
    * Stops looping of current function.
    */
   GameLooper.prototype.stop = function () {
-    if (this._request !== null) {
-      context.cancelRequestAnimationFrame(this._request);
-      this._request = null;
+    var r = this._getRequest();
+    if (r !== null) {
+      context.cancelRequestAnimationFrame(r);
+      this._setRequest(null);
     }
   };
 
