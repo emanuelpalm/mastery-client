@@ -27,7 +27,7 @@
       window.msRequestAnimationFrame ||
       window.oRequestAnimationFrame ||
       function (callback) {
-        return window.setTimeout(callback, 1000 / 60);
+        return window.setTimeout(callback, 1000 / 100);
     };
     window.cancelRequestAnimationFrame =
       window.cancelRequestAnimationFrame ||
@@ -45,7 +45,7 @@
    * @param {string} tagName - Tag-name of element to create.
    * @return {HTMLElement} Created HTML element.
    */
-  exports.createElement = (document) ? function (tagName) {
+  exports.createElement = (typeof document !== "undefined") ? function (tagName) {
     return document.createElement(tagName);
   } : function () {
     return {};
@@ -57,7 +57,7 @@
    *
    * @param {HTMLElement} $element - Element to set.
    */
-  exports.setBodyElement = (document && typeof document.body !== "undefined") ? function ($element) {
+  exports.setBodyElement = (typeof document !== "undefined" && typeof document.body !== "undefined") ? function ($element) {
     while (document.body.firstChild) {
       document.body.removeChild(document.body.firstChild);
     }
