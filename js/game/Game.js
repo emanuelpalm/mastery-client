@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var GameLooper = require("./game_looper.js");
+  var GameLooper = require("./GameLooper.js");
   var looper = new GameLooper();
 
   function Game() {

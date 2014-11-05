@@ -1,8 +1,8 @@
 (function () {
   "use strict";
 
-  var Game = require("./game/game.js");
-  var IntroScene = require("./scene/intro_scene.js");
+  var Game = require("./game/Game.js");
+  var IntroScene = require("./scene/IntroScene.js");
 
   function main() {
     try {
