@@ -1,6 +1,9 @@
 (function () {
   "use strict";
 
+  var GameLooper = require("./game_looper.js");
+  var looper = new GameLooper();
+
   function Game() {
     // TODO: Implement.
   }
@@ -11,7 +14,9 @@
   };
 
   Game.prototype.start = function () {
-    // TODO: Implement.
+    looper.loop(function () {
+      // TODO: Do something.
+    });
   };
 
   module.exports = Game;
