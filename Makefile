@@ -56,8 +56,8 @@ help:
 
 # Automatic commands. Don't use these directly.
 
-auto-release: $(MINIFIED)
-auto-debug: $(BUNDLE)
+auto-release: $(MINIFIED) $(TEMPL_OUTPUT)
+auto-debug: $(BUNDLE) $(TEMPL_OUTPUT)
 auto-clean:
 	$(RM) $(TEMPL_OUTPUT) $(BUNDLE) $(MINIFIED)
 
@@ -71,7 +71,7 @@ $(NODE_MODULES):
 $(TEMPL_DIR):
 	$(MKDIR) $@
 
-$(TEMPL_OUTPUT): $(TEMPL_INPUT) $(TEMPL_DIR)
+$(TEMPL_OUTPUT): $(TEMPL_INPUT) $(TEMPL_DIR) $(BUNDLE)
 	sed s/{{js.mastery}}/$(subst /,\\/,$(JS_MASTERY))/ < $< > $@
 
 $(BUNDLE_DIR):
@@ -79,7 +79,7 @@ $(BUNDLE_DIR):
 
 $(BUNDLER): $(NODE_MODULES)
 
-$(BUNDLE): $(SOURCE_FILES) $(ASSET_FILES) $(TEMPL_OUTPUT) $(BUNDLE_DIR) $(BUNDLER)
+$(BUNDLE): $(SOURCE_FILES) $(ASSET_FILES) $(BUNDLE_DIR) $(BUNDLER)
 	$(BUNDLER) $(SOURCE_MAIN) $(BFLAGS) -o $@
 
 $(MINIFIER): $(NODE_MODULES)
