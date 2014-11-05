@@ -6,21 +6,32 @@
   var IntroScene = require("./scene/IntroScene.js");
 
   function main() {
+
+    var game = null;
+    var options = {
+      $canvas: context.createElement("canvas"),
+      scene: new IntroScene(),
+    };
+
     try {
-      var $canvas = context.createElement("canvas");
-      var game = new Game({
-        canvas: $canvas,
-        scene: new IntroScene(),
-      });
-      context.setBodyElement($canvas);
+      game = new Game(options);
       game.start();
 
+      context.setBodyElement(options.$canvas);
+
     } catch (e) {
+      if (game !== null) {
+        game.stop();
+      }
+      displayErrorElement();
+      throw e;
+    }
+
+    function displayErrorElement() {
       var $error = context.createElement("img");
       $error.id = "error";
       $error.src = "assets/graphics/error.gif";
       context.setBodyElement($error);
-      throw e;
     }
   }
   window.addEventListener("load", main);
