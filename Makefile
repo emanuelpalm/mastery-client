@@ -20,6 +20,7 @@ MKDIR        = mkdir -p
 CP           = cp
 
 ASSET_FILES  = $(addprefix $(PATH_BASE),$(shell find assets/ -type f))
+GARBAGE      = $(TEMPL_OUTPUT) $(BUNDLE) $(MINIFIED) $(ASSET_FILES)
 NODE_MODULES = node_modules
 PATH_DEBUG   = build/debug/
 PATH_RELEASE = build/release/
@@ -59,7 +60,7 @@ help:
 auto-release: $(MINIFIED) $(TEMPL_OUTPUT)
 auto-debug: $(BUNDLE) $(TEMPL_OUTPUT)
 auto-clean:
-	$(RM) $(TEMPL_OUTPUT) $(BUNDLE) $(MINIFIED)
+	$(foreach FILE,$(wildcard $(GARBAGE)),$(RM) $(FILE)$(\n))
 
 $(PATH_BASE)assets/%: assets/%
 	@$(MKDIR) $(dir $@)
@@ -88,3 +89,8 @@ $(MINIFIED): $(BUNDLE) $(MINIFIER)
 	$(MINIFIER) $< --mangle --compress "drop_console=true,warnings=false" -o $@
 
 .PHONY: auto-debug auto-release auto-clean debug release clean version test
+
+define \n
+
+
+endef
