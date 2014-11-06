@@ -18,8 +18,8 @@
       game = new Game(options);
 
       w.setBodyElement(options.$canvas);
-      w.addEventListener("resize", function (evt) {
-        game.resize(evt.target.innerWidth, evt.target.innerHeight);
+      w.addResizeListener(function (width, height) {
+        game.resize(width, height);
       });
 
       game.start();
@@ -39,6 +39,6 @@
       w.setBodyElement($error);
     }
   }
-  w.addEventListener("load", main);
+  w.addLoadListener(main);
 
 }());

@@ -18,14 +18,6 @@
     }
   }
 
-  function isBrowser() {
-    return (
-      typeof window !== "undefined" &&
-      typeof document !== "undefined" &&
-      typeof document.body !== "undefined"
-    );
-  }
-
   /**
    * Creates a new HTML element.
    *
@@ -52,14 +44,38 @@
   } : function () {};
 
   /**
-   * Adds new event listener to global context.
+   * Registers function to be called when the window has loaded.
    *
-   * @param  {string} type - Event type.
-   * @param  {Function} f - Callback fired on event.
+   * @param  {Function} f - Function to call when the window has loaded.
    */
-  Window.prototype.addEventListener = isBrowser() ? function (type, f) {
-    window.addEventListener(type, f);
+  Window.prototype.addLoadListener = isBrowser() ? function (f) {
+    window.addEventListener("load", function () {
+      f();
+    });
+  } : function (f) {
+    f();
+  };
+
+  /**
+   * Registers funciton to be called when the window is resized. The function is
+   * also called immediately when registered.
+   *
+   * @param  {Function} f - Function to call on window resize.
+   */
+  Window.prototype.addResizeListener = isBrowser() ? function (f) {
+    window.addEventListener("resize", function (evt) {
+      f(evt.target.innerWidth, evt.target.innerHeight);
+    });
+    f(window.innerWidth, window.innerHeight);
   } : function () {};
+
+  function isBrowser() {
+    return (
+      typeof window !== "undefined" &&
+      typeof document !== "undefined" &&
+      typeof document.body !== "undefined"
+    );
+  }
 
   module.exports = Window;
 }());
