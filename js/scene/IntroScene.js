@@ -15,7 +15,7 @@
     // TODO: Implement.
   };
 
-  IntroScene.prototype.render = function (camera) {
+  IntroScene.prototype.record = function (camera) {
     // TODO: Implement.
   };
 

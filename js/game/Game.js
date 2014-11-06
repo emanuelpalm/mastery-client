@@ -21,7 +21,7 @@
     this.start = function () {
       looper.loop(function (dt) {
         sceneProxy.update(dt);
-        sceneProxy.render(null); // TODO: Pass on camera object.
+        sceneProxy.record(null); // TODO: Pass on camera object.
         canvas.render(null); // TODO: Pass on camera object.
         // TODO: Anything else? Handle events?
       });

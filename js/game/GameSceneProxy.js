@@ -32,12 +32,12 @@
     };
 
     /**
-     * Updates current scene relative to given elapsed time since last update.
+     * Records entities which are to be displayed at the next screen frame.
      *
      * @param {GameCamera} camera Camera used for recording scene entities.
      */
-    this.render = function (camera) {
-      scene.render(camera);
+    this.record = function (camera) {
+      scene.record(camera);
     };
 
     /**

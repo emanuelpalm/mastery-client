@@ -18,7 +18,7 @@
       update: function (dt) {
         recordedDt = dt;
       },
-      render: function (camera) {
+      record: function (camera) {
         recordedCamera = camera;
       },
     });
@@ -30,7 +30,7 @@
     proxy.update("update");
     test.equal(recordedDt, "update");
 
-    proxy.render("camera");
+    proxy.record("camera");
     test.equal(recordedCamera, "camera");
 
     proxy.notify("event");
