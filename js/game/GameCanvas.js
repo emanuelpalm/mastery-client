@@ -1,8 +1,6 @@
 (function () {
   "use strict";
 
-  var context = require("../utils/context.js");
-
   /**
    * Manages rendering.
    *

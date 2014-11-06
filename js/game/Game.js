@@ -11,46 +11,44 @@
    * @class
    */
   function Game(properties) {
-    properties.looper = new GameLooper();
-    properties.sceneProxy = new GameSceneProxy(properties.scene);
-    properties.gameCanvas = new GameCanvas(properties.$canvas);
+    var looper = new GameLooper();
+    var sceneProxy = new GameSceneProxy(properties.scene);
+    var gameCanvas = new GameCanvas(properties.$canvas);
 
-    this._getProperties = function () {
-      return properties;
+    /**
+     * Starts execution of game.
+     */
+    this.start = function () {
+      this.resize(
+        properties.$canvas.offsetWidth,
+        properties.$canvas.offsetHeight
+      );
+
+      looper.loop(function (dt) {
+        sceneProxy.update(dt);
+        sceneProxy.render(null); // TODO: Pass on camera object.
+        gameCanvas.render(null); // TODO: Pass on camera object.
+        // TODO: Anything else? Handle events?
+      });
+    };
+
+    /**
+     * Stops execution of game.
+     */
+    this.stop = function () {
+      looper.stop();
+    };
+
+    /**
+     * Resizes game canvas.
+     *
+     * @param  {integer} width  - Target width, in pixels.
+     * @param  {integer} height - Target height, in pixels.
+     */
+    this.resize = function (width, height) {
+      gameCanvas.resize(width, height);
     };
   }
-
-  /**
-   * Starts execution of game.
-   */
-  Game.prototype.start = function () {
-    var p = this._getProperties();
-
-    this.resize(p.$canvas.offsetWidth, p.$canvas.offsetHeight);
-    p.looper.loop(function (dt) {
-      p.sceneProxy.update(dt);
-      p.sceneProxy.render(null); // TODO: Pass on camera object.
-      p.gameCanvas.render(null); // TODO: Pass on camera object.
-      // TODO: Anything else? Handle events?
-    });
-  };
-
-  /**
-   * Stops execution of game.
-   */
-  Game.prototype.stop = function () {
-    this._getProperties().looper.stop();
-  }
-
-  /**
-   * Resizes game canvas.
-   *
-   * @param  {integer} width  - Target width, in pixels.
-   * @param  {integer} height - Target height, in pixels.
-   */
-  Game.prototype.resize = function (width, height) {
-    this._getProperties().gameCanvas.resize(width, height);
-  };
 
   module.exports = Game;
 }());

@@ -10,45 +10,37 @@
    */
   function GameLooper() {
     var request = null;
-    this._getRequest = function () {
-      return request;
+
+    /**
+     * Loops given function f.
+     *
+     * @param  {Function} f Function to schedule.
+     */
+    this.loop = function (f) {
+      this.stop();
+
+      var timeElapsed = 0.0,
+        timeBefore;
+      (function tick() {
+        request = context.requestAnimationFrame(tick);
+
+        timeBefore = context.getMonotonicTime();
+        f(timeElapsed);
+        timeElapsed = context.getMonotonicTime() - timeBefore;
+      }());
     };
-    this._setRequest = function (r) {
-      request = r;
+
+    /**
+     * Stops looping of current function.
+     */
+    this.stop = function () {
+      if (request !== null) {
+        context.cancelRequestAnimationFrame(request);
+        request = null;
+      }
     };
+
   }
-
-  /**
-   * Loops given function f.
-   *
-   * @param  {Function} f Function to schedule.
-   */
-  GameLooper.prototype.loop = function (f) {
-    this.stop();
-
-    var setRequest = this._setRequest;
-
-    var timeElapsed = 0.0,
-      timeBefore;
-    (function tick() {
-      setRequest(context.requestAnimationFrame(tick));
-
-      timeBefore = context.getMonotonicTime();
-      f(timeElapsed);
-      timeElapsed = context.getMonotonicTime() - timeBefore;
-    }());
-  };
-
-  /**
-   * Stops looping of current function.
-   */
-  GameLooper.prototype.stop = function () {
-    var r = this._getRequest();
-    if (r !== null) {
-      context.cancelRequestAnimationFrame(r);
-      this._setRequest(null);
-    }
-  };
 
   module.exports = GameLooper;
 }());
