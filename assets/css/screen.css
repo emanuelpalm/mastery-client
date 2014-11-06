@@ -13,6 +13,11 @@ body {
   background-color: #0B182E;
 }
 
+canvas {
+  width: 100%;
+  height: 100%;
+}
+
 #loader, #error {
   position: fixed;
   width: 128px;
@@ -21,7 +26,9 @@ body {
   left: 50%;
   margin-top: -64px;
   margin-left: -64px;
+}
 
+canvas, img {
   /* Disable image interpolation. */
   image-rendering: optimizeSpeed;             /* Legal fallback */
   image-rendering: -moz-crisp-edges;          /* Firefox        */
