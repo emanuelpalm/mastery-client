@@ -6,10 +6,14 @@
    *
    * @class
    */
-  function GameCanvas($onScreenCanvas) {
-    var $offScreenCanvas = $onScreenCanvas.cloneNode(false);
+  function GameCanvas(w) {
+    var $onScreenCanvas = w.createElement("canvas");
+    var $offScreenCanvas = w.createElement("canvas");
     var ctxOn = $onScreenCanvas.getContext("2d");
     var ctxOff = $offScreenCanvas.getContext("2d");
+
+    w.setBodyElement($onScreenCanvas);
+    w.addResizeListener(resize);
 
     /**
      * Renders recordings captured by given camera.
@@ -25,10 +29,7 @@
       );
     };
 
-    /**
-     * Resizes canvas to the size given in pixels.
-     */
-    this.resize = function (width, height) {
+    function resize(width, height) {
       $onScreenCanvas.setAttribute("width", width);
       $onScreenCanvas.setAttribute("height", height);
 

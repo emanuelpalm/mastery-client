@@ -12,18 +12,13 @@
    */
   function Game(properties) {
     var looper = new GameLooper();
-    var sceneProxy = new GameSceneProxy(properties.scene);
-    var canvas = new GameCanvas(properties.$canvas);
+    var sceneProxy = new GameSceneProxy(properties.originScene);
+    var canvas = new GameCanvas(properties.window);
 
     /**
      * Starts execution of game.
      */
     this.start = function () {
-      this.resize(
-        properties.$canvas.offsetWidth,
-        properties.$canvas.offsetHeight
-      );
-
       looper.loop(function (dt) {
         sceneProxy.update(dt);
         sceneProxy.render(null); // TODO: Pass on camera object.
@@ -37,16 +32,6 @@
      */
     this.stop = function () {
       looper.stop();
-    };
-
-    /**
-     * Resizes game canvas.
-     *
-     * @param  {integer} width  - Target width, in pixels.
-     * @param  {integer} height - Target height, in pixels.
-     */
-    this.resize = function (width, height) {
-      canvas.resize(width, height);
     };
   }
 
