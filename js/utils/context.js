@@ -65,6 +65,16 @@
   } : function () {};
 
   /**
+   * Adds new event listener to global context.
+   *
+   * @param  {string} type - Event type.
+   * @param  {Function} f - Callback fired on event.
+   */
+  exports.addEventListener = (typeof window !== "undefined") ? function (type, f) {
+    window.addEventListener(type, f);
+  } : function () {};
+
+  /**
    * Determines current relative time.
    *
    * Note: The time returned is not required to be relative to any particular
