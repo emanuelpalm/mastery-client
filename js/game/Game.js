@@ -13,7 +13,7 @@
   function Game(properties) {
     var looper = new GameLooper();
     var sceneProxy = new GameSceneProxy(properties.scene);
-    var gameCanvas = new GameCanvas(properties.$canvas);
+    var canvas = new GameCanvas(properties.$canvas);
 
     /**
      * Starts execution of game.
@@ -27,7 +27,7 @@
       looper.loop(function (dt) {
         sceneProxy.update(dt);
         sceneProxy.render(null); // TODO: Pass on camera object.
-        gameCanvas.render(null); // TODO: Pass on camera object.
+        canvas.render(null); // TODO: Pass on camera object.
         // TODO: Anything else? Handle events?
       });
     };
@@ -46,7 +46,7 @@
      * @param  {integer} height - Target height, in pixels.
      */
     this.resize = function (width, height) {
-      gameCanvas.resize(width, height);
+      canvas.resize(width, height);
     };
   }
 
