@@ -1,22 +1,24 @@
 (function () {
   "use strict";
 
-  var context = require("./utils/context.js");
+  var Window = require("./utils/Window.js");
   var Game = require("./game/Game.js");
   var IntroScene = require("./scene/IntroScene.js");
+
+  var w = new Window();
 
   function main() {
     var game = null;
     var options = {
-      $canvas: context.createElement("canvas"),
+      $canvas: w.createElement("canvas"),
       scene: new IntroScene(),
     };
 
     try {
       game = new Game(options);
 
-      context.setBodyElement(options.$canvas);
-      context.addEventListener("resize", function (evt) {
+      w.setBodyElement(options.$canvas);
+      w.addEventListener("resize", function (evt) {
         game.resize(evt.target.innerWidth, evt.target.innerHeight);
       });
 
@@ -31,12 +33,12 @@
     }
 
     function displayErrorElement() {
-      var $error = context.createElement("img");
+      var $error = w.createElement("img");
       $error.id = "error";
       $error.src = "assets/graphics/error.gif";
-      context.setBodyElement($error);
+      w.setBodyElement($error);
     }
   }
-  context.addEventListener("load", main);
+  w.addEventListener("load", main);
 
 }());

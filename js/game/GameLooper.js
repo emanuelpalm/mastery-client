@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var context = require("../utils/context.js");
+  var scheduler = require("../utils/scheduler.js");
 
   /**
    * Schedules some function to run at browser animation frame interval.
@@ -22,11 +22,11 @@
       var timeElapsed = 0.0,
         timeBefore;
       (function tick() {
-        request = context.requestAnimationFrame(tick);
+        request = scheduler.requestAnimationFrame(tick);
 
-        timeBefore = context.getMonotonicTime();
+        timeBefore = scheduler.getMonotonicTime();
         f(timeElapsed);
-        timeElapsed = context.getMonotonicTime() - timeBefore;
+        timeElapsed = scheduler.getMonotonicTime() - timeBefore;
       }());
     };
 
@@ -35,7 +35,7 @@
      */
     this.stop = function () {
       if (request !== null) {
-        context.cancelRequestAnimationFrame(request);
+        scheduler.cancelRequestAnimationFrame(request);
         request = null;
       }
     };
