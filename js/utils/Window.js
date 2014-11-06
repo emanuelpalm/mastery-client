@@ -69,6 +69,21 @@
     f(window.innerWidth, window.innerHeight);
   } : function () {};
 
+  /**
+   * Clears window of all visible elements and displays an error indicator.
+   *
+   * @param  {Error} e - Error causing panic.
+   */
+  Window.prototype.panic = isBrowser() ? function (e) {
+    var $error = this.createElement("img");
+    $error.id = "error";
+    $error.src = "assets/graphics/error.gif";
+    this.setBodyElement($error);
+    throw e;
+  } : function () {
+    throw e;
+  };
+
   function isBrowser() {
     return (
       typeof window !== "undefined" &&

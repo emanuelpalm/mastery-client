@@ -20,17 +20,9 @@
       if (game !== null) {
         game.stop();
       }
-      displayErrorElement();
-      throw e;
+      w.panic(e);
     }
   }
   w.addLoadListener(main);
-
-  function displayErrorElement() {
-    var $error = w.createElement("img");
-    $error.id = "error";
-    $error.src = "assets/graphics/error.gif";
-    w.setBodyElement($error);
-  }
 
 }());
