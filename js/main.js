@@ -6,7 +6,6 @@
   var IntroScene = require("./scene/IntroScene.js");
 
   function main() {
-
     var game = null;
     var options = {
       $canvas: context.createElement("canvas"),
@@ -15,9 +14,13 @@
 
     try {
       game = new Game(options);
-      game.start();
 
       context.setBodyElement(options.$canvas);
+      context.addEventListener("resize", function (evt) {
+        game.resize(evt.target.innerWidth, evt.target.innerHeight);
+      });
+
+      game.start();
 
     } catch (e) {
       if (game !== null) {
@@ -34,6 +37,6 @@
       context.setBodyElement($error);
     }
   }
-  window.addEventListener("load", main);
+  context.addEventListener("load", main);
 
 }());
