@@ -2,17 +2,32 @@
   "use strict";
 
   /**
-   * Manages transitions between scenes.
+   * Manages a current scene and its transitions to other scenes.
    *
    * @class
    */
   function GameSceneProxy(originScene) {
-    var scene = originScene;
+    var scene = null;
     this._getScene = function () {
       return scene;
     };
-    this._setScene = function (nextScene) {
+
+    var eventCallback = null;
+    this._getEventCallback = function () {
+      return eventCallback;
+    };
+
+    toScene(originScene);
+
+    /**
+     * Function passed on to a scene during setup in order to allow it to set up
+     * transitions to other scenes.
+     *
+     * @param  {Scene} nextScene - Scene to transition to.
+     */
+    function toScene(nextScene) {
       scene = nextScene;
+      eventCallback = scene.setup(toScene);
     }
   }
 
@@ -34,6 +49,14 @@
     this._getScene().render(camera);
   };
 
-  module.exports = GameSceneProxy;
+  /**
+   * Notifies current scene about some occurred event.
+   *
+   * @param  {GameEvent} evt - Event to pass on to scene.
+   */
+  GameSceneProxy.prototype.notify = function (evt) {
+    this._getEventCallback()(evt);
+  };
 
+  module.exports = GameSceneProxy;
 }());
