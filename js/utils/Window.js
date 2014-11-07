@@ -80,7 +80,7 @@
     $error.src = "assets/graphics/error.gif";
     this.setBodyElement($error);
     throw e;
-  } : function () {
+  } : function (e) {
     throw e;
   };
 
