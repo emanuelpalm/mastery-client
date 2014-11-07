@@ -4,6 +4,7 @@
   var GameLooper = require("./GameLooper.js");
   var GameSceneProxy = require("./GameSceneProxy.js");
   var GameCanvas = require("./GameCanvas.js");
+  var GameCamera = require("./GameCamera.js");
 
   /**
    * Represents the entirety of the game.
@@ -19,11 +20,12 @@
      * Starts execution of game.
      */
     this.start = function () {
+      var camera = new GameCamera();
+
       looper.loop(function (dt) {
         sceneProxy.update(dt);
-        sceneProxy.record(null); // TODO: Pass on camera object.
-        canvas.render(null); // TODO: Pass on camera object.
-        // TODO: Anything else? Handle events?
+        sceneProxy.record(camera);
+        canvas.render(camera);
       });
     };
 
