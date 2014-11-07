@@ -1,50 +1,46 @@
 (function () {
   "use strict";
 
+  var canvas = require("../utils/canvas.js");
+
   /**
-   * Manages rendering.
+   * Manages a HTMLCanvasElement visible on screen.
    *
    * @class
+   * @param {Window} w - Window in which canvas is to be visible.
    */
   function GameCanvas(w) {
-    var $onScreenCanvas = w.createElement("canvas");
-    var $offScreenCanvas = w.createElement("canvas");
-    var ctxOn = $onScreenCanvas.getContext("2d");
-    var ctxOff = $offScreenCanvas.getContext("2d");
+    var $canvas = w.createElement("canvas");
+    var context = $canvas.getContext("2d");
 
-    w.setBodyElement($onScreenCanvas);
+    var ratio = 0.75;
+
+    w.setBodyElement($canvas);
     w.addResizeListener(resize);
 
     /**
      * Renders recordings captured by given camera.
      */
     this.render = function (camera) {
-      // TODO: Draw camera recordings.
-      ctxOff.fillStyle = "#2212f2";
-      ctxOff.fillRect(10, 10, 100, 100);
+      var $cameraCanvas = camera.getCanvasBuffer();
+      var bounds = camera.getBounds(),
+        x = Math.min(bounds.x, $cameraCanvas.width, 0),
+        y = Math.min(bounds.y, $cameraCanvas.height, 0),
+        w = Math.min(bounds.w, $cameraCanvas.width - x, 0),
+        h = Math.min(bounds.h * ratio, $cameraCanvas.height - y, 0);
 
-      ctxOn.drawImage(
-        $offScreenCanvas,
-        0, 0, $onScreenCanvas.width, $onScreenCanvas.height
+      context.drawImage(
+        $cameraCanvas,
+        x, y, w, h,
+        0, 0, $canvas.width, $canvas.height
       );
     };
 
     function resize(width, height) {
-      $onScreenCanvas.setAttribute("width", width);
-      $onScreenCanvas.setAttribute("height", height);
-
-      $offScreenCanvas.setAttribute("height", 320 * (height / width));
-
-      disableImageSmoothing(ctxOff);
-      disableImageSmoothing(ctxOn);
-    };
-
-    function disableImageSmoothing(ctx) {
-      ctx.mozImageSmoothingEnabled = false;
-      ctx.oImageSmoothingEnabled = false;
-      ctx.webkitImageSmoothingEnabled = false;
-      ctx.msImageSmoothingEnabled = false;
-      ctx.imageSmoothingEnabled = false;
+      $canvas.width = width;
+      $canvas.height = height;
+      ratio = height / width;
+      canvas.disableContextImageSmoothing(context);
     }
   }
 
