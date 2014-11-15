@@ -77,7 +77,7 @@
   Window.prototype.panic = isBrowser() ? function (e) {
     var $error = this.createElement("img");
     $error.id = "error";
-    $error.src = "assets/graphics/error.gif";
+    $error.src = "assets/graphics/error.png";
     this.setBodyElement($error);
     throw e;
   } : function (e) {
