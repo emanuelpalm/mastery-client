@@ -1,14 +1,18 @@
 (function () {
   "use strict";
 
+  var GameAssetLoader = require("./GameAssetLoader.js");
+
   /**
    * Manages a current scene and its transitions to other scenes.
    *
    * @class
    */
   function GameSceneProxy(originScene) {
-    var scene = null;
+    var loader = new GameAssetLoader("assets/");
+
     var eventCallback = null;
+    var scene = null;
     toScene(originScene);
 
     /**
@@ -19,7 +23,7 @@
      */
     function toScene(nextScene) {
       scene = nextScene;
-      eventCallback = scene.setup(toScene);
+      eventCallback = scene.setup(loader, toScene);
     }
 
     /**

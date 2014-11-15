@@ -5,7 +5,7 @@
     // TODO: Implement.
   }
 
-  IntroScene.prototype.setup = function (toScene) {
+  IntroScene.prototype.setup = function (loader, toScene) {
     return function (evt) {
       // TODO: Implement.
     };
