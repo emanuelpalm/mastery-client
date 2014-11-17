@@ -7,12 +7,12 @@
 
   var w = new Window();
 
-  function main() {
+  function main(mode) {
     var game = null;
     try {
       game = new Game({
         window: w,
-        originScene: new IntroScene(),
+        originScene: new IntroScene(mode),
       });
       game.start();
 
