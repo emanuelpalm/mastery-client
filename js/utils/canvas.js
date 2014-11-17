@@ -1,7 +1,7 @@
 /**
  * Contains helper functions for creating and managing HTMLCanvasElements.
  *
- * @module utils/canvas-element
+ * @module utils/canvas
  */
 (function () {
   "use strict";
