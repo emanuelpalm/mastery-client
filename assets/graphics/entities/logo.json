@@ -1,0 +1,9 @@
+{
+    "sprite": "sprites/logo.json",
+    "bounds": {
+        "x": 100,
+        "y": 60,
+        "width": 120,
+        "height": 120
+    }
+}
