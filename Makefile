@@ -48,12 +48,16 @@ test:
 	@echo "Running unit tests ..."
 	@$(foreach FILE,$(TEST_FILES),$(TESTER) $(FILE))
 
+run: debug
+	cd build/debug/ && python -m SimpleHTTPServer 8080
+
 help:
 	@echo "make release - Builds using release configuration."
 	@echo "make debug   - Builds using development configuration."
 	@echo "make clean   - Removes existing builds."
 	@echo "make version - Prints current application version."
 	@echo "make test    - Runs unit tests."
+	@echo "make run     - Serves development version of game on port 8080."
 
 # Automatic commands. Don't use these directly.
 
@@ -88,7 +92,7 @@ $(MINIFIER): $(NODE_MODULES)
 $(MINIFIED): $(BUNDLE) $(MINIFIER)
 	$(MINIFIER) $< --mangle --compress "drop_console=true,warnings=false" -o $@
 
-.PHONY: auto-debug auto-release auto-clean debug release clean version test
+.PHONY: auto-debug auto-release auto-clean debug release clean version test run
 
 define \n
 
