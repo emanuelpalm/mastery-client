@@ -32,10 +32,10 @@ VERSION      = $(shell git describe --tags | sed "s/[^0-9]/ /g" | awk '{printf "
 # User commands.
 
 release:
-	@$(MAKE) auto-release PATH_BASE="$(PATH_RELEASE)" JS_MASTERY="$(MINIFIED)" --no-print-directory
+	@$(MAKE) auto-release PATH_BASE="$(PATH_RELEASE)" SCRIPT_ATTRIBUTES="src=\"$(MINIFIED)\"" --no-print-directory
 
 debug:
-	@$(MAKE) auto-debug BFLAGS="$(BFLAGS) --debug" PATH_BASE="$(PATH_DEBUG)" JS_MASTERY="$(BUNDLE)" --no-print-directory
+	@$(MAKE) auto-debug BFLAGS="$(BFLAGS) --debug" PATH_BASE="$(PATH_DEBUG)" SCRIPT_ATTRIBUTES="src=\"$(BUNDLE)\" data-mode=\"debug\"" --no-print-directory
 
 clean:
 	@$(MAKE) auto-clean PATH_BASE="$(PATH_RELEASE)" --no-print-directory
@@ -73,7 +73,7 @@ $(TEMPL_DIR):
 	$(MKDIR) $@
 
 $(TEMPL_OUTPUT): $(TEMPL_INPUT) $(TEMPL_DIR) $(BUNDLE)
-	sed s/{{js.mastery}}/$(subst /,\\/,$(JS_MASTERY))/ < $< > $@
+	sed 's/{{script.attributes}}/$(subst /,\/,$(SCRIPT_ATTRIBUTES))/' < $< > $@
 
 $(BUNDLE_DIR):
 	$(MKDIR) $@
