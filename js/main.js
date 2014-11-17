@@ -7,6 +7,12 @@
 
   var w = new Window();
 
+  /**
+   * Application main function.
+   *
+   * Called with the target application mode, which may be null or "release" for
+   * normal operation, and "debug" for development.
+   */
   function main(mode) {
     var game = null;
     try {
