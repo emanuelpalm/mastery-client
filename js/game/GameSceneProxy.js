@@ -9,7 +9,7 @@
    * @class
    */
   function GameSceneProxy(originScene) {
-    var loader = new GameAssetLoader("assets/");
+    var loader = new GameAssetLoader("/assets/");
 
     var eventCallback = null;
     var scene = null;
