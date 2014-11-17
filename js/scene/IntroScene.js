@@ -1,23 +1,30 @@
 (function () {
   "use strict";
 
-  function IntroScene() {
-    // TODO: Implement.
-  }
+  var LoginScene = require("./LoginScene.js");
 
-  IntroScene.prototype.setup = function (loader, toScene) {
-    return function (evt) {
-      // TODO: Implement.
+  function IntroScene(gameMode) {
+    var logo = null;
+
+    this.setup = function (loader, toScene) {
+      loader.loadBatch("scenes/intro.json", function (batch) {
+        logo = batch.logo;
+      });
+
+      var loginScene = new LoginScene(gameMode);
+      setTimeout(function () {
+        toScene(loginScene);
+      }, 2000);
     };
-  };
 
-  IntroScene.prototype.update = function (dt) {
-    // TODO: Implement.
-  };
+    this.update = function (dt) {
+      //logo.update(dt);
+    };
 
-  IntroScene.prototype.record = function (camera) {
-    // TODO: Implement.
-  };
+    this.record = function (camera) {
+      //camera.record(logo);
+    };
+  }
 
   module.exports = IntroScene;
 }());
