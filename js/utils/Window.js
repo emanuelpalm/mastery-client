@@ -50,7 +50,8 @@
    */
   Window.prototype.addLoadListener = isBrowser() ? function (f) {
     window.addEventListener("load", function () {
-      f();
+      var $script = document.getElementById("mastery-script");
+      f($script.getAttribute("data-mode"));
     });
   } : function (f) {
     f();
