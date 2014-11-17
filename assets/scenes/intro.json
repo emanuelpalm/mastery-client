@@ -1,5 +1,5 @@
 {
     "entities": {
-        "logo": "entities/logo.json"
+        "logo": "graphics/entities/logo.json"
     }
 }
