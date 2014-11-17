@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  var http = require("http");
+
   /**
    * Utility used for loading assets from files at some given root directory.
    *
@@ -16,7 +18,12 @@
      * thrown and the application is terminated.
      */
     this.loadBatch = function (path, onLoad) {
+      http.get(root + path, function (result) {
+        console.log(result);
 
+      }).on("error", function (e) {
+        throw e;
+      });
     };
   }
 
