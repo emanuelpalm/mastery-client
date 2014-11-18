@@ -1,5 +1,5 @@
 {
-    "sprite": "sprites/logo.json",
+    "sprite": "/assets/sprites/logo.json",
     "bounds": {
         "x": 100,
         "y": 60,
