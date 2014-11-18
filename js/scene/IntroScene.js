@@ -7,9 +7,13 @@
     var logo = null;
 
     this.setup = function (loader, toScene) {
-      loader.loadBatch("scenes/intro.json", function (batch) {
-        logo = batch.logo;
-      });
+      loader.loadBatch("/assets/scenes/intro.json")
+        .then(function (batch) {
+          logo = batch.logo;
+        })
+        .catch(function (e) {
+          console.log(e);
+        });
 
       var loginScene = new LoginScene(gameMode);
       setTimeout(function () {
