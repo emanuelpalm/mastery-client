@@ -1,7 +1,9 @@
 {
   "name": "Mastery",
   "description": "An HTML5 platform game where you take on the role as a wizard fighting the undead.",
-  "dependencies": {},
+  "dependencies": {
+    "promise": "^6.0.1"
+  },
   "devDependencies": {
     "browserify": ">= 6.2.0 < 7.0.0",
     "uglify-js": ">= 2.4.0 < 3.0.0",
