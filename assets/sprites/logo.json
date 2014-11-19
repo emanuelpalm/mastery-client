@@ -1,5 +1,5 @@
 {
-    "src": "/assets/graphics/textures/interface.png",
+    "image": "/assets/graphics/textures/interface.png",
     "bounds": {
         "x": 0,
         "y": 0,
