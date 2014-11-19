@@ -21,7 +21,7 @@
      */
     this.loadBatch = function (url) {
       return new Promise(function (fulfill, reject) {
-        loadOne(url)
+        loadOneAt(url)
           .then(function (batch) {
             console.log(batch);
           })
@@ -29,7 +29,7 @@
       });
     };
 
-    function loadOne(url) {
+    function loadOneAt(url) {
       var promise = loadCached(url);
       if (promise !== null) {
         return promise;
@@ -73,6 +73,9 @@
         http.request(url)
           .on("response", function (response) {
             response.on("data", function (data) {
+              if (Buffer.isBuffer(data)) {
+                data = data.toString();
+              }
               if (response.headers["content-type"] === "application/json") {
                 data = JSON.parse(data);
                 Object.freeze(data);
@@ -89,6 +92,11 @@
           .end();
       });
     }
+
+    /**
+     * Loads resource at given url.
+     */
+    this.loadOneAt = loadOneAt;
   }
 
   module.exports = GameAssetLoader;
