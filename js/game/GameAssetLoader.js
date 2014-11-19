@@ -21,15 +21,39 @@
      */
     this.loadBatch = function (url) {
       return new Promise(function (fulfill, reject) {
-        loadOneAt(url)
+
+        loadAt(url)
           .then(function (batch) {
-            console.log(batch);
+            var pendingJobs = 1;
+
+            if (batch.entities) {
+              forEachPathInMap(batch.entities, loadEntityAt)
+                .then(function (entities) {
+                  batch.entities = entities;
+                  completeJob();
+                })
+                .catch(reject);
+            } else {
+              completeJob();
+            }
+
+            function completeJob() {
+              pendingJobs -= 1;
+              if (pendingJobs === 0) {
+                Object.freeze(batch);
+                fulfill(batch);
+              }
+            }
           })
           .catch(reject);
       });
     };
 
-    function loadOneAt(url) {
+    function loadAt(url) {
+      if (!url) {
+        return Promise.reject(new Error("No URL given."));
+      }
+
       var promise = loadCached(url);
       if (promise !== null) {
         return promise;
@@ -78,7 +102,6 @@
               }
               if (response.headers["content-type"] === "application/json") {
                 data = JSON.parse(data);
-                Object.freeze(data);
               }
               if (response.statusCode < 200 || response.statusCode > 299) {
                 reject(data);
@@ -93,10 +116,64 @@
       });
     }
 
-    /**
-     * Loads resource at given url.
-     */
-    this.loadOneAt = loadOneAt;
+    function forEachPathInMap(map, loader) {
+      return new Promise(function (fulfill, reject) {
+        var keys = Object.keys(map);
+        var pendingJobs = keys.length;
+
+        keys.forEach(function (key) {
+          loader(map[key])
+            .then(function (resource) {
+              map[key] = resource;
+              completeJob();
+            })
+            .catch(reject);
+        });
+
+        function completeJob() {
+          pendingJobs -= 1;
+          if (pendingJobs === 0) {
+            fulfill(map);
+          }
+        }
+      });
+    }
+
+    function loadEntityAt(path) {
+      return new Promise(function (fulfill, reject) {
+        loadAt(path)
+          .then(function (entity) {
+            if (!entity.sprite) {
+              fulfill(entity);
+            }
+            loadSpriteAt(entity.sprite)
+              .then(function (sprite) {
+                entity.sprite = sprite;
+                fulfill(entity);
+              })
+              .catch(reject);
+          })
+          .catch(reject);
+      });
+    }
+
+    function loadSpriteAt(path) {
+      return new Promise(function (fulfill, reject) {
+        loadAt(path)
+          .then(function (sprite) {
+            if (!sprite.image) {
+              reject(new Error("Sprite '" + path + "' has no image."));
+            }
+            loadAt(sprite.image)
+              .then(function (image) {
+                sprite.image = image;
+                fulfill(sprite);
+              })
+              .catch(reject);
+          })
+          .catch(reject);
+      });
+    }
   }
 
   module.exports = GameAssetLoader;
