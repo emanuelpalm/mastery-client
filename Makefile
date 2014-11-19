@@ -26,7 +26,7 @@ PATH_DEBUG   = build/debug/
 PATH_RELEASE = build/release/
 SOURCE_FILES = $(shell find js/ -type f -iname '*.js*')
 SOURCE_MAIN  = js/main.js
-TEST_FILES   = $(shell find test/ -type f -iname '*.js*')
+TEST_FILES   = $(shell find test/ -type f -iname '*.js')
 VERSION      = $(shell git describe --tags | sed "s/[^0-9]/ /g" | awk '{printf "%d.%d.%d", $$1, $$2, $$3}')
 
 # User commands.
