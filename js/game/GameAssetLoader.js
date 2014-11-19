@@ -30,13 +30,28 @@
     };
 
     function loadOne(url) {
-      var cached = cache[url];
-      if (cached) {
+      var promise = loadCached(url);
+      if (promise !== null) {
+        return promise;
+      }
+      promise = loadImageAt(url);
+      if (promise !== null) {
+        return promise;
+      }
+      return loadResourceAt(url);
+    }
+
+    function loadCached(url) {
+      var item = cache[url];
+      if (item) {
         return new Promise(function (fulfill) {
-          fulfill(cached);
+          fulfill(item);
         });
       }
+      return null;
+    }
 
+    function loadImageAt(url) {
       if (url.match(imageRegex)) {
         return new Promise(function (fulfill, reject) {
           var image = new Image();
@@ -50,7 +65,10 @@
           image.src = url;
         });
       }
+      return null;
+    }
 
+    function loadResourceAt(url) {
       return new Promise(function (fulfill, reject) {
         http.request(url)
           .on("response", function (response) {
@@ -75,4 +93,3 @@
 
   module.exports = GameAssetLoader;
 }());
-
