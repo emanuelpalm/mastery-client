@@ -8,7 +8,7 @@
    *
    * @class
    */
-  function GameSceneProxy(originScene) {
+  function GameSceneProxy(originScene, onPanic) {
     var sceneControl = new GameSceneControl();
     var scene = {
       update: function () {},
@@ -17,7 +17,7 @@
     var eventCallback = unhandledEvent;
 
     sceneControl.onEvent = onEvent;
-    sceneControl.panic = unhandledPanic;
+    sceneControl.panic = onPanic;
     sceneControl.toScene = toScene;
     sceneControl.toScene(originScene);
 
@@ -35,10 +35,6 @@
         scene = nextScene;
       };
       nextScene.setup(sceneControl);
-    }
-
-    function unhandledPanic(error) {
-      console.log("Unhandled panic: " + error);
     }
 
     /**
@@ -60,13 +56,6 @@
      */
     this.notify = function (evt) {
       eventCallback(evt);
-    };
-
-    /**
-     * Registers scene panic handler.
-     */
-    this.onPanic = function (f) {
-      sceneControl.panic = f;
     };
   }
 
