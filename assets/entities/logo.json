@@ -1,9 +1,9 @@
 {
     "sprite": "/assets/sprites/logo.json",
     "bounds": {
-        "x": 100,
-        "y": 60,
-        "width": 120,
-        "height": 120
+        "x": 96,
+        "y": 56,
+        "width": 128,
+        "height": 128
     }
 }
