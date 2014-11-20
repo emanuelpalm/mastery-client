@@ -19,7 +19,11 @@
     $canvas.height = height;
     return $canvas;
   } : function () {
-    return {};
+    return {
+      getContext: function () {
+        return {};
+      },
+    };
   };
 
   /**
