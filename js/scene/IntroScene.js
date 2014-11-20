@@ -12,7 +12,7 @@
           logo = batch.logo;
         })
         .catch(function (e) {
-          console.log(e);
+          console.log(e.stack);
         });
 
       var loginScene = new LoginScene(gameMode);
