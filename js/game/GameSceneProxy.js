@@ -14,21 +14,27 @@
       update: function () {},
       record: function () {},
     };
+    var eventCallback = unhandledEvent;
 
+    sceneControl.onEvent = onEvent;
     sceneControl.panic = unhandledPanic;
     sceneControl.toScene = toScene;
     sceneControl.toScene(originScene);
 
+    function unhandledEvent(evt) {
+      console.log("Unhandled event: " + evt);
+    }
+
+    function onEvent(f) {
+      eventCallback = f;
+    }
+
     function toScene (nextScene) {
-      sceneControl.onEvent = unhandledEvent;
+      eventCallback = unhandledEvent;
       sceneControl.ready = function () {
         scene = nextScene;
       };
       nextScene.setup(sceneControl);
-    }
-
-    function unhandledEvent(evt) {
-      console.log("Unhandled event: " + evt);
     }
 
     function unhandledPanic(error) {
@@ -53,7 +59,7 @@
      * Notifies current scene about some occurred event.
      */
     this.notify = function (evt) {
-      sceneControl.onEvent(evt);
+      eventCallback(evt);
     };
 
     /**
