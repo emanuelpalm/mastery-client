@@ -52,5 +52,32 @@
     return this._getState().bounds;
   };
 
+  /**
+   * Sets entity position.
+   */
+  GameEntity.prototype.setPosition = function (x, y) {
+    var bounds = this._getState().bounds;
+    bounds.x = x;
+    bounds.y = y;
+  };
+
+  /**
+   * Sets entity velocity.
+   */
+  GameEntity.prototype.setVelocity = function (dx, dy) {
+    var bounds = this._getState().bounds;
+    bounds.dx = dx;
+    bounds.dy = dy;
+  };
+
+  /**
+   * Sets entity size.
+   */
+  GameEntity.prototype.setSize = function (width, height) {
+    var bounds = this._getState().bounds;
+    bounds.width = width;
+    bounds.height = height;
+  };
+
   module.exports = GameEntity;
 }());
