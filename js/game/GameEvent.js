@@ -2,23 +2,21 @@
   "use strict";
 
   /**
-   * A game event.
+   * A game event, created with a string type and arbitrary properties.
    *
    * @class
-   * @param {*} type - Type of event.
-   * @param {Object|null} [properties] - Event data payload.
    */
   function GameEvent(type, properties) {
 
     /**
-     * @return {*} Event type.
+     * Acquires string type identifier.
      */
     this.getType = function () {
       return type;
     };
 
     /**
-     * @return {Object|null} Event data payload.
+     * Acquires event properties.
      */
     this.getProperties = function () {
       return properties;
