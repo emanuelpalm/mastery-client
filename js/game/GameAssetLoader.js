@@ -5,6 +5,7 @@
   var http = require("http");
   var GameEntity = require("./GameEntity.js");
   var GameSprite = require("./GameSprite.js");
+  var GameAnimation = require("./GameAnimation.js");
 
   /**
    * Utility class used for loading assets.
@@ -23,7 +24,6 @@
      */
     this.loadBatch = function (url) {
       return new Promise(function (fulfill, reject) {
-
         loadAt(url)
           .then(function (batch) {
             var pendingJobs = 1;
@@ -53,7 +53,9 @@
 
     function loadAt(url) {
       if (!url) {
-        return Promise.reject(new Error("No URL given."));
+        return new Promise(function (fulfill) {
+          fulfill(url);
+        });
       }
 
       var promise = loadCached(url);
@@ -145,15 +147,16 @@
       return new Promise(function (fulfill, reject) {
         loadAt(path)
           .then(function (entity) {
-            if (!entity.sprite) {
+            return Promise.all([
+              loadSpriteAt(entity.sprite),
+              loadAnimationAt(entity.animation)
+            ])
+            .then(function (resources) {
+              entity.sprite = resources[0];
+              entity.animation = resources[1];
               fulfill(new GameEntity(entity));
-            }
-            loadSpriteAt(entity.sprite)
-              .then(function (sprite) {
-                entity.sprite = sprite;
-                fulfill(new GameEntity(entity));
-              })
-              .catch(reject);
+            })
+            .catch(reject);
           })
           .catch(reject);
       });
@@ -172,6 +175,16 @@
                 fulfill(new GameSprite(sprite));
               })
               .catch(reject);
+          })
+          .catch(reject);
+      });
+    }
+
+    function loadAnimationAt(path) {
+      return new Promise(function (fulfill, reject) {
+        loadAt(path)
+          .then(function (animation) {
+            fulfill(new GameAnimation(animation));
           })
           .catch(reject);
       });
