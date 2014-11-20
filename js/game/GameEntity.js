@@ -11,7 +11,7 @@
    * the same type, and state, which is the unique state of the particular
    * entity.
    */
-  function Entity(typeData, state) {
+  function GameEntity(typeData, state) {
     if (!state) {
       state = Object.create(null);
     }
@@ -36,7 +36,7 @@
   /**
    * Updates entity position in relation to elapsed time.
    */
-  Entity.prototype.update = function (dt) {
+  GameEntity.prototype.update = function (dt) {
     var state = this._getState();
     state.bounds.x += state.bounds.dx * dt;
     state.bounds.y += state.bounds.dy * dt;
@@ -45,16 +45,16 @@
   /**
    * Acquires sprite, if any, representing entity.
    */
-  Entity.prototype.getSprite = function () {
+  GameEntity.prototype.getSprite = function () {
     return this._getTypeData().sprite;
   };
 
   /**
    * Gets bounds, which is a map of x/y coordinates and with/height.
    */
-  Entity.prototype.getBounds = function () {
+  GameEntity.prototype.getBounds = function () {
     return this._getState().bounds;
   };
 
-  module.exports = Entity;
+  module.exports = GameEntity;
 }());
