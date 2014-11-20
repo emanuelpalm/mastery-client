@@ -12,19 +12,15 @@
    * entity.
    */
   function GameEntity(typeData, state) {
-    if (!state) {
-      state = Object.create(null);
-    }
-    if (!state.bounds) {
-      state.bounds = {
+    state = state || Object.create(null);
+    state.bounds = state.bounds || {
         x: typeData.bounds.x,
         y: typeData.bounds.y,
         width: typeData.bounds.width,
         height: typeData.bounds.height,
         dx: typeData.bounds.dx || 0.0,
         dy: typeData.bounds.dy || 0.0,
-      };
-    }
+    };
     this._getTypeData = function () {
       return typeData;
     };
