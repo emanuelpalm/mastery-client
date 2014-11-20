@@ -82,6 +82,7 @@
     $error.id = "error";
     $error.src = "assets/graphics/error.png";
     this.setBodyElement($error);
+    console.log(e.stack);
     throw e;
   } : function (e) {
     throw e;
