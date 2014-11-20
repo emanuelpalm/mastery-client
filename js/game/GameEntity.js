@@ -13,8 +13,16 @@
    */
   function Entity(typeData, state) {
     if (!state) {
-      state = {
-        bounds: typeData.bounds,
+      state = Object.create(null);
+    }
+    if (!state.bounds) {
+      state.bounds = {
+        x: typeData.bounds.x,
+        y: typeData.bounds.y,
+        width: typeData.bounds.width,
+        height: typeData.bounds.height,
+        dx: typeData.bounds.dx || 0.0,
+        dy: typeData.bounds.dy || 0.0,
       };
     }
     this._getTypeData = function () {
@@ -30,10 +38,8 @@
    */
   Entity.prototype.update = function (dt) {
     var state = this._getState();
-    if (state.bounds) {
-      state.bounds.x += state.bounds.dx * dt;
-      state.bounds.y += state.bounds.dy * dt;
-    }
+    state.bounds.x += state.bounds.dx * dt;
+    state.bounds.y += state.bounds.dy * dt;
   };
 
   /**
@@ -47,8 +53,7 @@
    * Gets bounds, which is a map of x/y coordinates and with/height.
    */
   Entity.prototype.getBounds = function () {
-    var bounds = this._getState().bounds;
-    return bounds ? bounds : { x: 0, y: 0, width: 32, height: 32 };
+    return this._getState().bounds;
   };
 
   module.exports = Entity;
