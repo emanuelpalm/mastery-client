@@ -45,8 +45,8 @@
      * The bounds object contains the four keys x, y, w and h, which indicate
      * x/y offset and width/heigt of the bounds.
      */
-    this.setBounds = function (bounds) {
-      bounds = bounds;
+    this.setBounds = function (b) {
+      bounds = b;
     };
 
     /**
