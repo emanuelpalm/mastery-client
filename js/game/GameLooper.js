@@ -20,11 +20,11 @@
       var timeElapsed = 0.0,
         timeBefore;
       (function tick() {
+        timeElapsed = scheduler.getMonotonicTime() - timeBefore;
         request = scheduler.requestAnimationFrame(tick);
 
         timeBefore = scheduler.getMonotonicTime();
         f(timeElapsed);
-        timeElapsed = scheduler.getMonotonicTime() - timeBefore;
       }());
     };
 
