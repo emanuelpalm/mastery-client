@@ -22,6 +22,8 @@
      * Renders recordings captured by given camera.
      */
     this.render = function (camera) {
+      context.clearRect(0, 0, $canvas.width, $canvas.height);
+
       var $cameraCanvas = camera.getCanvasBuffer();
       var bounds = camera.getBounds(),
         x = Math.min(bounds.x, $cameraCanvas.width, 0),
