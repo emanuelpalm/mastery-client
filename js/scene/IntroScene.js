@@ -7,31 +7,26 @@
   function IntroScene(gameMode) {
     var logo = null;
 
-    this.setup = function (loader, toScene) {
-      loader.loadBatch("/assets/batches/intro.json")
+    this.setup = function (control) {
+      control.getAssetLoader().loadBatch("/assets/batches/intro.json")
         .then(function (batch) {
           logo = new GameEntity(batch.entities.logo);
+          control.ready();
         })
-        .catch(function (e) {
-          console.log(e.stack);
-        });
+        .catch(control.panic);
 
       var loginScene = new LoginScene(gameMode);
       setTimeout(function () {
-        toScene(loginScene);
+        control.toScene(loginScene);
       }, 2000);
     };
 
     this.update = function (dt) {
-      if (logo) {
-        logo.update(dt);
-      }
+      logo.update(dt);
     };
 
     this.record = function (camera) {
-      if (logo) {
-        camera.record(logo);
-      }
+      camera.record(logo);
     };
   }
 

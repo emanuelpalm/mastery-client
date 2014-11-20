@@ -3,8 +3,8 @@
 
   function LoginScene(gameMode) {
 
-    this.setup = function (loader, toScene) {
-
+    this.setup = function (control) {
+      control.ready();
     };
 
     this.update = function (dt) {
