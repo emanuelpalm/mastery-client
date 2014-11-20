@@ -13,8 +13,6 @@
 
     /**
      * Loops given function f.
-     *
-     * @param  {Function} f Function to schedule.
      */
     this.loop = function (f) {
       this.stop();

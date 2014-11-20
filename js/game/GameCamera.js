@@ -21,8 +21,6 @@
 
     /**
      * Records given entity.
-     *
-     * @param  {GameEntity} entity - Entity to record.
      */
     this.record = function (entity) {
       var cameraBounds = entity.getBounds();
@@ -36,8 +34,6 @@
 
     /**
      * Acuires the bounds of the camera recordings which are to be rendered.
-     *
-     * @returns {Object} Camera bounds.
      */
     this.getBounds = function () {
       return bounds;
@@ -48,8 +44,6 @@
      *
      * The bounds object contains the four keys x, y, w and h, which indicate
      * x/y offset and width/heigt of the bounds.
-     *
-     * @param {Object} bounds - Target bounds.
      */
     this.setBounds = function (bounds) {
       bounds = bounds;
@@ -57,8 +51,6 @@
 
     /**
      * Acquires canvas containing all previously recorded entities.
-     *
-     * @returns {HTMLCanvasElement} Canvas containing recorded entities.
      */
     this.getCanvasBuffer = function () {
       return $canvas;
