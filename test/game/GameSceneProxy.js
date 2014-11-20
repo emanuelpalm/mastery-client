@@ -40,6 +40,19 @@
     test.done();
   };
 
+  exports.forwardPanic = function (test) {
+    new GameSceneProxy({
+      setup: function (control) {
+        control.panic("panic");
+      },
+      update: function () {},
+      record: function () {},
+    }, function (error) {
+      test.equal(error, "panic");
+      test.done();
+    });
+  };
+
   exports.toScene = function (test) {
     test.expect(2);
 
