@@ -10,6 +10,7 @@
       control.getAssetLoader().loadBatch("/assets/batches/intro.json")
         .then(function (batch) {
           entities = batch.entities;
+          entities.loader.setPosition(152, 150);
           control.ready();
         })
         .catch(control.panic);
