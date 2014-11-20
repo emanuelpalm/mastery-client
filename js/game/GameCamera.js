@@ -50,6 +50,14 @@
     };
 
     /**
+     * Sets camera position.
+     */
+    this.setPosition = function (x, y) {
+      bounds.x = x;
+      bounds.y = y;
+    };
+
+    /**
      * Acquires canvas containing all previously recorded entities.
      */
     this.getCanvasBuffer = function () {
