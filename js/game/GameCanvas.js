@@ -13,10 +13,10 @@
     var $canvas = w.createElement("canvas");
     var context = $canvas.getContext("2d");
 
-    var ratio = 0.75;
+    var RATIO = 0.75;
 
     w.setBodyElement($canvas);
-    w.addResizeListener(resize);
+    w.addResizeListener(adjustCanvasSize);
 
     /**
      * Renders recordings captured by given camera.
@@ -36,10 +36,17 @@
       );
     };
 
-    function resize(width, height) {
+    function adjustCanvasSize(width, height) {
+      var left = 0;
+      if (width * RATIO < height) {
+        height = width * RATIO;
+      } else {
+        left = (width - (height / RATIO)) / 2;
+        width = height / RATIO;
+      }
+      $canvas.style.left = left + "px";
       $canvas.width = width;
       $canvas.height = height;
-      ratio = height / width;
       canvas.disableContextImageSmoothing(context);
     }
   }
