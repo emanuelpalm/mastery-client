@@ -4,12 +4,12 @@
   var LoginScene = require("./LoginScene.js");
 
   function IntroScene(gameMode) {
-    var logo = null;
+    var entities = {};
 
     this.setup = function (control) {
       control.getAssetLoader().loadBatch("/assets/batches/intro.json")
         .then(function (batch) {
-          logo = batch.entities.logo;
+          entities = batch.entities;
           control.ready();
         })
         .catch(control.panic);
@@ -21,11 +21,13 @@
     };
 
     this.update = function (dt) {
-      logo.update(dt);
+      entities.logo.update(dt);
+      entities.loader.update(dt);
     };
 
     this.record = function (camera) {
-      camera.record(logo);
+      camera.record(entities.logo);
+      camera.record(entities.loader);
     };
   }
 
