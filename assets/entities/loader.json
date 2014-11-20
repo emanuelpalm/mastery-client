@@ -1,0 +1,9 @@
+{
+  "sprite": "/assets/sprites/loader.json",
+  "bounds": {
+    "x": 152,
+    "y": 112,
+    "width": 16,
+    "height": 16
+  }
+}
