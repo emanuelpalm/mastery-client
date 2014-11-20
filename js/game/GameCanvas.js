@@ -26,12 +26,12 @@
       var bounds = camera.getBounds(),
         x = Math.min(bounds.x, $cameraCanvas.width, 0),
         y = Math.min(bounds.y, $cameraCanvas.height, 0),
-        w = Math.min(bounds.w, $cameraCanvas.width - x, 0),
-        h = Math.min(bounds.h * ratio, $cameraCanvas.height - y, 0);
+        width = Math.min(bounds.width, $cameraCanvas.width - x),
+        height = Math.min(bounds.height, $cameraCanvas.height - y);
 
       context.drawImage(
         $cameraCanvas,
-        x, y, w, h,
+        x, y, width, height,
         0, 0, $canvas.width, $canvas.height
       );
     };
