@@ -9,15 +9,15 @@
    * @class
    */
   function GameCamera(width, height) {
-    var $canvas = canvas.createCanvasElement(width, height);
-    var context = $canvas.getContext("2d");
-    canvas.disableContextImageSmoothing(context);
     var bounds = {
       x: 0,
       y: 0,
-      w: width,
-      h: height,
+      width: width || 320,
+      height: height || 240,
     };
+    var $canvas = canvas.createCanvasElement(bounds.width, bounds.height);
+    var context = $canvas.getContext("2d");
+    canvas.disableContextImageSmoothing(context);
 
     /**
      * Records given recordable.
