@@ -16,6 +16,8 @@
     if (instances++ > 0) {
       throw new Error("Only a single Window instance allowed.");
     }
+
+    Object.freeze(this);
   }
 
   /**
@@ -92,6 +94,8 @@
       typeof document.body !== "undefined"
     );
   }
+
+  Object.seal(Window.prototype);
 
   module.exports = Window;
 }());

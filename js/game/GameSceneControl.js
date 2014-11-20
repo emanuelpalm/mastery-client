@@ -47,6 +47,8 @@
      * Causes eventual transition from current scene to given next scene.
      */
     this.toScene = function (nextScene) {};
+
+    Object.seal(this);
   }
 
   module.exports = GameSceneControl;

@@ -174,6 +174,8 @@
           .catch(reject);
       });
     }
+
+    Object.seal(this);
   }
 
   module.exports = GameAssetLoader;

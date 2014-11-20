@@ -41,6 +41,8 @@
     this.stop = function () {
       looper.stop();
     };
+
+    Object.seal(this);
   }
 
   module.exports = Game;

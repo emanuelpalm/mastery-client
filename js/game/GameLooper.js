@@ -38,6 +38,7 @@
       }
     };
 
+    Object.seal(this);
   }
 
   module.exports = GameLooper;

@@ -57,6 +57,8 @@
     this.notify = function (evt) {
       eventCallback(evt);
     };
+
+    Object.seal(this);
   }
 
   module.exports = GameSceneProxy;

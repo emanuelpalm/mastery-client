@@ -51,6 +51,8 @@
       $canvas.height = height;
       canvas.disableContextImageSmoothing(context);
     }
+
+    Object.seal(this);
   }
 
   module.exports = GameCanvas;

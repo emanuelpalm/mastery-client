@@ -39,6 +39,8 @@
     context.imageSmoothingEnabled = false;
   };
 
+  Object.freeze(exports);
+
   function isBrowser() {
     return (typeof document !== "undefined");
   }

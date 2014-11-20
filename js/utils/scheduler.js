@@ -44,6 +44,8 @@
     clearTimeout(r);
   };
 
+  Object.freeze(exports);
+
   // Brosert compatibility measures.
   if (isBrowser()) {
     window.performance = window.performance || {};

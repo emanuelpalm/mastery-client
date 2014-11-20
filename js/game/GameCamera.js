@@ -70,6 +70,8 @@
     this.getCanvasBuffer = function () {
       return $canvas;
     };
+
+    Object.seal(this);
   }
 
   module.exports = GameCamera;
