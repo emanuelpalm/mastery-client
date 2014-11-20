@@ -3,7 +3,7 @@
 
   var GameSceneProxy = require("../../js/game/GameSceneProxy.js");
 
-  exports.forwardEvents = function (test) {
+  exports.forwardCalls = function (test) {
 
     var recordedEvt = null,
       recordedDt = null,
