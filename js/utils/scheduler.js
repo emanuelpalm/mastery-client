@@ -15,7 +15,7 @@
    * @return {double} High definition time stamp.
    */
   exports.getMonotonicTime = isBrowser() ? function () {
-    return window.performance.now();
+    return window.performance.now() / 1000.0;
   } : function () {
     return new Date().getTime();
   };
@@ -46,7 +46,7 @@
 
   Object.freeze(exports);
 
-  // Brosert compatibility measures.
+  // Browser compatibility measures.
   if (isBrowser()) {
     window.performance = window.performance || {};
     window.performance.now =
