@@ -20,16 +20,18 @@
     canvas.disableContextImageSmoothing(context);
 
     /**
-     * Records given recordable.
+     * Records given entity.
      *
-     * @param  {Entity|GameCamera} recordable - Entity or GameCamera to record.
+     * @param  {GameEntity} entity - Entity to record.
      */
-    this.record = function (recordable) {
-      if (recordable instanceof GameCamera) {
-        // TODO: Handle camera recording.
-      } else {
-        // TODO: Handle entity recording.
-      }
+    this.record = function (entity) {
+      var cameraBounds = entity.getBounds();
+      var spriteBounds = entity.getSprite().bounds;
+      context.drawImage(
+        entity.getSprite().image,
+        spriteBounds.x, spriteBounds.y, spriteBounds.width, spriteBounds.height,
+        cameraBounds.x, cameraBounds.y, cameraBounds.width, cameraBounds.height
+      );
     };
 
     /**
