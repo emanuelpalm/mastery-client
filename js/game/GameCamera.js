@@ -20,6 +20,13 @@
     canvas.disableContextImageSmoothing(context);
 
     /**
+     * Clears camera.
+     */
+    this.clear = function () {
+      context.clearRect(0, 0, $canvas.width, $canvas.height);
+    };
+
+    /**
      * Records given entity.
      */
     this.record = function (entity) {

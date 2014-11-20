@@ -23,6 +23,8 @@
       var camera = new GameCamera();
 
       looper.loop(function (dt) {
+        camera.clear();
+
         sceneProxy.update(dt);
         sceneProxy.record(camera);
         canvas.render(camera);
