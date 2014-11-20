@@ -42,6 +42,7 @@
       bounds.x = xy[0];
       bounds.y = xy[1];
     };
+    this.setState(0);
   }
 
   module.exports = GameSprite;
