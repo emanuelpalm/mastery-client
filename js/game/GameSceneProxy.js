@@ -55,6 +55,13 @@
     this.notify = function (evt) {
       sceneControl.onEvent(evt);
     };
+
+    /**
+     * Registers scene panic handler.
+     */
+    this.onPanic = function (f) {
+      sceneControl.panic = f;
+    };
   }
 
   module.exports = GameSceneProxy;

@@ -13,8 +13,12 @@
    */
   function Game(properties) {
     var looper = new GameLooper();
-    var sceneProxy = new GameSceneProxy(properties.originScene);
     var canvas = new GameCanvas(properties.window);
+    var sceneProxy = new GameSceneProxy(properties.originScene);
+
+    sceneProxy.onPanic(function (error) {
+      properties.window.panic(error);
+    });
 
     /**
      * Starts execution of game.
