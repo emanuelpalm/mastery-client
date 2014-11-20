@@ -1,5 +1,6 @@
 {
   "sprite": "/assets/sprites/loader.json",
+  "animation": "/assets/animations/loader.json",
   "bounds": {
     "x": 144,
     "y": 104,
