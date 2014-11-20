@@ -3,6 +3,8 @@
 
   var Promise = require("promise");
   var http = require("http");
+  var GameEntity = require("./GameEntity.js");
+  var GameSprite = require("./GameSprite.js");
 
   /**
    * Utility class used for loading assets.
@@ -144,12 +146,12 @@
         loadAt(path)
           .then(function (entity) {
             if (!entity.sprite) {
-              fulfill(entity);
+              fulfill(new GameEntity(entity));
             }
             loadSpriteAt(entity.sprite)
               .then(function (sprite) {
                 entity.sprite = sprite;
-                fulfill(entity);
+                fulfill(new GameEntity(entity));
               })
               .catch(reject);
           })
@@ -167,7 +169,7 @@
             loadAt(sprite.image)
               .then(function (image) {
                 sprite.image = image;
-                fulfill(sprite);
+                fulfill(new GameSprite(sprite));
               })
               .catch(reject);
           })

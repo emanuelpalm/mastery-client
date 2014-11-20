@@ -2,7 +2,6 @@
   "use strict";
 
   var LoginScene = require("./LoginScene.js");
-  var GameEntity = require("../game/GameEntity.js");
 
   function IntroScene(gameMode) {
     var logo = null;
@@ -10,7 +9,7 @@
     this.setup = function (control) {
       control.getAssetLoader().loadBatch("/assets/batches/intro.json")
         .then(function (batch) {
-          logo = new GameEntity(batch.entities.logo);
+          logo = batch.entities.logo;
           control.ready();
         })
         .catch(control.panic);

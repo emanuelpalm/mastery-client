@@ -1,9 +1,8 @@
 {
-    "image": "/assets/graphics/textures/interface.png",
-    "bounds": {
-        "x": 0,
-        "y": 0,
-        "width": 64,
-        "height": 64
-    }
+  "image": "/assets/graphics/textures/interface.png",
+  "width": 64,
+  "height": 64,
+  "states": [
+    [0, 0]
+  ]
 }

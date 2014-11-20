@@ -30,10 +30,14 @@
      * Records given entity.
      */
     this.record = function (entity) {
+      var sprite = entity.getSprite();
+      if (!sprite) {
+        return;
+      }
       var cameraBounds = entity.getBounds();
-      var spriteBounds = entity.getSprite().bounds;
+      var spriteBounds = sprite.getBounds();
       context.drawImage(
-        entity.getSprite().image,
+        sprite.getImage(),
         spriteBounds.x, spriteBounds.y, spriteBounds.width, spriteBounds.height,
         cameraBounds.x, cameraBounds.y, cameraBounds.width, cameraBounds.height
       );
