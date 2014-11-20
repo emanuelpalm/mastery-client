@@ -7,7 +7,7 @@
     var logo = null;
 
     this.setup = function (loader, toScene) {
-      loader.loadBatch("/assets/scenes/intro.json")
+      loader.loadBatch("/assets/batches/intro.json")
         .then(function (batch) {
           logo = batch.logo;
         })
