@@ -10,7 +10,7 @@
       recordedCamera = null;
 
     var proxy = new GameSceneProxy({
-      setup: function (loader, toScene) {
+      setup: function () {
         return function (evt) {
           recordedEvt = evt;
         };
@@ -43,14 +43,14 @@
     test.expect(2);
 
     var scene2 = {
-      setup: function (loader, toScene) {
+      setup: function () {
         test.ok(true);
       }
     };
 
     var scene1 = {
       setup: function (loader, toScene) {
-        return function (evt) {
+        return function () {
           test.ok(true);
           toScene(scene2);
         };
@@ -59,7 +59,7 @@
 
     var proxy = new GameSceneProxy(scene1);
     proxy.notify("go to next scene");
-
     test.done();
   };
+
 }());
