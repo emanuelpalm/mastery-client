@@ -31,8 +31,12 @@
 
   /**
    * Progresses animation in relation to given elapsed time since last update.
+   *
+   * Returns true if the frame was changed, false otherwise.
    */
   GameAnimation.prototype.update = function (dt) {
+    var updated = false;
+
     this.timeLeft -= dt;
     while (this.timeLeft <= 0.0) {
       this.index += 1;
@@ -40,8 +44,13 @@
         this.index = 0;
       }
       this.timeLeft += this.program.interval;
+      updated = true;
+    }
+
+    if (updated) {
       this.refreshFrame();
     }
+    return updated;
   };
 
   GameAnimation.prototype.refreshFrame = function () {
