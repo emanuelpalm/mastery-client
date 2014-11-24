@@ -9,34 +9,9 @@
    */
   function GameAnimation(typeData, frame) {
     this.typeData = typeData;
-    this.frame = frame || 0;
     this.program = typeData["default"];
-    this.currentInterval = 0.0;
-/*
-    var currentInterval = 0.0;
-    var stateIndex = 0;
-    var stateChanged = false;
-
-    this.update = function (dt) {
-      currentInterval -= dt;
-      while (currentInterval <= 0.0) {
-        if (++stateIndex >= states.length) {
-          stateIndex = 0;
-        }
-        currentInterval += interval;
-        stateChanged = true;
-      }
-      if (stateChanged) {
-        var nextState = states[stateIndex];
-        if (nextState < 0) {
-          stateIndex = Math.abs(nextState);
-          nextState = states[stateIndex];
-        } 
-        animatable.setState(nextState);
-        stateChanged = false;
-      }
-    };
-    */
+    this.frame = frame || this.program.frames[0];
+    this.currentInterval = this.program.interval;
   }
 
   GameAnimation.prototype.getFrame = function () {
@@ -45,25 +20,24 @@
 
   GameAnimation.prototype.setProgram = function (identifier) {
     this.program = this.typeData[identifier];
+    this.frame = this.program.frames[0];
+    this.currentInterval = this.program.interval;
   };
 
   GameAnimation.prototype.update = function (dt) {
-    var doUpdate = false;
+    var nextFrame = null;
 
     this.currentInterval -= dt;
     while (this.currentInterval <= 0.0) {
-      if (++this.frame >= this.program.frames.length) {
-        this.frame = 0;
+      if (++nextFrame >= this.program.frames.length) {
+        nextFrame = 0;
       }
       this.currentInterval += this.program.interval;
-      doUpdate = true;
     }
-    if (doUpdate) {
-      var nextFrame = this.program.frames[this.frame];
-      if (nextFrame < 0) {
+    if (nextFrame) {
+      this.frame = this.program.frames[nextFrame];
+      if (this.frame < 0) {
         this.frame = this.program.frames[Math.abs(nextFrame)];
-      } else {
-        this.frame = nextFrame;
       }
     }
   };
