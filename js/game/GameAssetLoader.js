@@ -3,9 +3,6 @@
 
   var Promise = require("promise");
   var http = require("http");
-  var GameEntity = require("./GameEntity.js");
-  var GameSprite = require("./GameSprite.js");
-  var GameAnimation = require("./GameAnimation.js");
 
   /**
    * Utility class used for loading assets.
@@ -62,9 +59,8 @@
       if (promise !== null) {
         return promise;
       }
-      promise = loadImageAt(url);
-      if (promise !== null) {
-        return promise;
+      if (url.match(imageRegex)) {
+        return loadImageAt(url);
       }
       return loadResourceAt(url);
     }
@@ -80,20 +76,17 @@
     }
 
     function loadImageAt(url) {
-      if (url.match(imageRegex)) {
-        return new Promise(function (fulfill, reject) {
-          var image = new Image();
-          image.addEventListener("load", function () {
-            cache[url] = image;
-            fulfill(image);
-          });
-          image.addEventListener("error", function () {
-            reject(new Error("Unable to load image at '" + url + "'."));
-          });
-          image.src = url;
+      return new Promise(function (fulfill, reject) {
+        var image = new Image();
+        image.addEventListener("load", function () {
+          cache[url] = image;
+          fulfill(image);
         });
-      }
-      return null;
+        image.addEventListener("error", function () {
+          reject(new Error("Unable to load image at '" + url + "'."));
+        });
+        image.src = url;
+      });
     }
 
     function loadResourceAt(url) {
@@ -146,15 +139,15 @@
     function loadEntityAt(path) {
       return new Promise(function (fulfill, reject) {
         loadAt(path)
-          .then(function (entity) {
+          .then(function (entityType) {
             return Promise.all([
-              loadSpriteAt(entity.sprite),
-              loadAnimationAt(entity.animation)
+              loadSpriteAt(entityType.sprite),
+              loadAt(entityType.animation)
             ])
             .then(function (resources) {
-              entity.sprite = resources[0];
-              entity.animation = resources[1];
-              fulfill(new GameEntity(entity));
+              entityType.sprite = resources[0];
+              entityType.animation = resources[1];
+              fulfill(entityType);
             })
             .catch(reject);
           })
@@ -172,19 +165,9 @@
             loadAt(sprite.image)
               .then(function (image) {
                 sprite.image = image;
-                fulfill(new GameSprite(sprite));
+                fulfill(sprite);
               })
               .catch(reject);
-          })
-          .catch(reject);
-      });
-    }
-
-    function loadAnimationAt(path) {
-      return new Promise(function (fulfill, reject) {
-        loadAt(path)
-          .then(function (animation) {
-            fulfill(new GameAnimation(animation));
           })
           .catch(reject);
       });
