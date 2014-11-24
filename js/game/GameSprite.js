@@ -8,42 +8,42 @@
    * the same type, and state, which is an integer identifying the state the
    * sprite is currently in.
    */
-  function GameSprite (typeData, state) {
-    state = state || 0;
-    var bounds = {
+  function GameSprite (type) {
+    this.type = type;
+    this.bounds = {
       x: 0,
       y: 0,
-      width: typeData.width,
-      height: typeData.height,
-    };
-
-    /**
-     * Acquires bounds.
-     */
-    this.getBounds = function () {
-      return bounds;
-    };
-
-    /**
-     * Acquires sprite image.
-     */
-    this.getImage = function () {
-      return typeData.image;
-    };
-
-    /**
-     * Sets sprite state.
-     *
-     * The state has to be a positive integer that refers to a valid sprite
-     * state.
-     */
-    this.setState = function (state) {
-      var xy = typeData.states[state];
-      bounds.x = xy[0];
-      bounds.y = xy[1];
+      width: type.width,
+      height: type.height,
     };
     this.setState(0);
   }
+
+  /**
+   * Acquires bounds.
+   */
+  GameSprite.prototype.getBounds = function () {
+    return this.bounds;
+  };
+
+  /**
+   * Acquires sprite image.
+   */
+  GameSprite.prototype.getImage = function () {
+    return this.type.image;
+  };
+
+  /**
+   * Sets sprite state.
+   *
+   * The state has to be a positive integer that refers to a valid sprite
+   * state.
+   */
+  GameSprite.prototype.setState = function (state) {
+    var xy = this.type.states[state];
+    this.bounds.x = xy[0];
+    this.bounds.y = xy[1];
+  };
 
   module.exports = GameSprite;
 }());
