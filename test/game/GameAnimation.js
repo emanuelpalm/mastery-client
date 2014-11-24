@@ -16,7 +16,7 @@
         },
         third: {
           interval: 3,
-          frames: [8, -1]
+          frames: [8, 9, -1]
         }
       });
       callback();
@@ -57,7 +57,7 @@
 
       this.animation.setProgram("third");
       this.animation.update(4);
-      test.equal(this.animation.getFrame(), 8);
+      test.equal(this.animation.getFrame(), 9);
 
       test.done();
     },
