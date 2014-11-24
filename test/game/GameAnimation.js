@@ -6,7 +6,7 @@
   exports.animation = {
     setUp: function (callback) {
       this.animation = new GameAnimation({
-        first: {
+        default: {
           interval: 1,
           frames: [0, 1, 2, 3]
         },
@@ -16,7 +16,7 @@
         },
         third: {
           interval: 3,
-          frames: [8, -0]
+          frames: [8, -1]
         }
       });
       callback();
