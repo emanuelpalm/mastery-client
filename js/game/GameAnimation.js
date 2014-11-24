@@ -7,38 +7,47 @@
    * Instantiated with immutable type data common to all animations of the same
    * type.
    */
-  function GameAnimation(typeData, frame) {
+  function GameAnimation(typeData) {
     this.typeData = typeData;
-    this.program = typeData["default"];
-    this.frame = frame || this.program.frames[0];
-    this.currentInterval = this.program.interval;
+    this.setProgram("default");
   }
 
+  /**
+   * Acquires current frame identifier.
+   */
   GameAnimation.prototype.getFrame = function () {
     return this.frame;
   };
 
+  /**
+   * Sets animation program.
+   */
   GameAnimation.prototype.setProgram = function (identifier) {
     this.program = this.typeData[identifier];
     this.frame = this.program.frames[0];
-    this.currentInterval = this.program.interval;
+    this.index = 0;
+    this.timeLeft = this.program.interval;
   };
 
+  /**
+   * Progresses animation in relation to given elapsed time since last update.
+   */
   GameAnimation.prototype.update = function (dt) {
-    var nextFrame = null;
-
-    this.currentInterval -= dt;
-    while (this.currentInterval <= 0.0) {
-      if (++nextFrame >= this.program.frames.length) {
-        nextFrame = 0;
+    this.timeLeft -= dt;
+    while (this.timeLeft <= 0.0) {
+      this.index += 1;
+      if (this.index >= this.program.frames.length) {
+        this.index = 0;
       }
-      this.currentInterval += this.program.interval;
+      this.timeLeft += this.program.interval;
+      this.refreshFrame();
     }
-    if (nextFrame) {
-      this.frame = this.program.frames[nextFrame];
-      if (this.frame < 0) {
-        this.frame = this.program.frames[Math.abs(nextFrame)];
-      }
+  };
+
+  GameAnimation.prototype.refreshFrame = function () {
+    this.frame = this.program.frames[this.index];
+    while (this.frame < 0) {
+      this.frame = this.program.frames[Math.abs(this.frame)];
     }
   };
 
