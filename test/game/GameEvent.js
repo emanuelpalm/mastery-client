@@ -8,8 +8,8 @@
       "data": [0, 1, 2, 3],
     });
 
-    test.equal(evt.getType(), "type");
-    test.deepEqual(evt.getProperties(), {
+    test.equal(evt.type, "type");
+    test.deepEqual(evt.properties, {
       "data": [0, 1, 2, 3],
     });
     test.done();

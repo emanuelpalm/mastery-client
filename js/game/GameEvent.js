@@ -9,18 +9,14 @@
   function GameEvent(type, properties) {
 
     /**
-     * Acquires string type identifier.
+     * Contains string type identifier.
      */
-    this.getType = function () {
-      return type;
-    };
+    this.type = type;
 
     /**
-     * Acquires event properties.
+     * Contains event properties.
      */
-    this.getProperties = function () {
-      return properties;
-    };
+    this.properties = properties;
   }
 
   module.exports = GameEvent;
