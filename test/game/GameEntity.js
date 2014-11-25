@@ -14,17 +14,8 @@
           dx: 5,
           dy: 6,
         },
-        sprite: {
-          image: "sprite",
-          states: [0],
-        },
       });
       callback();
-    },
-
-    testGetSprite: function (test) {
-      test.deepEqual(this.entity.getSprite(), { image: "sprite", states: [0] });
-      test.done();
     },
 
     testGetBounds: function (test) {
