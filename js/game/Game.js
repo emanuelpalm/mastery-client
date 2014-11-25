@@ -26,6 +26,9 @@
     this.start = function () {
       var camera = new GameCamera();
 
+      canvas.onMouseDown(sceneProxy.notify);
+      canvas.onMouseMove(sceneProxy.notify);
+
       looper.loop(function (dt) {
         camera.clear();
 
