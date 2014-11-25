@@ -19,7 +19,10 @@
 
       var loginScene = new LoginScene(gameMode);
       setTimeout(function () {
-        control.toScene(loginScene);
+        entities.loader.animation.setProgram("stop");
+        setTimeout(function () {
+          control.toScene(loginScene);
+        }, 450);
       }, 2000);
     };
 
