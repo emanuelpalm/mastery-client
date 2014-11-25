@@ -54,6 +54,8 @@
       this.animation.setProgram("second");
       this.animation.update(7);
       test.equal(this.animation.getFrame(), 3);
+      this.animation.update(2);
+      test.equal(this.animation.getFrame(), 2);
 
       this.animation.setProgram("third");
       this.animation.update(4);

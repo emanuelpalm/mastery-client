@@ -56,7 +56,8 @@
   GameAnimation.prototype._refreshFrame = function () {
     this.frame = this.program.frames[this.index];
     while (this.frame < 0) {
-      this.frame = this.program.frames[Math.abs(this.frame)];
+      this.index = Math.abs(this.frame);
+      this.frame = this.program.frames[this.index];
     }
   };
 
