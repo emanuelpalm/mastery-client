@@ -14,13 +14,16 @@
           dx: 5,
           dy: 6,
         },
-        sprite: "sprite",
+        sprite: {
+          image: "sprite",
+          states: [0],
+        },
       });
       callback();
     },
 
     testGetSprite: function (test) {
-      test.equal(this.entity.getSprite(), "sprite");
+      test.deepEqual(this.entity.getSprite(), { image: "sprite", states: [0] });
       test.done();
     },
 
