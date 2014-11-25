@@ -38,7 +38,7 @@
    * Acquires sprite, if any, representing entity.
    */
   GameEntity.prototype.getSprite = function () {
-    return this.type.sprite;
+    return this.sprite;
   };
 
   /**
