@@ -64,6 +64,31 @@
   } : function () {};
 
   /**
+   * Registers mouse event listener function.
+   */
+  Window.prototype.addMouseListener = isBrowser() ? function (f) {
+    window.addEventListener("mousedown", handleMouseEvent);
+    window.addEventListener("mousemove", handleMouseEvent);
+
+    function handleMouseEvent(evt) {
+      f(evt.type, evt.clientX, evt.clientY);
+    }
+  } : function () {};
+
+  /**
+   * Registers function to be called when a keyboard key is pressed while the
+   * window has focus.
+   */
+  Window.prototype.addKeyboardListener = isBrowser() ? function (f) {
+    window.addEventListener("keydown", handleKeyboardEvent);
+    window.addEventListener("keyup", handleKeyboardEvent);
+
+    function handleKeyboardEvent(evt) {
+      f(evt.type, evt.key || evt.keyCode);
+    }
+  } : function () {};
+
+  /**
    * Clears window of all visible elements and displays an error indicator.
    */
   Window.prototype.panic = isBrowser() ? function (e) {

@@ -58,27 +58,17 @@
     }
 
     /**
-     * Registers mouse click event listener.
+     * Registers given function for receiving all canvas events.
      */
-    this.onMouseDown = function (f) {
-      handleMouseEvent("mousedown", f);
-    };
-
-    /**
-     * Registers mouse move event listener.
-     */
-    this.onMouseMove = function (f) {
-      handleMouseEvent("mousemove", f);
-    };
-
-    function handleMouseEvent(name, f) {
-      $canvas.addEventListener(name, function (evt) {
-        var x = evt.offsetX * (cameraWidth / $canvas.width);
-        var y = evt.offsetY * (cameraHeight / $canvas.height);
-        f(new GameEvent(name, { x: x, y: y }));
+    this.onEvent = function (f) {
+      w.addMouseListener(function (type, x, y) {
+        f(new GameEvent(type, { x: x, y: y }));
       });
-    }
-
+      w.addKeyboardListener(function (type, key) {
+        f(new GameEvent(type, key));
+      });
+    };
+      
     Object.seal(this);
   }
 
