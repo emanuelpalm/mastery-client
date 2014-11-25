@@ -16,8 +16,6 @@
     this.type = type;
     this.animation = (type.animation) ? new GameAnimation(type.animation) : null;
     this.sprite = (type.sprite) ? new GameSprite(type.sprite) : null;
-    console.log(this.animation);
-    console.log(this.sprite);
     this.bounds = {
       x: type.bounds.x,
       y: type.bounds.y,
