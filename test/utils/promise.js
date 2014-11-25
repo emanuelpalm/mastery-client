@@ -136,6 +136,18 @@
     }, 5);
   };
 
+  exports.testTimeoutWithNoData = function (test) {
+    promise.timeout(1)
+      .then(function () {
+        test.ok(true);
+        test.done();
+      })
+      .catch(function () {
+        test.ok(false);
+        test.done();
+      });
+  };
+
   exports.testExpire = function (test) {
     test.expect(2);
     var hasExpired = false;
