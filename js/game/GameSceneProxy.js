@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var GameSceneControl = require("./GameSceneControl.js");
+  var GameAssetLoader = require("./GameAssetLoader.js");
 
   /**
    * Manages a current scene and its transitions to other scenes.
@@ -9,32 +9,46 @@
    * @class
    */
   function GameSceneProxy(originScene, onPanic) {
-    var sceneControl = new GameSceneControl();
+    var assetLoader = new GameAssetLoader();
     var scene = {
       update: function () {},
       record: function () {},
     };
     var eventCallback = unhandledEvent;
-
-    sceneControl.onEvent = onEvent;
-    sceneControl.panic = onPanic;
-    sceneControl.toScene = toScene;
-    sceneControl.toScene(originScene);
+    toScene(originScene);
 
     function unhandledEvent(evt) {
       console.log("Unhandled event: " + evt);
     }
 
-    function onEvent(f) {
-      eventCallback = f;
+    function toScene (nextScene) {
+      if (nextScene.isLoaded) {
+        transitionTo(nextScene);
+
+      } else if (nextScene.loadError) {
+        onPanic(nextScene.loadError);
+
+      } else {
+        nextScene.load(assetLoader, function () {
+          transitionTo(nextScene);
+        }, onPanic);
+      }
     }
 
-    function toScene (nextScene) {
-      eventCallback = unhandledEvent;
-      sceneControl.ready = function () {
-        scene = nextScene;
-      };
-      nextScene.setup(sceneControl);
+    function transitionTo(nextScene) {
+      eventCallback = nextScene.setup(toScene, load);
+      if (!eventCallback) {
+        eventCallback = unhandledEvent;
+      }
+      scene = nextScene;
+    }
+
+    function load(otherScene) {
+      otherScene.load(assetLoader, function () {
+        otherScene.isLoaded = true;
+      }, function (e) {
+        otherScene.loadError = e;
+      });
     }
 
     /**

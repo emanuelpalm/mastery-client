@@ -6,29 +6,30 @@
 
   function LoginScene(gameMode) {
     var entities = [];
+    var facebook, developer;
 
-    this.setup = function (control) {
-      control.getAssetLoader().loadBatch("/assets/batches/login.json")
+    this.load = function (assetLoader, done, failed) {
+      assetLoader.loadBatch("/assets/batches/login.json")
         .then(function (batch) {
           var logo = new GameEntity(batch.entities.logo);
           logo.setSize(64, 64);
           logo.setPosition(128, 0);
           entities.push(logo);
 
-          var facebook = new Button(batch.entities.facebook, function () {
-            console.log("Pressed facebook button.");
-          });
+          facebook = new Button(batch.entities.facebook);
           entities.push(facebook);
 
           if (gameMode === "debug") {
-            var developer = new Button(batch.entities.developer, function () {
-              console.log("Pressed developer button.");
-            });
+            developer = new Button(batch.entities.developer);
             entities.push(developer);
           }
-          control.ready();
+          done();
         })
-        .catch(control.panic);
+        .catch(failed);
+    };
+
+    this.setup = function (toScene, load) {
+      // TODO: Implement.
     };
 
     this.update = function (dt) {

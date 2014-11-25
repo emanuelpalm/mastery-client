@@ -4,17 +4,26 @@
   var GameSceneProxy = require("../../js/game/GameSceneProxy.js");
 
   exports.forwardCalls = function (test) {
+    test.expect(11);
 
     var recordedEvt = null,
       recordedDt = null,
       recordedCamera = null;
 
     var proxy = new GameSceneProxy({
-      setup: function (control) {
-        control.onEvent(function (evt) {
+      load: function (loader, done, failed) {
+        test.ok(loader);
+        test.ok(done);
+        test.equal(failed, "failed");
+        done();
+      },
+      setup: function (toScene, load) {
+        test.ok(toScene);
+        test.ok(load);
+
+        return function (evt) {
           recordedEvt = evt;
-        });
-        control.ready();
+        };
       },
       update: function (dt) {
         recordedDt = dt;
@@ -22,7 +31,7 @@
       record: function (camera) {
         recordedCamera = camera;
       },
-    });
+    }, "failed");
 
     test.equal(recordedEvt, null);
     test.equal(recordedDt, null);
@@ -42,9 +51,10 @@
 
   exports.forwardPanic = function (test) {
     new GameSceneProxy({
-      setup: function (control) {
-        control.panic("panic");
+      load: function (assetLoader, done, failed) {
+        failed("panic");
       },
+      setup: function () {},
       update: function () {},
       record: function () {},
     }, function (error) {
@@ -54,21 +64,27 @@
   };
 
   exports.toScene = function (test) {
-    test.expect(2);
+    test.expect(3);
 
     var scene2 = {
+      load: function (assetLoader, done) {
+        test.ok(true);
+        done();
+      },
       setup: function () {
         test.ok(true);
       }
     };
 
     var scene1 = {
-      setup: function (control) {
-        control.onEvent(function () {
+      load: function (assetLoader, done) {
+        done();
+      },
+      setup: function (toScene) {
+        return function () {
           test.ok(true);
-          control.toScene(scene2);
-        });
-        control.ready();
+          toScene(scene2);
+        };
       }
     };
 
@@ -77,4 +93,23 @@
     test.done();
   };
 
+  exports.preloadScene = function (test) {
+    var scene2 = {
+      load: function (assetLoader, done) {
+        test.ok(true);
+        done();
+        test.done();
+      },
+      setup: function () {}
+    };
+
+    new GameSceneProxy({
+      load: function (assetLoader, done) {
+        done();
+      },
+      setup: function (toScene, load) {
+        load(scene2);
+      }
+    });
+  };
 }());

@@ -8,37 +8,34 @@
     var entities = [];
     var loader;
 
-    this.setup = function (control) {
-      load(control.getAssetLoader(), control.ready, control.panic);
-
-      control.onEvent(function (evt) {
-        console.log(evt);
-      });
-
-      var loginScene = new LoginScene(gameMode);
-      setTimeout(function () {
-        loader.animation.setProgram("stop");
-
-        setTimeout(function () {
-          control.toScene(loginScene);
-        }, 450);
-
-      }, 2000);
-    };
-
-    function load(assetLoader, ready, panic) {
+    this.load = function (assetLoader, done, failed) {
       assetLoader.loadBatch("/assets/batches/intro.json")
         .then(function (batch) {
+
           loader = new GameEntity(batch.entities.loader);
           loader.setPosition(144, 150);
           entities.push(loader);
 
           entities.push(new GameEntity(batch.entities.logo));
 
-          ready();
+          done();
         })
-        .catch(panic);
-    }
+        .catch(failed);
+    };
+
+    this.setup = function (toScene, load) {
+      var loginScene = new LoginScene(gameMode);
+      load(loginScene);
+
+      setTimeout(function () {
+        loader.animation.setProgram("stop");
+
+        setTimeout(function () {
+          toScene(loginScene);
+        }, 450);
+
+      }, 2000);
+    };
 
     this.update = function (dt) {
       entities.forEach(function (e) {
