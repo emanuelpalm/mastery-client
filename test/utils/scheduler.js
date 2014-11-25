@@ -11,7 +11,7 @@
       var t2 = scheduler.getMonotonicTime();
       test.ok(t1 < t2);
       test.done();
-    }, 1);
+    }, 5);
   };
 
   exports.testRequestAnimationFrame = function (test) {
