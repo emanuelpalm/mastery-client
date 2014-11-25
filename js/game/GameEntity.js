@@ -32,6 +32,12 @@
   GameEntity.prototype.update = function (dt) {
     this.bounds.x += this.bounds.dx * dt;
     this.bounds.y += this.bounds.dy * dt;
+    if (this.animation !== null && this.sprite !== null) {
+      if (this.animation.update(dt)) {
+        this.sprite.setState(this.animation.getFrame());
+        console.log(this.animation.getFrame());
+      }
+    }
   };
 
   /**
