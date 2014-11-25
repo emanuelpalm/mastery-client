@@ -35,7 +35,6 @@
     if (this.animation !== null && this.sprite !== null) {
       if (this.animation.update(dt)) {
         this.sprite.setState(this.animation.getFrame());
-        console.log(this.animation.getFrame());
       }
     }
   };
