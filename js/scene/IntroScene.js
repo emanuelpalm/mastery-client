@@ -11,6 +11,10 @@
     this.setup = function (control) {
       load(control.getAssetLoader(), control.ready, control.panic);
 
+      control.onEvent(function (evt) {
+        console.log(evt);
+      });
+
       var loginScene = new LoginScene(gameMode);
       setTimeout(function () {
         loader.animation.setProgram("stop");

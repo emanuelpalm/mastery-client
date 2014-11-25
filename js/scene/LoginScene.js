@@ -4,6 +4,9 @@
   function LoginScene(gameMode) {
 
     this.setup = function (control) {
+      control.onEvent(function (evt) {
+        console.log(evt);
+      });
       control.ready();
     };
 
