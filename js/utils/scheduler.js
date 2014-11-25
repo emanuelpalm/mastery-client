@@ -7,12 +7,10 @@
   "use strict";
 
   /**
-   * Determines current relative time.
+   * Determines current relative time, in seconds.
    *
    * Note: The time returned is not required to be relative to any particular
    * point in time, which makes it useless for using with dates.
-   *
-   * @return {double} High definition time stamp.
    */
   exports.getMonotonicTime = isBrowser() ? function () {
     return window.performance.now() / 1000.0;
@@ -23,9 +21,6 @@
   /**
    * Requests given function to be executed at next screen frame, or at some
    * other suitable point in the near future.
-   *
-   * @param {Function} f - Function to schedule.
-   * @return {long} Request reference.
    */
   exports.requestAnimationFrame = isBrowser() ? function (f) {
     return window.requestAnimationFrame(f);
@@ -35,8 +30,6 @@
 
   /**
    * Cancels referenced animation request.
-   *
-   * @param {long} animationRequest - A reference to the animation to cancel.
    */
   exports.cancelRequestAnimationFrame = isBrowser() ? function (r) {
     window.cancelRequestAnimationFrame(r);
