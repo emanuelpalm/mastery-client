@@ -49,7 +49,7 @@
     };
 
     function loadAt(url) {
-      if (!url) {
+      if (typeof url !== "string" && !(url instanceof String)) {
         return new Promise(function (fulfill) {
           fulfill(url);
         });
