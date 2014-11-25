@@ -5,35 +5,45 @@
   var GameEntity = require("../game/GameEntity.js");
 
   function IntroScene(gameMode) {
-    var entities = {};
+    var entities = [];
+    var loader;
 
     this.setup = function (control) {
-      control.getAssetLoader().loadBatch("/assets/batches/intro.json")
-        .then(function (batch) {
-          entities.loader = new GameEntity(batch.entities.loader);
-          entities.loader.setPosition(144, 150);
-          entities.logo = new GameEntity(batch.entities.logo);
-          control.ready();
-        })
-        .catch(control.panic);
+      load(control.getAssetLoader(), control.ready, control.panic);
 
       var loginScene = new LoginScene(gameMode);
       setTimeout(function () {
-        entities.loader.animation.setProgram("stop");
+        loader.animation.setProgram("stop");
+
         setTimeout(function () {
           control.toScene(loginScene);
         }, 450);
+
       }, 2000);
     };
 
+    function load(assetLoader, ready, panic) {
+      assetLoader.loadBatch("/assets/batches/intro.json")
+        .then(function (batch) {
+          loader = new GameEntity(batch.entities.loader);
+          loader.setPosition(144, 150);
+          entities.push(loader);
+
+          entities.push(new GameEntity(batch.entities.logo));
+
+          ready();
+        })
+        .catch(panic);
+    }
+
     this.update = function (dt) {
-      entities.logo.update(dt);
-      entities.loader.update(dt);
+      entities.forEach(function (e) {
+        e.update(dt);
+      });
     };
 
     this.record = function (camera) {
-      camera.record(entities.logo);
-      camera.record(entities.loader);
+      entities.forEach(camera.record);
     };
   }
 
