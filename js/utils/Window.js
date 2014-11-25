@@ -21,10 +21,7 @@
   }
 
   /**
-   * Creates a new HTML element.
-   *
-   * @param {string} tagName - Tag-name of element to create.
-   * @return {HTMLElement} Created HTML element.
+   * Creates a new HTML element with a given tag name.
    */
   Window.prototype.createElement = isBrowser() ? function (tagName) {
     return document.createElement(tagName);
@@ -35,8 +32,6 @@
   /**
    * Removes all HTML elements in context body and inserts the given
    * element.
-   *
-   * @param {HTMLElement} $element - Element to set.
    */
   Window.prototype.setBodyElement = isBrowser() ? function ($element) {
     while (document.body.firstChild) {
@@ -47,8 +42,6 @@
 
   /**
    * Registers function to be called when the window has loaded.
-   *
-   * @param  {Function} f - Function to call when the window has loaded.
    */
   Window.prototype.addLoadListener = isBrowser() ? function (f) {
     window.addEventListener("load", function () {
@@ -62,8 +55,6 @@
   /**
    * Registers funciton to be called when the window is resized. The function is
    * also called immediately when registered.
-   *
-   * @param  {Function} f - Function to call on window resize.
    */
   Window.prototype.addResizeListener = isBrowser() ? function (f) {
     window.addEventListener("resize", function (evt) {
@@ -74,8 +65,6 @@
 
   /**
    * Clears window of all visible elements and displays an error indicator.
-   *
-   * @param  {Error} e - Error causing panic.
    */
   Window.prototype.panic = isBrowser() ? function (e) {
     var $error = this.createElement("img");
