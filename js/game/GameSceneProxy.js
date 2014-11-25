@@ -2,6 +2,7 @@
   "use strict";
 
   var GameAssetLoader = require("./GameAssetLoader.js");
+  var Promise = require("promise");
 
   /**
    * Manages a current scene and its transitions to other scenes.
@@ -44,10 +45,14 @@
     }
 
     function load(otherScene) {
-      otherScene.load(assetLoader, function () {
-        otherScene.isLoaded = true;
-      }, function (e) {
-        otherScene.loadError = e;
+      return new Promise(function (fulfill) {
+        otherScene.load(assetLoader, function () {
+          otherScene.isLoaded = true;
+          fulfill(otherScene);
+        }, function (e) {
+          otherScene.loadError = e;
+          fulfill(otherScene);
+        });
       });
     }
 

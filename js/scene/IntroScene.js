@@ -3,6 +3,7 @@
 
   var LoginScene = require("./LoginScene.js");
   var GameEntity = require("../game/GameEntity.js");
+  var promise = require("../utils/promise.js");
 
   function IntroScene(gameMode) {
     var entities = [];
@@ -25,16 +26,19 @@
 
     this.setup = function (toScene, load) {
       var loginScene = new LoginScene(gameMode);
-      load(loginScene);
-
-      setTimeout(function () {
+      promise.starve([
+        promise.timeout(2000), // TODO: Fix bug.
+        load(loginScene),
+      ])
+      .then(function () {
         loader.animation.setProgram("stop");
-
-        setTimeout(function () {
+        promise.timeout(450).then(function () {
           toScene(loginScene);
-        }, 450);
-
-      }, 2000);
+        });
+      })
+      .catch(function () {
+        console.log(arguments);
+      });
     };
 
     this.update = function (dt) {
