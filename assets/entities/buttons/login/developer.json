@@ -1,0 +1,9 @@
+{
+  "sprite": "/assets/sprites/buttons/login/developer.json",
+  "bounds": {
+    "x": 128,
+    "y": 96,
+    "width": 64,
+    "height": 20
+  }
+}

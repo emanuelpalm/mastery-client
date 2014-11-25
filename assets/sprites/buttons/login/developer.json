@@ -1,0 +1,10 @@
+{
+  "image": "/assets/graphics/textures/interface.png",
+  "width": 64,
+  "height": 20,
+  "states": [
+    [0, 198],
+    [0, 230]
+  ]
+}
+

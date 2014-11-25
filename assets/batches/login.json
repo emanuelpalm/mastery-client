@@ -1,0 +1,7 @@
+{
+  "entities": {
+    "logo": "/assets/entities/logo.json",
+    "developer": "/assets/entities/buttons/login/developer.json",
+    "facebook": "/assets/entities/buttons/login/facebook.json"
+ }
+}
