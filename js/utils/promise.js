@@ -69,7 +69,7 @@
         promises.forEach(function (promise) {
           promise
             .then(function (data) {
-              lastData = data;
+              lastData = data || true;
               completeJob();
             })
             .catch(function (error) {
