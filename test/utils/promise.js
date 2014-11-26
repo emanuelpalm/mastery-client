@@ -117,6 +117,21 @@
     });
   };
 
+  exports.testStarvePromisesWithoutData = function (test) {
+    promise.starve([
+      promise.timeout(1),
+      promise.timeout(2),
+    ])
+    .then(function () {
+      test.ok(true);
+      test.done();
+    })
+    .catch(function () {
+      test.ok(false);
+      test.done();
+    });
+  };
+
   exports.testTimeout = function (test) {
     test.expect(2);
     var hasTimedOut = false;
