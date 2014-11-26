@@ -12,8 +12,7 @@
       assetLoader.loadBatch("/assets/batches/login.json")
         .then(function (batch) {
           var logo = new GameEntity(batch.entities.logo);
-          logo.setSize(64, 64);
-          logo.setPosition(128, 0);
+          logo.setPosition(96, 0);
           entities.push(logo);
 
           facebook = new Button(batch.entities.facebook);
