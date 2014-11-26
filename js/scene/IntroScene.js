@@ -27,7 +27,7 @@
     this.setup = function (toScene, load) {
       var loginScene = new LoginScene(gameMode);
       promise.starve([
-        promise.timeout(2000), // TODO: Fix bug.
+        promise.timeout(2000),
         load(loginScene),
       ])
       .then(function () {
