@@ -12,13 +12,8 @@
     this.load = function (assetLoader, done, failed) {
       assetLoader.loadBatch("/assets/batches/intro.json")
         .then(function (batch) {
-
-          loader = new GameEntity(batch.entities.loader);
-          loader.setPosition(144, 150);
-          entities.push(loader);
-
+          entities.push(loader = new GameEntity(batch.entities.loader));
           entities.push(new GameEntity(batch.entities.logo));
-
           done();
         })
         .catch(failed);
@@ -35,9 +30,6 @@
         promise.timeout(450).then(function () {
           toScene(loginScene);
         });
-      })
-      .catch(function () {
-        console.log(arguments);
       });
     };
 
