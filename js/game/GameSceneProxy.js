@@ -19,7 +19,7 @@
     toScene(originScene);
 
     function unhandledEvent(evt) {
-      console.log("Unhandled event: " + evt);
+      console.log("Unhandled event: " + evt.type);
     }
 
     function toScene(nextScene) {
