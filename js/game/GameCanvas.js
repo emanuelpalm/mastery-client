@@ -13,6 +13,7 @@
   function GameCanvas(w) {
     var $canvas = w.createElement("canvas");
     var context = $canvas.getContext("2d");
+    var canvasBounds;
     var cameraWidth = 320, cameraHeight = 240;
 
     var RATIO = 0.75;
@@ -55,6 +56,7 @@
       $canvas.width = width;
       $canvas.height = height;
       canvas.disableContextImageSmoothing(context);
+      canvasBounds = { left: left, top: 0, width: width, height: height };
     }
 
     /**
@@ -62,6 +64,8 @@
      */
     this.onEvent = function (f) {
       w.addMouseListener(function (type, x, y) {
+        x = (x - canvasBounds.left) / canvasBounds.width * cameraWidth;
+        y = (y - canvasBounds.top) / canvasBounds.height * cameraHeight;
         f(new GameEvent(type, { x: x, y: y }));
       });
       w.addKeyboardListener(function (type, key) {
