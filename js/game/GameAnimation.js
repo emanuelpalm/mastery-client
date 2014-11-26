@@ -35,7 +35,7 @@
    * Returns true if the frame was changed, false otherwise.
    */
   GameAnimation.prototype.update = function (dt) {
-    var updated = false;
+    var updated = this.index === 0;
 
     this.timeLeft -= dt;
     while (this.timeLeft <= 0.0) {
