@@ -2,7 +2,7 @@
   "sprite": "/assets/sprites/logo.json",
   "bounds": {
     "x": 96,
-    "y": 56,
+    "y": 0,
     "width": 128,
     "height": 128
   }
