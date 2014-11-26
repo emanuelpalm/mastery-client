@@ -22,7 +22,7 @@
       console.log("Unhandled event: " + evt);
     }
 
-    function toScene (nextScene) {
+    function toScene(nextScene) {
       if (nextScene.isLoaded) {
         transitionTo(nextScene);
 
@@ -38,7 +38,7 @@
 
     function transitionTo(nextScene) {
       eventCallback = nextScene.setup(toScene, load);
-      if (!eventCallback) {
+      if (typeof eventCallback !== "function") {
         eventCallback = unhandledEvent;
       }
       scene = nextScene;
