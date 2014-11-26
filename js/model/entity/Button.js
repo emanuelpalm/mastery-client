@@ -21,6 +21,16 @@
         this.callback();
       }
       break;
+
+    case "mousemove":
+      if (this.animation) {
+        if (this.intersects(evt.properties)) {
+          this.animation.setProgram("hover");
+        } else {
+          this.animation.setProgram("default");
+        }
+      }
+      break;
     }
   };
 

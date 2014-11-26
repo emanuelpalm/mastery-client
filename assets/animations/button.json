@@ -1,0 +1,11 @@
+{
+  "default": {
+    "interval": 1,
+    "frames": [0]
+  },
+  "hover": {
+    "interval": 1,
+    "frames": [1]
+  }
+}
+
