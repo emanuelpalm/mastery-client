@@ -8,7 +8,6 @@
    * Manages a HTMLCanvasElement visible on screen.
    *
    * @class
-   * @param {Window} w - Window in which canvas is to be visible.
    */
   function GameCanvas(w) {
     var $canvas = w.createElement("canvas");
