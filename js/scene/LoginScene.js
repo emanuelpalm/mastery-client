@@ -11,16 +11,10 @@
     this.load = function (assetLoader, done, failed) {
       assetLoader.loadBatch("/assets/batches/login.json")
         .then(function (batch) {
-          var logo = new GameEntity(batch.entities.logo);
-          logo.setPosition(96, 0);
-          entities.push(logo);
-
-          facebook = new Button(batch.entities.facebook);
-          entities.push(facebook);
-
+          entities.push(new GameEntity(batch.entities.logo));
+          entities.push(facebook = new Button(batch.entities.facebook));
           if (gameMode === "debug") {
-            developer = new Button(batch.entities.developer);
-            entities.push(developer);
+            entities.push(developer = new Button(batch.entities.developer));
           }
           done();
         })
@@ -28,7 +22,20 @@
     };
 
     this.setup = function (toScene, load) {
-      // TODO: Implement.
+      facebook.onPress(function () {
+        console.log("facebook");
+      });
+      if (developer) {
+        developer.onPress(function () {
+          console.log("developer");
+        });
+      }
+      return function (evt) {
+        facebook.offerEvent(evt);
+        if (developer) {
+          developer.offerEvent(evt);
+        }
+      };
     };
 
     this.update = function (dt) {
