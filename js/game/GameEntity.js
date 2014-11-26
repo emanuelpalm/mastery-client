@@ -77,5 +77,23 @@
     this.bounds.height = height;
   };
 
+  /**
+   * Determine if this entity intersects with given other entity, bounds or
+   * point.
+   */
+  GameEntity.prototype.intersects = function (other) {
+    var a = this.getBounds(), b;
+    if (other instanceof GameEntity) {
+      b = other.getBounds();
+    } else {
+      b = other;
+    }
+    if (!a || !b || isNaN(b.x) || isNaN(b.y)) {
+      return false;
+    }
+    return (!(a.x + (a.width | 0) < b.x || b.x + (b.width | 0) < a.x ||
+                a.y + (a.height | 0) < b.y || b.y + (b.height | 0) < a.y));
+  };
+
   module.exports = GameEntity;
 }());

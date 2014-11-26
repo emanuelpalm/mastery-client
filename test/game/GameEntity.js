@@ -15,6 +15,14 @@
           dy: 6,
         },
       });
+      this.other = new GameEntity({
+        bounds: {
+          x: 11,
+          y: 12,
+          width: 7,
+          height: 8,
+        },
+      });
       callback();
     },
 
@@ -50,6 +58,46 @@
       var bounds = this.entity.getBounds();
       test.equal(bounds.width, 1000);
       test.equal(bounds.height, 2000);
+      test.done();
+    },
+
+    testIntersectsWithEntity: function (test) {
+      test.ok(!this.entity.intersects(this.other));
+      test.ok(!this.other.intersects(this.entity));
+
+      this.other.setPosition(3, 5);
+      test.ok(this.entity.intersects(this.other));
+      test.ok(this.other.intersects(this.entity));
+
+      test.done();
+    },
+
+    testIntersectsWithBounds: function (test) {
+      test.ok(!this.entity.intersects(this.other.getBounds()));
+      test.ok(!this.other.intersects(this.entity.getBounds()));
+
+      this.other.setPosition(-5, 5);
+      test.ok(this.entity.intersects(this.other.getBounds()));
+      test.ok(this.other.intersects(this.entity.getBounds()));
+
+      test.done();
+    },
+
+    testIntersectsWithPoint: function (test) {
+      test.ok(!this.entity.intersects({ x: -13, y: 1 }));
+      test.ok(!this.other.intersects({ x: 3, y: 120 }));
+
+      test.ok(this.entity.intersects({ x: 1.2, y: 2.3 }));
+      test.ok(this.other.intersects({ x: 14, y: 19 }));
+
+      test.done();
+    },
+
+    testIntersectsWithInvalidValue: function (test) {
+      test.ok(!this.entity.intersects(null));
+      test.ok(!this.entity.intersects({}));
+      test.ok(!this.entity.intersects({ a: 1.1, b: 2.1 }));
+      test.ok(!this.entity.intersects({ x: "hello", y: "goodbye" }));
       test.done();
     },
 
