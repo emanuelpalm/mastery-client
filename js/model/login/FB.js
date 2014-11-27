@@ -6,8 +6,9 @@
   /**
    * Determines whether or not the current user is logged using Facebook.
    *
-   * If the user is logged in, then the promise returned is fulfilled with
-   * the authentication data retrieved from Facebook.
+   * If the user is logged in, then the promise returned is fulfilled with two
+   * arguments: (1) whether or not the user is logged in, (2) the authentication
+   * data received from Facebook.
    */
   exports.getLoginStatus = function () {
     return new Promise(function (fulfill, reject) {
@@ -53,8 +54,9 @@
   /**
    * Attempts to login the current user to Facebook.
    *
-   * Returns a promise which is fulfilled if the user is logged in, or rejected
-   * if the user is not.
+   * If the user is logged in, then the promise returned is fulfilled with two
+   * arguments: (1) whether or not the user is logged in, (2) the authentication
+   * data received from Facebook.
    */
   exports.login = function () {
     return new Promise(function (fulfill, reject) {
