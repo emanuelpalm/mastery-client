@@ -1,3 +1,8 @@
+/**
+ * Facebook login management.
+ *
+ * @module model/login/FB
+ */
 (function () {
   "use strict";
 
