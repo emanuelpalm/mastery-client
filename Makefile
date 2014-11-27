@@ -1,6 +1,6 @@
 # Module management.
 BUNDLER      = ./$(NODE_MODULES)/.bin/browserify
-BUNDLE       = $(PATH_BASE)js/mastery.$(VERSION).js
+BUNDLE       = $(PATH_BASE)js/mastery.$(VERSION).dbg.js
 BUNDLE_DIR   = $(dir $(BUNDLE))
 
 # Code optimization.
