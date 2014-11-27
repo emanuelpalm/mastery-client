@@ -50,6 +50,9 @@ test:
 run: debug
 	cd build/debug/ && python -m SimpleHTTPServer 8080
 
+docker: clean release
+	sudo docker build -t emanuelpalm/matery-client:v$(VERSION) .
+
 help:
 	@echo "make release - Builds using release configuration."
 	@echo "make debug   - Builds using development configuration."
@@ -57,6 +60,7 @@ help:
 	@echo "make version - Prints current application version."
 	@echo "make test    - Runs unit tests."
 	@echo "make run     - Serves development version of game on port 8080."
+	@echo "make docker  - Creates docker image of game release version."
 	@echp "make help    - Displays this help message."
 
 # Automatic commands. Don't use these directly.
