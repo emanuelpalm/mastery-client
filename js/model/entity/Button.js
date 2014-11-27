@@ -3,6 +3,11 @@
 
   var GameEntity = require("../../game/GameEntity.js");
 
+  /**
+   * A clickable button.
+   *
+   * Button inherits GameEntity.
+   */
   function Button(type) {
     GameEntity.call(this, type);
     this.callback = function () {};
@@ -10,10 +15,16 @@
   Button.prototype = Object.create(GameEntity.prototype);
   Button.prototype.constructor = Button;
 
+  /**
+   * Sets button activation callback.
+   */
   Button.prototype.onPress = function (f) {
     this.callback = f;
   };
 
+  /**
+   * Offer button opportunity to react to given event.
+   */
   Button.prototype.offerEvent = function (evt) {
     switch (evt.type) {
     case "mousedown":
