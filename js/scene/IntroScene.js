@@ -9,6 +9,13 @@
   var promise = require("../utils/promise.js");
   var FB = require("../model/login/FB.js");
 
+  /**
+   * The scene that fires up when the game is first started.
+   *
+   * Is instantiated with a game mode identifier. If the game mode is "debug",
+   * then the appropriate measures are made for the client to be able to run
+   * in stand-alone mode.
+   */
   function IntroScene(gameMode) {
     var entities = [];
     var loader;

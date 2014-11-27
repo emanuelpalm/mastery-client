@@ -4,6 +4,9 @@
   var GameEntity = require("../game/GameEntity.js");
   var promise = require("../utils/promise.js");
 
+  /**
+   * Displays a loader while loading a given next scene.
+   */
   function LoaderScene(nextScene) {
     var loader;
 

@@ -1,6 +1,12 @@
 (function () {
   "use strict";
 
+  /**
+   * Represents the game home menu.
+   *
+   * The scene is created with an account object, which is required for the user
+   * to be able to manages his/her account or join games.
+   */
   function HomeScene(account) {
     this._account = account;
   }

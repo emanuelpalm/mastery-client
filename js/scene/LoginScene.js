@@ -9,6 +9,12 @@
   var account = require("../model/account.js");
   var FB = require("../model/login/FB.js");
 
+  /**
+   * Login dialog.
+   *
+   * If the game mode is set to "debug", then only debug authentication is made
+   * available.
+   */
   function LoginScene(gameMode) {
     var entities = [];
     var buttonFB, buttonDEV;
