@@ -8,6 +8,7 @@
 
   var account = require("../model/account.js");
   var FB = require("../model/login/FB.js");
+  var DEV = require("../model/login/DEV.js");
 
   /**
    * Login dialog.
@@ -17,24 +18,28 @@
    */
   function LoginScene(gameMode) {
     var entities = [];
-    var buttonFB, buttonDEV;
+    var button, auth;
 
     this.load = function (assetLoader, done, failed) {
       assetLoader.loadBatch("/assets/batches/login.json")
         .then(function (batch) {
           entities.push(new GameEntity(batch.entities.logo));
-          entities.push(buttonFB = new Button(batch.entities.facebook));
           if (gameMode === "debug") {
-            entities.push(buttonDEV = new Button(batch.entities.developer));
+            button = new Button(batch.entities.developer);
+            auth = DEV;
+          } else {
+            button = new Button(batch.entities.facebook);
+            auth = FB;
           }
+          entities.push(button);
           done();
         })
         .catch(failed);
     };
 
     this.setup = function (toScene) {
-      buttonFB.onPress(function () {
-        FB.login()
+      button.onPress(function () {
+        auth.login()
           .then(function (isLoggedIn, authResponse) {
             if (isLoggedIn) {
               return account.authenticate(authResponse)
@@ -47,16 +52,8 @@
             console.log(e.stack); // TODO: Show nice error message to user.
           });
       });
-      if (buttonDEV) {
-        buttonDEV.onPress(function () {
-          console.log("buttonDEV");
-        });
-      }
       return function (evt) {
-        buttonFB.offerEvent(evt);
-        if (buttonDEV) {
-          buttonDEV.offerEvent(evt);
-        }
+        button.offerEvent(evt);
       };
     };
 
