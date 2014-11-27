@@ -67,12 +67,9 @@
   };
 
   function loginToFacebook() {
-    return new Promise(function (fulfill, reject) {
+    return new Promise(function (fulfill) {
       FB.login(function (response) {
-        if (response.AuthResponse) {
-          fulfill(response.AuthResponse);
-        }
-        reject();
+        fulfill(response.status === "connected", response.authResponse);
       });
     });
   }
