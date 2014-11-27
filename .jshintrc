@@ -18,5 +18,6 @@
   "strict": true,
   "maxparams": 3,
   "maxdepth": 4,
-  "maxlen": 100
+  "maxlen": 100,
+  "predef": ["FB"]
 }
