@@ -46,6 +46,9 @@
       });
 
       function determineAndLoadNextScene() {
+        if (gameMode === "debug") {
+          return load(new LoginScene(gameMode));
+        }
         return FB.getLoginStatus()
           .then(function (isLoggedIn, authResponse) {
             if (isLoggedIn) {
