@@ -1,25 +1,25 @@
 (function () {
   "use strict";
 
-  function HomeScene() {
-
-      this.load = function (assetLoader, done, failed) {
-        console.log("load");
-        done();
-      };
-
-      this.setup = function (toScene, load) {
-        console.log("setup");
-      };
-
-      this.update = function (dt) {
-
-      };
-
-      this.record = function (camera) {
-
-      };
+  function HomeScene(account) {
+    this._account = account;
   }
+
+  HomeScene.prototype.load = function (assetLoader, done, failed) {
+    done();
+  };
+
+  HomeScene.prototype.setup = function (toScene, load) {
+
+  };
+
+  HomeScene.prototype.update = function (dt) {
+
+  };
+
+  HomeScene.prototype.record = function (camera) {
+
+  };
 
   module.exports = HomeScene;
 }());
