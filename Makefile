@@ -20,7 +20,7 @@ MKDIR        = mkdir -p
 CP           = cp
 
 ASSET_FILES  = $(addprefix $(PATH_BASE),$(shell find assets/ -type f))
-GARBAGE      = $(TEMPL_OUTPUT) $(BUNDLE) $(MINIFIED) $(ASSET_FILES)
+GARBAGE      = $(shell find build/ -type f)
 NODE_MODULES = node_modules
 PATH_DEBUG   = build/debug/
 PATH_RELEASE = build/release/
@@ -38,8 +38,7 @@ debug:
 	@$(MAKE) auto-debug BFLAGS="$(BFLAGS) --debug" PATH_BASE="$(PATH_DEBUG)" SCRIPT_ATTRIBUTES="src=\"$(BUNDLE)\" data-mode=\"debug\"" --no-print-directory
 
 clean:
-	@$(MAKE) auto-clean PATH_BASE="$(PATH_RELEASE)" --no-print-directory
-	@$(MAKE) auto-clean PATH_BASE="$(PATH_DEBUG)" --no-print-directory
+	@$(MAKE) auto-clean --no-print-directory
 
 version:
 	@echo $(VERSION)
