@@ -57,6 +57,7 @@ help:
 	@echo "make version - Prints current application version."
 	@echo "make test    - Runs unit tests."
 	@echo "make run     - Serves development version of game on port 8080."
+	@echp "make help    - Displays this help message."
 
 # Automatic commands. Don't use these directly.
 
