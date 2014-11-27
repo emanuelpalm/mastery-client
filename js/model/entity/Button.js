@@ -27,7 +27,7 @@
    */
   Button.prototype.offerEvent = function (evt) {
     switch (evt.type) {
-    case "mousedown":
+    case "click":
       if (this.intersects(evt.properties)) {
         this.callback();
       }

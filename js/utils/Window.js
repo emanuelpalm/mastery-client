@@ -67,6 +67,7 @@
    * Registers mouse event listener function.
    */
   Window.prototype.addMouseListener = isBrowser() ? function (f) {
+    window.addEventListener("click", handleMouseEvent);
     window.addEventListener("mousedown", handleMouseEvent);
     window.addEventListener("mousemove", handleMouseEvent);
 
