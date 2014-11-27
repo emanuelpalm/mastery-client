@@ -3,6 +3,7 @@
 
   var GameEntity = require("../game/GameEntity.js");
   var Button = require("../model/entity/Button.js");
+  var FB = require("../model/login/FB.js");
 
   function LoginScene(gameMode) {
     var entities = [];
@@ -23,7 +24,16 @@
 
     this.setup = function (toScene, load) {
       facebook.onPress(function () {
-        console.log("facebook");
+        FB.login()
+          .then(function (authResponse) {
+            console.log("Login successful.");
+            console.log(authResponse);
+          })
+          .catch(function (e) {
+            if (e) {
+              console.log(e.stack); // TODO: Show nice error message to user.
+            }
+          });
       });
       if (developer) {
         developer.onPress(function () {
