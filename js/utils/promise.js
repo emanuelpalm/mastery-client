@@ -95,7 +95,7 @@
      * Returns a promise that is fulfilled in the given amount of milliseconds.
      *
      * Optionally some data may be given as second argument, which is then
-     * passed when the promise is fulfilled.
+     * passed on when the promise is fulfilled.
      */
     timeout: function (timeInMs, data) {
       return new Promise(function (fulfill) {
@@ -109,7 +109,7 @@
      * Returns a promise that is rejected in the given amount of milliseconds.
      *
      * Optionally some error may be given as second argument, which is then
-     * passed when the promise is rejected.
+     * passed on when the promise is rejected.
      */
     expire: function (timeInMs, error) {
       return new Promise(function (_, reject) {
