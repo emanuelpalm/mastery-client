@@ -7,17 +7,29 @@ BUNDLE_DIR   = $(dir $(BUNDLE))
 MINIFIER     = ./$(NODE_MODULES)/.bin/uglifyjs
 MINIFIED     = $(BUNDLE_DIR)mastery.$(VERSION).min.js
 
-# Compile-time template.
-TEMPL_INPUT  = templates/index.t.html
-TEMPL_OUTPUT = $(PATH_BASE)index.html
-TEMPL_DIR    = $(dir $(TEMPL_OUTPUT))
-
 # Unit test runner.
 TESTER       = ./$(NODE_MODULES)/.bin/nodeunit
 
+# HTML template.
+HTMLT_INPUT  = templates/index.t.html
+HTMLT_OUTPUT = $(PATH_BASE)index.html
+
+# Dockerfile template.
+DOCKR_INPUT  = templates/Dockerfile.t
+DOCKR_OUTPUT = $(PATH_BASE)Dockerfile
+
+# GNU tools.
 RM           = rm -f
 MKDIR        = mkdir -p
 CP           = cp
+SED          = sed
+AWK          = awk
+
+# Other utilities.
+GIT          = git
+NPM          = npm
+DOCKER       = docker
+HTTPD        = python -m SimpleHTTPServer 8080
 
 ASSET_FILES  = $(addprefix $(PATH_BASE),$(shell find assets/ -type f))
 GARBAGE      = $(shell find build/ -type f)
@@ -27,15 +39,27 @@ PATH_RELEASE = build/release/
 SOURCE_FILES = $(shell find js/ -type f -iname '*.js*')
 SOURCE_MAIN  = js/main.js
 TEST_FILES   = $(shell find test/ -type f -iname '*.js')
-VERSION      = $(shell git describe --tags | sed "s/[^0-9]/ /g" | awk '{printf "%d.%d.%d", $$1, $$2, $$3}')
+VERSION      = $(shell $(GIT) describe --tags | $(SED) "s/[^0-9]/ /g" | \
+			   $(AWK) '{printf "%d.%d.%d", $$1, $$2, $$3}')
+
+ifeq (,$(shell which $(GIT)))
+$(error Cannot find "git" in PATH. Please install it and try again)
+endif
+
+ifeq (,$(shell which $(NPM)))
+$(error Cannot find "npm" in PATH. Please install node.js and try again)
+endif
 
 # User commands.
 
 release:
-	@$(MAKE) auto-release PATH_BASE="$(PATH_RELEASE)" SCRIPT_ATTRIBUTES="src=\"$(MINIFIED)\"" --no-print-directory
+	@$(MAKE) auto-release PATH_BASE="$(PATH_RELEASE)" \
+		SCRIPT_ATTRIBUTES="src=\"$(MINIFIED)\"" --no-print-directory
 
 debug:
-	@$(MAKE) auto-debug BFLAGS="$(BFLAGS) --debug" PATH_BASE="$(PATH_DEBUG)" SCRIPT_ATTRIBUTES="src=\"$(BUNDLE)\" data-mode=\"debug\"" --no-print-directory
+	@$(MAKE) auto-debug BFLAGS="$(BFLAGS) --debug" PATH_BASE="$(PATH_DEBUG)" \
+		SCRIPT_ATTRIBUTES="src=\"$(BUNDLE)\" data-mode=\"debug\"" \
+		--no-print-directory
 
 clean:
 	@$(MAKE) auto-clean --no-print-directory
@@ -48,10 +72,14 @@ test:
 	@$(foreach FILE,$(TEST_FILES),$(TESTER) $(FILE))
 
 run: debug
-	cd build/debug/ && python -m SimpleHTTPServer 8080
+	cd build/debug/ && $(HTTPD)
 
-docker: clean release
-	sudo docker build -t emanuelpalm/matery-client:v$(VERSION) .
+docker:
+ifeq (,$(shell which docker))
+	@echo "Docker not installed. Please install it and try again."
+else
+	@$(MAKE) auto-docker PATH_BASE="$(PATH_RELEASE)" --no-print-directory
+endif
 
 help:
 	@echo "make release - Builds using release configuration."
@@ -65,23 +93,31 @@ help:
 
 # Automatic commands. Don't use these directly.
 
-auto-release: $(MINIFIED) $(TEMPL_OUTPUT)
-auto-debug: $(BUNDLE) $(TEMPL_OUTPUT)
+auto-release: $(MINIFIED) $(HTMLT_OUTPUT)
+
+auto-debug: $(BUNDLE) $(HTMLT_OUTPUT)
+
 auto-clean:
 	$(foreach FILE,$(wildcard $(GARBAGE)),$(RM) $(FILE)$(\n))
+
+auto-docker: auto-clean auto-release $(DOCKR_OUTPUT)
+	cd $(PATH_BASE) && sudo docker build -t mastery-client:v$(VERSION) .
+
+$(PATH_BASE):
+	@$(MKDIR) $@
 
 $(PATH_BASE)assets/%: assets/%
 	@$(MKDIR) $(dir $@)
 	$(CP) $(subst $(PATH_BASE),,$@) $@
 
 $(NODE_MODULES):
-	npm install
+	$(NPM) install
 
-$(TEMPL_DIR):
-	$(MKDIR) $@
+$(HTMLT_OUTPUT): $(HTMLT_INPUT) $(PATH_BASE) $(BUNDLE)
+	$(SED) 's/{{script.attributes}}/$(subst /,\/,$(SCRIPT_ATTRIBUTES))/' < $< > $@
 
-$(TEMPL_OUTPUT): $(TEMPL_INPUT) $(TEMPL_DIR) $(BUNDLE)
-	sed 's/{{script.attributes}}/$(subst /,\/,$(SCRIPT_ATTRIBUTES))/' < $< > $@
+$(DOCKR_OUTPUT): $(DOCKR_INPUT) $(PATH_BASE)
+	$(CP) $< $@
 
 $(BUNDLE_DIR):
 	$(MKDIR) $@
@@ -102,3 +138,4 @@ define \n
 
 
 endef
+
