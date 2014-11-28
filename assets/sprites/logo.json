@@ -1,7 +1,7 @@
 {
   "image": "/assets/graphics/textures/interface.png",
   "width": 64,
-  "height": 64,
+  "height": 32,
   "states": [
     [0, 0]
   ]
