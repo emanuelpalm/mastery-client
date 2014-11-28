@@ -21,7 +21,7 @@
     var loader;
 
     this.load = function (assetLoader, done, failed) {
-      assetLoader.loadBatch("/assets/batches/intro.json")
+      assetLoader.load("/assets/batches/intro.json")
         .then(function (batch) {
           entities.push(loader = new GameEntity(batch.entities.loader));
           entities.push(new GameEntity(batch.entities.logo));

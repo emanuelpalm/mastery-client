@@ -1,6 +1,6 @@
 {
-  "sprite": "/assets/sprites/buttons/avatar.json",
-  "animation": "/assets/animations/button.json",
+  "sprite": "url:/assets/sprites/buttons/avatar.json",
+  "animation": "url:/assets/animations/button.json",
   "bounds": {
     "x": 128,
     "y": 110,

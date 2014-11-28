@@ -1,6 +1,6 @@
 {
-  "sprite": "/assets/sprites/buttons/login/facebook.json",
-  "animation": "/assets/animations/button.json",
+  "sprite": "url:/assets/sprites/buttons/login/facebook.json",
+  "animation": "url:/assets/animations/button.json",
   "bounds": {
     "x": 128,
     "y": 110,

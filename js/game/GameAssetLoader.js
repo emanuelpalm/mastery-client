@@ -2,6 +2,7 @@
   "use strict";
 
   var Promise = require("promise");
+  var promise = require("../utils/promise.js");
   var http = require("http");
 
   /**
@@ -10,170 +11,126 @@
    * @class
    */
   function GameAssetLoader() {
-    var imageRegex = /.(png|jpg|jpeg|bmp)$/i;
     var cache = {};
 
     /**
-     * Loads asset batch at given URL.
+     * Returns a promise loading given target.
      *
-     * The method returns a promise, which when done serves a map containing the
-     * batch data.
+     * The target may be a string URL or an object. In case of the target being an
+     * object, it is traversed. Each string value encountered beginning with
+     * "url:" is loaded and replaced with any results.
+     *
+     * If the target, or any subtarget, fails to load, the returned promise is
+     * rejected. Also, providing an invalid target will cause the promise to be
+     * rejected.
      */
-    this.loadBatch = function (url) {
-      return new Promise(function (fulfill, reject) {
-        loadAt(url)
-          .then(function (batch) {
-            var pendingJobs = 1;
+    this.load = function (target) {
+      switch (typeof target) {
+      case "string":
+        return loadURL(target)
+          .then(loadIter);
 
-            if (batch.entities) {
-              forEachPathInMap(batch.entities, loadEntityAt)
-                .then(function (entities) {
-                  batch.entities = entities;
-                  completeJob();
-                })
-                .catch(reject);
-            } else {
-              completeJob();
-            }
+      case "object":
+        return loadURLsInObject(target);
 
-            function completeJob() {
-              pendingJobs -= 1;
-              if (pendingJobs === 0) {
-                Object.freeze(batch);
-                fulfill(batch);
-              }
-            }
-          })
-          .catch(reject);
-      });
+      default:
+        return promise.reject(
+          new Error("Only URLs, or object with URLs may be loaded.")
+        );
+      }
     };
 
-    function loadAt(url) {
-      if (typeof url !== "string" && !(url instanceof String)) {
-        return new Promise(function (fulfill) {
-          fulfill(url);
+    var urlRegex = /^url:/i;
+    function loadIter(target) {
+      if (typeof target === "string" && target.match(urlRegex)) {
+        return loadURL(target.slice(4))
+          .then(loadIter);
+
+      } else if (typeof target === "object" && !(target instanceof HTMLElement)) {
+        return loadURLsInObject(target);
+
+      } else {
+        return promise.fulfill(target);
+      }
+    }
+
+    var imgRegex = /.(png|jpg|jpeg|bmp)$/i;
+    function loadURL(url) {
+      var cached = cache[url];
+      if (cached) {
+        return promise.fulfill(cached);
+      }
+      if (url.match(imgRegex)) {
+        return httpGetImage(url);
+      }
+      return httpGet(url);
+
+      function httpGetImage(url) {
+        return new Promise(function (fulfill, reject) {
+          var image = new Image();
+          image.addEventListener("load", function () {
+            cache[url] = image;
+            fulfill(image);
+          });
+          image.addEventListener("error", function () {
+            reject(new Error("Unable to load image at '" + url + "'."));
+          });
+          image.src = url;
         });
       }
 
-      var promise = loadCached(url);
-      if (promise !== null) {
-        return promise;
-      }
-      if (url.match(imageRegex)) {
-        return loadImageAt(url);
-      }
-      return loadResourceAt(url);
-    }
-
-    function loadCached(url) {
-      var item = cache[url];
-      if (item) {
-        return new Promise(function (fulfill) {
-          fulfill(item);
+      function httpGet(url) {
+        return new Promise(function (fulfill, reject) {
+          http.request(url)
+            .on("response", function (response) {
+              getDataFrom(response)
+                .then(fulfill, reject);
+            })
+            .on("error", reject)
+            .end();
         });
+
+        function getDataFrom(response) {
+          return new Promise(function (fulfill, reject) {
+            response
+              .on("data", function (data) {
+                if (Buffer.isBuffer(data)) {
+                  data = data.toString();
+                }
+                if (response.headers["content-type"].match(/^application\/json/)) {
+                  data = JSON.parse(data);
+                }
+                if (response.statusCode !== 200) {
+                  reject(data);
+                }
+                cache[url] = data;
+                fulfill(data);
+              });
+          });
+        }
       }
-      return null;
     }
 
-    function loadImageAt(url) {
+    function loadURLsInObject(object) {
       return new Promise(function (fulfill, reject) {
-        var image = new Image();
-        image.addEventListener("load", function () {
-          cache[url] = image;
-          fulfill(image);
-        });
-        image.addEventListener("error", function () {
-          reject(new Error("Unable to load image at '" + url + "'."));
-        });
-        image.src = url;
-      });
-    }
-
-    function loadResourceAt(url) {
-      return new Promise(function (fulfill, reject) {
-        http.request(url)
-          .on("response", function (response) {
-            response.on("data", function (data) {
-              if (Buffer.isBuffer(data)) {
-                data = data.toString();
-              }
-              if (response.headers["content-type"] === "application/json") {
-                data = JSON.parse(data);
-              }
-              if (response.statusCode < 200 || response.statusCode > 299) {
-                reject(data);
-                return;
-              }
-              cache[url] = data;
-              fulfill(data);
-            });
-          })
-          .on("error", reject)
-          .end();
-      });
-    }
-
-    function forEachPathInMap(map, loader) {
-      return new Promise(function (fulfill, reject) {
-        var keys = Object.keys(map);
-        var pendingJobs = keys.length;
+        var keys = Object.keys(object);
+        var pendingLoads = keys.length;
 
         keys.forEach(function (key) {
-          loader(map[key])
-            .then(function (resource) {
-              map[key] = resource;
-              completeJob();
-            })
-            .catch(reject);
+          loadIter(object[key])
+            .then(function (value) {
+              completeLoad(key, value);
+            }, reject);
         });
 
-        function completeJob() {
-          pendingJobs -= 1;
-          if (pendingJobs === 0) {
-            fulfill(map);
+        function completeLoad(key, value) {
+          object[key] = value;
+          if (--pendingLoads === 0) {
+            fulfill(object);
           }
         }
       });
     }
-
-    function loadEntityAt(path) {
-      return new Promise(function (fulfill, reject) {
-        loadAt(path)
-          .then(function (entityType) {
-            return Promise.all([
-              loadSpriteAt(entityType.sprite),
-              loadAt(entityType.animation)
-            ])
-            .then(function (resources) {
-              entityType.sprite = resources[0];
-              entityType.animation = resources[1];
-              fulfill(entityType);
-            })
-            .catch(reject);
-          })
-          .catch(reject);
-      });
-    }
-
-    function loadSpriteAt(path) {
-      return new Promise(function (fulfill, reject) {
-        loadAt(path)
-          .then(function (sprite) {
-            if (!sprite.image) {
-              reject(new Error("Sprite '" + path + "' has no image."));
-            }
-            loadAt(sprite.image)
-              .then(function (image) {
-                sprite.image = image;
-                fulfill(sprite);
-              })
-              .catch(reject);
-          })
-          .catch(reject);
-      });
-    }
-
-    Object.seal(this);
   }
 
   module.exports = GameAssetLoader;

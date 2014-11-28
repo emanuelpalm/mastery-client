@@ -21,7 +21,7 @@
     var button, auth;
 
     this.load = function (assetLoader, done, failed) {
-      assetLoader.loadBatch("/assets/batches/login.json")
+      assetLoader.load("/assets/batches/login.json")
         .then(function (batch) {
           entities.push(new GameEntity(batch.entities.logo));
           if (gameMode === "debug") {

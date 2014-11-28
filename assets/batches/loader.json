@@ -1,5 +1,5 @@
 {
   "entities": {
-    "loader": "/assets/entities/loader.json"
+    "loader": "url:/assets/entities/loader.json"
  }
 }

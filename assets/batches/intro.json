@@ -1,6 +1,6 @@
 {
   "entities": {
-    "logo": "/assets/entities/logo.json",
-    "loader": "/assets/entities/loader.json"
+    "logo": "url:/assets/entities/logo.json",
+    "loader": "url:/assets/entities/loader.json"
  }
 }

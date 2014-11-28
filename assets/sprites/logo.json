@@ -1,5 +1,5 @@
 {
-  "image": "/assets/graphics/textures/interface.png",
+  "image": "url:/assets/graphics/textures/interface.png",
   "width": 64,
   "height": 32,
   "states": [
