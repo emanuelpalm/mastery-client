@@ -3,7 +3,6 @@
 
   var GameEntity = require("../game/GameEntity.js");
   var Button = require("../model/entity/Button.js");
-  var FileUploader = require("../utils/FileUploader.js");
 
   /**
    * Represents the game home menu.
@@ -20,7 +19,7 @@
     this.load = function (assetLoader, done, failed) {
       assetLoader.load("/assets/batches/home.json")
         .then(function (batch) {
-          uploader = new FileUploader();
+          uploader = acc.getAvatarUploader();
           entities.push(new GameEntity(batch.frame));
           entities.push(buttonAvatar = new Button(batch.avatar));
           entities.push(buttonPlay = new Button(batch.play));
@@ -33,6 +32,8 @@
         uploader.openDialog()
           .then(function () {
             console.log("done");
+          }, function () {
+            console.log("TODO: Present nice error message.");
           });
       });
       buttonPlay.onPress(function () {

@@ -35,7 +35,13 @@
         $uploader.addEventListener("change", function () {
           if ($uploader.value) {
             var xhr = new XMLHttpRequest();
-            xhr.addEventListener("load", fulfill);
+            xhr.addEventListener("load", function (evt) {
+              if (evt.target.status === 201) {
+                fulfill();
+              } else {
+                reject();
+              }
+            });
             xhr.addEventListener("error", reject);
             xhr.open("POST", url);
             xhr.send(new FormData($form));
