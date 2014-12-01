@@ -13,7 +13,7 @@
     this.load = function (assetLoader, done, failed) {
       assetLoader.load("/assets/batches/loader.json")
         .then(function (batch) {
-          loader = new GameEntity(batch.entities.loader);
+          loader = new GameEntity(batch.loader);
           done();
         })
         .catch(failed);

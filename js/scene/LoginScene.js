@@ -23,12 +23,12 @@
     this.load = function (assetLoader, done, failed) {
       assetLoader.load("/assets/batches/login.json")
         .then(function (batch) {
-          entities.push(new GameEntity(batch.entities.logo));
+          entities.push(new GameEntity(batch.logo));
           if (gameMode === "debug") {
-            button = new Button(batch.entities.developer);
+            button = new Button(batch.developer);
             auth = DEV;
           } else {
-            button = new Button(batch.entities.facebook);
+            button = new Button(batch.facebook);
             auth = FB;
           }
           entities.push(button);
