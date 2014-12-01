@@ -10,7 +10,6 @@
    * Returns a promise, which, if fulfilled, yields an Account object.
    */
   exports.authenticate = function (authResponse) {
-    console.log(authResponse);
     return new Promise(function (fulfill, reject) {
       fulfill(new Account());
     });

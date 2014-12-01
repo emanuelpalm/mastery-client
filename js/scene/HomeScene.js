@@ -14,7 +14,7 @@
   function HomeScene(acc) {
     var account = acc;
     var entities = [];
-    var avatar, play;
+    var buttonAvatar, buttonPlay;
     var uploader;
 
     this.load = function (assetLoader, done, failed) {
@@ -22,25 +22,25 @@
         .then(function (batch) {
           uploader = new FileUploader();
           entities.push(new GameEntity(batch.frame));
-          entities.push(avatar = new Button(batch.avatar));
-          entities.push(play = new Button(batch.play));
+          entities.push(buttonAvatar = new Button(batch.avatar));
+          entities.push(buttonPlay = new Button(batch.play));
           done();
         }, failed);
     };
   
     this.setup = function (toScene, load) {
-      avatar.onPress(function () {
+      buttonAvatar.onPress(function () {
         uploader.openDialog()
           .then(function () {
             console.log("done");
           });
       });
-      play.onPress(function () {
+      buttonPlay.onPress(function () {
         console.log("pla");
       });
       return function (evt) {
-        avatar.offerEvent(evt);
-        play.offerEvent(evt);
+        buttonAvatar.offerEvent(evt);
+        buttonPlay.offerEvent(evt);
       };
     };
   
