@@ -1,4 +1,5 @@
 {
-  "entities": {
- }
+  "frame": "url:/assets/entities/frame.json",
+  "avatar": "url:/assets/entities/buttons/avatar.json",
+  "play": "url:/assets/entities/buttons/play.json"
 }
