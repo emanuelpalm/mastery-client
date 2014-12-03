@@ -2,6 +2,7 @@
   "use strict";
 
   var GameEntity = require("../game/GameEntity.js");
+  var FileDialog = require("../utils/FileDialog.js");
   var Button = require("../model/entity/Button.js");
   var Image = require("../model/entity/Image.js");
 
@@ -15,12 +16,12 @@
     var account = acc;
     var entities = [];
     var buttonAvatar, buttonPlay, avatar = null;
-    var uploader;
+    var fileDialog;
 
     this.load = function (assetLoader, done, failed) {
       assetLoader.load("/assets/batches/home.json")
         .then(function (batch) {
-          uploader = acc.getAvatarUploader();
+          fileDialog = new FileDialog();
           entities.push(new GameEntity(batch.frame));
           entities.push(buttonAvatar = new Button(batch.avatar));
           entities.push(buttonPlay = new Button(batch.play));
@@ -30,7 +31,7 @@
   
     this.setup = function (toScene, load) {
       buttonAvatar.onPress(function () {
-        uploader.openImageDialog()
+        fileDialog.selectImage()
           .then(function (image) {
             if (!image) {
               return;

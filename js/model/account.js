@@ -2,7 +2,6 @@
   "use strict";
 
   var Promise = require("promise");
-  var FileUploader = require("../utils/FileUploader.js");
 
   /**
    * Authenticates current user with account service using data received from a
@@ -12,6 +11,7 @@
    */
   exports.authenticate = function (authResponse) {
     return new Promise(function (fulfill, reject) {
+      // TODO: Implement.
       fulfill(new Account());
     });
   };
@@ -20,10 +20,7 @@
    * Represents a users connection to his/her Mastery account.
    */
   function Account() {
-
-    this.getAvatarUploader = function () {
-      return new FileUploader(); // TODO: token and path.
-    };
+    // TODO: Implement.
   }
 
 }());
