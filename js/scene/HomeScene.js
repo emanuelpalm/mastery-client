@@ -29,11 +29,11 @@
   
     this.setup = function (toScene, load) {
       buttonAvatar.onPress(function () {
-        uploader.openDialog()
-          .then(function () {
-            console.log("done");
-          }, function () {
-            console.log("TODO: Present nice error message.");
+        uploader.openImageDialog()
+          .then(function (image) {
+            console.log(image);
+          }, function (e) {
+            console.log(e);
           });
       });
       buttonPlay.onPress(function () {

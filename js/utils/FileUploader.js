@@ -17,88 +17,96 @@
      *
      * A promise is returned, which is fulfilled when the dialog is closed.
      */
-    this.openDialog = isBrowser() ? function () {
-      return new Promise(function (fulfill, reject) {
-        showDialog()
-          .then(loadImage)
-          .then(postImage)
-          .then(fulfill, reject);
-      });
+    this.openImageDialog = isBrowser() ? function () {
+      return showSelectDialog()
+        .then(verifySelectedFileIsImage)
+        .then(loadFile)
+        .then(postFile)
+        .then(convertFileToImage);
 
-      function showDialog() {
+      function showSelectDialog() {
         return new Promise(function (fulfill, reject) {
-          var $form = createForm();
+          var formSet = createFormSet(), $uploader = formSet.$uploader;
+          $uploader.addEventListener("change", function (evt) {
+            destroyFormSet(formSet);
+            fulfill($uploader.files.item(0));
+          });
+          $uploader.addEventListener("error", function (e) {
+            reject(e);
+          });
+          $uploader.click();
         });
       }
 
-      function createForm() {
+      function createFormSet() {
         var $form = document.createElement("form");
         $form.style.display = "none";
 
-        var $token = document.createElement("input");
-        $token.setAttribute("type", "hidden");
-        $token.setAttribute("name", "token");
-        $token.setAttribute("value", token);
-        $form.appendChild($token);
-
         var $uploader = document.createElement("input");
         $uploader.setAttribute("type", "file");
-        $uploader.setAttribute("name", "image");
         $form.appendChild($uploader);
 
         document.body.appendChild($form);
 
-        return $form;
+        return { $form: $form, $uploader: $uploader };
       }
 
-      function destroyForm($form) {
-        document.body.removeChild($form);
+      function destroyFormSet(formSet) {
+        document.body.removeChild(formSet.$form);
       }
 
-      function loadImage() {
+      var fileTypeRegex = /image.*/;
+      function verifySelectedFileIsImage(file) {
         return new Promise(function (fulfill, reject) {
-
-        });
-      }
-
-      function postImage() {
-        return new Promise(function (fulfill, reject) {
-
-        });
-      }
-    };
-
-        document.body.appendChild($form);
-
-        $uploader.addEventListener("change", function (evt) {
-          if ($uploader.value) {
-            var reader = new FileReader();
-            reader.onload = function (file) {
-              var img = new Image();
-              img.src = file.target.result;
-              console.log(img);
-            };
-            reader.readAsDataURL(evt.target.files[0]);
-            var xhr = new XMLHttpRequest();
-            xhr.addEventListener("load", function (evt) {
-              if (evt.target.status === 201) {
-                fulfill();
-              } else {
-                reject();
-              }
-            });
-            xhr.addEventListener("error", reject);
-            xhr.open("POST", url);
-            xhr.send(new FormData($form));
+          if (file.type.match(fileTypeRegex)) {
+            fulfill(file);
           } else {
-            fulfill();
+            reject("Selected file is not an image in a supported format.");
           }
-          $form.parentNode.removeChild($form);
         });
+      }
 
-        $uploader.click();
-      });
+      function loadFile(file) {
+        return new Promise(function (fulfill, reject) {
+          var reader = new FileReader();
+          reader.addEventListener("load", function () {
+            fulfill(reader.result);
+          });
+          reader.addEventListener("error", function (e) {
+            reject("Unable to load selected file.");
+          });
+          reader.readAsDataURL(file);
+        });
+      }
 
+      function postFile(encodedFile) {
+        return new Promise(function (fulfill, reject) {
+          var xhr = new XMLHttpRequest();
+          xhr.addEventListener("load", function (evt) {
+            if (evt.target.status === 201) {
+              fulfill(encodedFile);
+            } else {
+              reject("Failed to send file to server.");
+            }
+          });
+          xhr.addEventListener("error", reject);
+          xhr.open("POST", url);
+          xhr.send(JSON.stringify({ file: encodedFile }));
+        });
+      }
+
+      function convertFileToImage(encodedFile) {
+        return new Promise(function (fulfill, reject) {
+          var image = new Image();
+          image.addEventListener("load", function () {
+            fulfill(image);
+          });
+          image.addEventListener("error", function (e) {
+            reject(e);
+          });
+          image.src = encodedFile;
+        });
+      }
     } : function () {
       return promise.fulfill();
     };
