@@ -3,6 +3,7 @@
 
   var GameEntity = require("../game/GameEntity.js");
   var Button = require("../model/entity/Button.js");
+  var Image = require("../model/entity/Image.js");
 
   /**
    * Represents the game home menu.
@@ -13,7 +14,7 @@
   function HomeScene(acc) {
     var account = acc;
     var entities = [];
-    var buttonAvatar, buttonPlay;
+    var buttonAvatar, buttonPlay, avatar = null;
     var uploader;
 
     this.load = function (assetLoader, done, failed) {
@@ -31,9 +32,18 @@
       buttonAvatar.onPress(function () {
         uploader.openImageDialog()
           .then(function (image) {
-            console.log(image);
+            if (!image) {
+              return;
+            }
+            if (avatar) {
+              entities.splice(entities.indexOf(avatar), 1);
+            }
+            entities.push(avatar = new Image(image));
+            avatar.setPosition(130, 34);
+
           }, function (e) {
-            console.log(e);
+            console.log(e.stack);
+            alert(e);
           });
       });
       buttonPlay.onPress(function () {
