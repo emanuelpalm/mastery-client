@@ -8,8 +8,7 @@
       .then(function (data) {
         test.equal(data, "data");
         test.done();
-      })
-      .catch(function () {
+      }, function () {
         test.ok(false);
         test.done();
       });
@@ -20,8 +19,7 @@
       .then(function () {
         test.ok(false);
         test.done();
-      })
-      .catch(function (error) {
+      }, function (error) {
         test.equal(error, "error");
         test.done();
       });
@@ -35,8 +33,7 @@
     .then(function (data) {
       test.equal(data, "fast");
       test.done();
-    })
-    .catch(function () {
+    }, function () {
       test.ok(false);
       test.done();
     });
@@ -50,8 +47,7 @@
     .then(function (data) {
       test.equal(data, "slow");
       test.done();
-    })
-    .catch(function () {
+    }, function () {
       test.ok(false);
       test.done();
     });
@@ -65,8 +61,7 @@
     .then(function () {
       test.ok(false);
       test.done();
-    })
-    .catch(function (error) {
+    }, function (error) {
       test.equal(error, "slowest");
       test.done();
     });
@@ -80,8 +75,7 @@
     .then(function (data) {
       test.equal(data, "slow");
       test.done();
-    })
-    .catch(function () {
+    }, function () {
       test.ok(false);
       test.done();
     });
@@ -95,8 +89,7 @@
     .then(function (data) {
       test.equal(data, "fast");
       test.done();
-    })
-    .catch(function () {
+    }, function () {
       test.ok(false);
       test.done();
     });
@@ -110,8 +103,7 @@
     .then(function () {
       test.ok(false);
       test.done();
-    })
-    .catch(function (error) {
+    }, function (error) {
       test.equal(error, "slow");
       test.done();
     });
@@ -125,8 +117,7 @@
     .then(function () {
       test.ok(true);
       test.done();
-    })
-    .catch(function () {
+    }, function () {
       test.ok(false);
       test.done();
     });
@@ -140,8 +131,7 @@
       .then(function (data) {
         test.equal(data, "timeout");
         hasTimedOut = true;
-      })
-      .catch(function () {
+      }, function () {
         test.ok(false);
       });
 
@@ -156,8 +146,7 @@
       .then(function () {
         test.ok(true);
         test.done();
-      })
-      .catch(function () {
+      }, function () {
         test.ok(false);
         test.done();
       });
@@ -170,8 +159,7 @@
     promise.expire(1, "expire")
       .then(function () {
         test.ok(false);
-      })
-      .catch(function (error) {
+      }, function (error) {
         test.equal(error, "expire");
         hasExpired = true;
       });

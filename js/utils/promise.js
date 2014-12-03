@@ -41,8 +41,7 @@
 
         promises.forEach(function (promise) {
           promise
-            .then(fulfill)
-            .catch(function (error) {
+            .then(fulfill, function (error) {
               pending -= 1;
               if (pending === 0) {
                 reject(error);
@@ -62,15 +61,15 @@
     starve: function (promises) {
       return new Promise(function (fulfill, reject) {
         var pending = promises.length;
-        var lastData = null, lastError;
+        var lastData, hasData = false, lastError;
 
         promises.forEach(function (promise) {
           promise
             .then(function (data) {
-              lastData = data || true;
+              lastData = data;
+              hasData = true;
               completeJob();
-            })
-            .catch(function (error) {
+            }, function (error) {
               lastError = error;
               completeJob();
             });
@@ -79,7 +78,7 @@
         function completeJob() {
           pending -= 1;
           if (pending === 0) {
-            if (lastData) {
+            if (hasData) {
               fulfill(lastData);
             } else {
               reject(lastError);
