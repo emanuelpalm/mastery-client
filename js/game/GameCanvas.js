@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var canvas = require("../utils/canvas.js");
+  var CanvasFactory = require("../utils/CanvasFactory.js");
   var GameEvent = require("./GameEvent.js");
 
   /**
@@ -10,7 +10,8 @@
    * @class
    */
   function GameCanvas(w) {
-    var $canvas = w.createElement("canvas");
+    var canvasFactory = new CanvasFactory();
+    var $canvas = canvasFactory.createElement();
     var context = $canvas.getContext("2d");
     var canvasBounds;
     var cameraWidth = 320, cameraHeight = 240;
@@ -54,7 +55,7 @@
       $canvas.style.left = left + "px";
       $canvas.width = width;
       $canvas.height = height;
-      canvas.disableContextImageSmoothing(context);
+      canvasFactory.disableContextImageSmoothing(context);
       canvasBounds = { left: left, top: 0, width: width, height: height };
     }
 

@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var canvas = require("../utils/canvas.js");
+  var CanvasFactory = require("../utils/CanvasFactory.js");
 
   /**
    * Records entities, which may later be rendered to screen using a GameCanvas.
@@ -9,15 +9,16 @@
    * @class
    */
   function GameCamera(width, height) {
+    var canvasFactory = new CanvasFactory();
     var bounds = {
       x: 0,
       y: 0,
       width: width || 320,
       height: height || 240,
     };
-    var $canvas = canvas.createCanvasElement(bounds.width, bounds.height);
+    var $canvas = canvasFactory.createElement(bounds.width, bounds.height);
     var context = $canvas.getContext("2d");
-    canvas.disableContextImageSmoothing(context);
+    canvasFactory.disableContextImageSmoothing(context);
 
     /**
      * Clears camera.
