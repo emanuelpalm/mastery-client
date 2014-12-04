@@ -4,7 +4,6 @@
   var GameEntity = require("../game/GameEntity.js");
   var FileDialog = require("../utils/FileDialog.js");
   var Button = require("../model/entity/Button.js");
-  var Image = require("../model/entity/Image.js");
 
   /**
    * Represents the game home menu.
@@ -12,8 +11,7 @@
    * The scene is created with an account object, which is required for the user
    * to be able to manages his/her account or join games.
    */
-  function HomeScene(acc) {
-    var account = acc;
+  function HomeScene(account) {
     var entities = [];
     var buttonAvatar, buttonPlay, avatar = null;
     var fileDialog;
@@ -32,15 +30,14 @@
     this.setup = function (toScene, load) {
       buttonAvatar.onPress(function () {
         fileDialog.selectImage()
-          .then(function (image) {
-            if (!image) {
-              return;
-            }
+          .then(account.setAvatarImage)
+          .then(function (a) {
             if (avatar) {
               entities.splice(entities.indexOf(avatar), 1);
             }
-            entities.push(avatar = new Image(image));
-            avatar.setPosition(130, 34);
+            a.setPosition(130, 34);
+            entities.push(a);
+            avatar = a;
 
           }, function (e) {
             console.log(e.stack);

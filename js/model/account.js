@@ -2,6 +2,7 @@
   "use strict";
 
   var Promise = require("promise");
+  var Image = require("./entity/Image.js");
 
   /**
    * Authenticates current user with account service using data received from a
@@ -22,5 +23,16 @@
   function Account() {
     // TODO: Implement.
   }
+
+  /**
+   * Sets given image as the user's avatar image.
+   *
+   * Returned promise is fulfilled when the avatar has been saved.
+   */
+  Account.prototype.setAvatarImage = function ($image) {
+    return new Promise(function (fulfill, reject) {
+      fulfill(new Image($image)); // TODO: Implement.
+    });
+  };
 
 }());
