@@ -2,7 +2,6 @@
   "use strict";
 
   var Promise = require("promise");
-  var Image = require("./entity/Image.js");
   var CanvasFactory = require("../utils/CanvasFactory.js");
   var http = require("http");
 
@@ -14,23 +13,71 @@
    */
   exports.authenticate = function (auth) {
     return new Promise(function (fulfill, reject) {
-      console.log(auth);
-      if (auth.mode === "debug") {
-        fulfill(new Account("localhost"));
-      } else {
-        fulfill(new Account("mastery-account"));
-      }
+      var host = (auth.mode === "debug") ? "localhost" : "mastery-account";
+      var port = 14000;
+
+      httpGetMe(auth.token, host, port)
+        .then(function (data) {
+          fulfill(new Account(data, host, port));
+        }, reject);
     });
   };
+
+  function httpGetMe(token, host, port) {
+    return new Promise(function (fulfill, reject) {
+      http.request({
+        host: host,
+        port: port,
+        method: "GET",
+        path: "/me?token=" + token,
+      }, function (res) {
+        if (res.statusCode === 200) {
+          res.on("data", function (data) {
+            fulfill(data);
+          });
+        } else {
+          reject("Failed to retrieve account data.");
+        }
+      }).end();
+    });
+  }
 
   /**
    * Represents a users connection to his/her Mastery account.
    */
-  function Account(host) {
+  function Account(data, host, port) {
+    this.id = data.id;
+    this.avatarUrl = data["avatar-url"];
     this.host = host;
-    this.port = 14000;
+    this.port = port;
+  }
 
-    // TODO: Implement.
+  /**
+   * Acquires avatar image associated with account.
+   *
+   * Returned promise is fulfilled when the image has been retrieved. If the
+   * account has no associated image, the promise is fulfilled with null.
+   */
+  Account.prototype.getAvatarImage = function () {
+    var that = this;
+    return new Promise(function (fulfill, reject) {
+      if (!that.avatarUrl) {
+        fulfill(null);
+      }
+      httpGetAvatarsName(that.avatarUrl)
+        .then(fulfill, reject);
+    });
+  };
+
+  function httpGetAvatarsName(url) {
+    return new Promise(function (fulfill, reject) {
+      var $image = new Image();
+      $image.addEventListener("load", function () {
+        fulfill($image);
+      });
+      $image.addEventListener("error", reject);
+      $image.src = url;
+    });
   }
 
   /**
@@ -44,9 +91,20 @@
       var canvasFactory = new CanvasFactory();
       var $resizedImage = canvasFactory.resizeImage($image, 60, 60);
       var data = canvasFactory.imageToDataObject($resizedImage);
+
+      httpPostAvatars(data, that.host, that.port)
+        .then(function (location) {
+          that.avatarUrl = location;
+          fulfill($resizedImage);
+        }, reject);
+    });
+  };
+
+  function httpPostAvatars(data, host, port) {
+    return new Promise(function (fulfill, reject) {
       http.request({
-        host: that.host,
-        port: that.port,
+        host: host,
+        port: port,
         method: "POST",
         path: "/avatars",
         headers: {
@@ -54,12 +112,13 @@
         },
       }, function (res) {
         if (res.statusCode === 204) {
-          fulfill(new Image($resizedImage));
+          fulfill(res.headers.location);
         } else {
           reject("Unable to send avatar to server.");
         }
       }).end(data);
     });
-  };
+  }
 
+  Object.freeze(Account);
 }());
