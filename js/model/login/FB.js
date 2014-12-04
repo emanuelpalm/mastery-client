@@ -50,7 +50,10 @@
   function getFacebookLoginStatus() {
     return new Promise(function (fulfill, reject) {
       FB.getLoginStatus(function (response) {
-        fulfill(response.status === "connected", response.authResponse);
+        fulfill({
+          isLoggedIn: response.status === "connected",
+          auth: response.authResponse,
+        });
       });
       setTimeout(reject, 1000);
     });

@@ -40,9 +40,9 @@
     this.setup = function (toScene) {
       button.onPress(function () {
         auth.login()
-          .then(function (isLoggedIn, authResponse) {
-            if (isLoggedIn) {
-              return account.authenticate(authResponse)
+          .then(function (response) {
+            if (response.isLoggedIn) {
+              return account.authenticate(response.auth)
                 .then(function (account) {
                   toScene(new LoaderScene(new HomeScene(account)));
                 });

@@ -30,7 +30,7 @@
     this.setup = function (toScene, load) {
       buttonAvatar.onPress(function () {
         fileDialog.selectImage()
-          .then(account.setAvatarImage)
+          .then(setAvatarImage)
           .then(function (a) {
             if (avatar) {
               entities.splice(entities.indexOf(avatar), 1);
@@ -43,6 +43,10 @@
             console.log(e.stack);
             alert(e);
           });
+
+        function setAvatarImage($image) {
+          return account.setAvatarImage($image);
+        }
       });
       buttonPlay.onPress(function () {
         console.log("pla");

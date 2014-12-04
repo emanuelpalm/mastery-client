@@ -39,6 +39,7 @@
   CanvasFactory.prototype.resizeImage = isBrowser() ? function($image, w, h) {
     var $canvas = this.createElement(w, h);
     var context = $canvas.getContext("2d");
+    this.disableContextImageSmoothing(context);
     context.drawImage($image, 0, 0, w, h);
 
     var $result = new Image();
@@ -55,6 +56,7 @@
   CanvasFactory.prototype.imageToDataObject = isBrowser() ? function ($image) {
     var $canvas = this.createElement($image.width, $image.height);
     var context = $canvas.getContext("2d");
+    this.disableContextImageSmoothing(context);
     context.drawImage($image, 0, 0);
 
     return dataUriToObject($canvas.toDataURL());

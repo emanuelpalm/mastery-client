@@ -50,9 +50,9 @@
           return load(new LoginScene(gameMode));
         }
         return FB.getLoginStatus()
-          .then(function (isLoggedIn, authResponse) {
-            if (isLoggedIn) {
-              return account.authenticate(authResponse)
+          .then(function (response) {
+            if (response.isLoggedIn) {
+              return account.authenticate(response.auth)
                 .then(function (account) {
                   return load(new HomeScene(account));
                 });

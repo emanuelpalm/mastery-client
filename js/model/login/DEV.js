@@ -15,7 +15,10 @@
    */
   exports.login = function () {
     return new Promise(function (fulfill) {
-      fulfill(true, { mode: "debug" });
+      fulfill({
+        isLoggedIn: true,
+        auth: { mode: "debug" },
+      });
     });
   };
 
