@@ -4,6 +4,8 @@
   var GameEntity = require("../game/GameEntity.js");
   var FileDialog = require("../utils/FileDialog.js");
   var Button = require("../model/entity/Button.js");
+  var LoaderScene = require("./LoaderScene.js");
+  var WorldScene = require("./WorldScene.js");
 
   /**
    * Represents the game home menu.
@@ -27,7 +29,7 @@
         }, failed);
     };
   
-    this.setup = function (toScene, load) {
+    this.setup = function (toScene) {
       buttonAvatar.onPress(function () {
         fileDialog.selectImage()
           .then(setAvatarImage)
@@ -49,7 +51,7 @@
         }
       });
       buttonPlay.onPress(function () {
-        console.log("pla");
+        toScene(new LoaderScene(new WorldScene(account)));
       });
       return function (evt) {
         buttonAvatar.offerEvent(evt);
