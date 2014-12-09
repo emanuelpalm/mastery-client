@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  var server = require("../model/server.js");
+
   /**
    * Represents the game world.
    *
@@ -8,12 +10,18 @@
    */
   function WorldScene(account) {
     var entities = [];
+    var srv = {};
   
     this.load = function (assetLoader, done, failed) {
-
+      server.connect(account)
+        .then(function (s) {
+          srv = s;
+          done();
+        }, failed);
     };
 
-    this.setup = function (toScene, load) {
+    this.setup = function () {
+        
     };
   
     this.update = function (dt) {
