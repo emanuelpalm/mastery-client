@@ -14,12 +14,19 @@
   exports.authenticate = function (auth) {
     return new Promise(function (fulfill, reject) {
       var host = (auth.mode === "debug") ? "localhost" : "mastery-account";
-      var port = 14000;
+      var port = 8081;
 
-      httpGetMe(auth.token, host, port)
-        .then(function (data) {
-          fulfill(new Account(data, host, port));
-        }, reject);
+      if (auth.mode === "debug") {
+        fulfill(new Account({
+          id: 1234,
+          avatarUrl: null
+        }, host, port));
+      } else {
+        httpGetMe(auth.token, host, port)
+          .then(function (data) {
+            fulfill(new Account(data, host, port));
+          }, reject);
+      }
     });
   };
 
