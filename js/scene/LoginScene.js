@@ -49,7 +49,8 @@
             }
           })
           .catch(function (e) {
-            console.log(e.stack); // TODO: Show nice error message to user.
+            console.log(e.stack);
+            alert("Failed to authenticate."); // TODO: Nicer error message.
           });
       });
       return function (evt) {
