@@ -9,9 +9,9 @@
    *
    * Returns a promise fulfilled with a server object, if all went well.
    */
-  exports.connect = function (host, account) {
+  exports.connect = function (account) {
     return new Promise(function (fulfill, reject) {
-      var socket = IO(host);
+      var socket = IO(account.serverHost);
       socket.on("connect", function () {
         var server = new Server(socket);
         waitForEntranceState(server)
@@ -19,7 +19,10 @@
           .then(waitForLobbyState)
           .then(waitForWorldState)
           .then(waitForPartyData)
-          .then(fulfill, reject);
+          .then(fulfill, function (error) {
+            server.disconnect();
+            reject(error);
+          });
       });
       socket.on("connect_error", function (error) {
         reject(error);
@@ -30,9 +33,13 @@
     });
 
     function waitForEntranceState(server) {
+      return waitForState(server, "entrance", 10000);
+    }
+
+    function waitForState(server, state, timeout) {
       return new Promise(function (fulfill, reject) {
-        server.on("state", function (state) {
-          if (state === "entrance") {
+        server.on("state", function (s) {
+          if (state === s) {
             fulfill(server);
           } else {
             reject(new Error("Server responded with invalid state."));
@@ -40,7 +47,7 @@
         });
         setTimeout(function () {
           reject(new Error("Server failed to declare client state."));
-        }, 10000);
+        }, timeout);
       });
     }
 
@@ -52,34 +59,11 @@
     }
 
     function waitForLobbyState(server) {
-      return new Promise(function (fulfill, reject) {
-        server.on("state", function (state) {
-          if (state === "lobby") {
-            fulfill(server);
-          } else {
-            reject(new Error("Server responded with invalid state."));
-          }
-        });
-        setTimeout(function () {
-          reject(new Error("Server failed to declare client state."));
-        }, 10000);
-      });
+      return waitForState(server, "lobby", 10000);
     }
 
     function waitForWorldState(server) {
-      return new Promise(function (fulfill, reject) {
-        server.on("state", function (state) {
-          if (state === "world") {
-            fulfill(server);
-          } else {
-            reject(new Error("Server responded with invalid state."));
-          }
-        });
-        setTimeout(function () {
-          reject(new Error("Server failed to declare client state."));
-        }, 10000);
-        
-      });
+      return waitForState(server, "world", 200000);
     }
 
     function waitForPartyData(server) {
@@ -145,6 +129,10 @@
    */
   Server.prototype.clearCallbacks = function () {
     this.callbacks = {};
+  };
+
+  Server.prototype.disconnect = function () {
+    this.socket.disconnect();
   };
 
   Object.seal(Server);
