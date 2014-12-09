@@ -89,7 +89,7 @@ help:
 	@echo "make test    - Runs unit tests."
 	@echo "make run     - Serves development version of game on port 8080."
 	@echo "make docker  - Creates docker image of game release version."
-	@echp "make help    - Displays this help message."
+	@echo "make help    - Displays this help message."
 
 # Automatic commands. Don't use these directly.
 
