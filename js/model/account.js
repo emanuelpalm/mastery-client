@@ -13,7 +13,7 @@
    */
   exports.authenticate = function (auth) {
     return new Promise(function (fulfill, reject) {
-      var host = (auth.mode === "debug") ? "localhost" : "mastery-account";
+      var host = "localhost"; // TODO: ?
       var port = 8081;
 
       if (auth.mode === "debug") {
@@ -54,6 +54,7 @@
     this.avatarUrl = data["avatar-url"];
     this.host = host;
     this.port = port;
+    this.serverHost = "http://localhost:8082"; // TODO: ?
   }
 
   /**
