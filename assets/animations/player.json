@@ -45,7 +45,7 @@
   },
   "north:move": {
     "interval": 0.2,
-    "frames": [14,12,15,12]
+    "frames": [14,13,15,13]
   },
   "north:attack": {
     "interval": 0.5,

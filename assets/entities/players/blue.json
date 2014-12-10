@@ -1,5 +1,5 @@
 {
-  "sprite": "url:/assets/sprites/players/purple.json",
+  "sprite": "url:/assets/sprites/players/blue.json",
   "animation": "url:/assets/animations/player.json",
   "bounds": {
     "x": 144,
