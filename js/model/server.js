@@ -68,8 +68,9 @@
 
     function waitForPartyData(server) {
       return new Promise(function (fulfill, reject) {
-        server.on("party", function () {
-          fulfill(server);
+        server.on("party", function (partyData) {
+          server.clearCallbacks();
+          fulfill({ server: server, partyData: partyData });
         });
         setTimeout(function () {
           reject(new Error("Server failed to send party data."));
@@ -88,12 +89,13 @@
     var that = this;
 
     this.socket.on("message", function (message) {
-      // TODO: Handle.
+      if (that.callbacks.message) {
+        that.callbacks.message(message);
+      }
     });
     this.socket.on("party", function (partyData) {
-      // TODO: Save.
       if (that.callbacks.party) {
-        that.callbacks.party(); // TODO: Call with Party object.
+        that.callbacks.party(partyData);
       }
     });
     this.socket.on("state", function (state) {
@@ -104,7 +106,8 @@
   }
 
   /**
-   * Sends account identification to server.
+   * Sends account identification to server and determines which entity in world
+   * belongs to current user.
    */
   Server.prototype.identifyUsing = function (account) {
     this.socket.emit("identification", {
