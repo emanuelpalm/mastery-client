@@ -131,6 +131,9 @@
     this.callbacks = {};
   };
 
+  /**
+   * Disconnects from server.
+   */
   Server.prototype.disconnect = function () {
     this.socket.disconnect();
   };
