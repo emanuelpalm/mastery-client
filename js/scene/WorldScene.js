@@ -1,6 +1,7 @@
 (function () {
   "use strict";
 
+  var Player = require("../model/entity/Player.js");
   var GameEntity = require("../game/GameEntity.js");
   var server = require("../model/server.js");
 
@@ -18,7 +19,6 @@
     this.load = function (assetLoader, done, failed) {
       assetLoader.load("/assets/batches/world.json")
         .then(function (batch) {
-          console.log(batch);
           server.connect(account)
             .then(function (data) {
               srv = data.server;
@@ -58,10 +58,11 @@
 
     function createPlayerEntitiesUsing(batch, partyData) {
       partyData.forEach(function (playerData, index) {
-        var player = new GameEntity(batch.players[index]);
+        var player;
         if (playerData.id === account.id) {
-          player.skip = true;
-          userPlayer = player;
+          player = userPlayer = new Player(batch.players[index]);
+        } else {
+          player = new GameEntity(batch.players[index]);
         }
         entities.push(player);
       });
@@ -70,12 +71,17 @@
     this.setup = function () {
       srv.on("message", function (data) {
         data.forEach(function (entry, index) {
+          console.log(entry);
           var entity = entities[index];
-          if (entity && entity.skip !== true) {
+          if (entity) {
             entity.synchronize(entry);
           }
         });
       });
+
+      setInterval(function () {
+        srv.sendPlayerState(userPlayer);
+      }, 100);
 
       return function (evt) {
         userPlayer.offerEvent(evt);
