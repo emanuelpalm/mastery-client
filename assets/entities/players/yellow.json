@@ -1,0 +1,11 @@
+{
+  "sprite": "url:/assets/sprites/players/yellow.json",
+  "animation": "url:/assets/animations/player.json",
+  "bounds": {
+    "x": 144,
+    "y": 104,
+    "width": 32,
+    "height": 32
+  }
+}
+

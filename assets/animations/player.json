@@ -1,0 +1,55 @@
+{
+  "default": {
+    "interval": 1,
+    "frames": [1]
+  },
+  "south:idle": {
+    "interval": 1,
+    "frames": [1]
+  },
+  "south:move": {
+    "interval": 0.2,
+    "frames": [2,1,3,1]
+  },
+  "south:attack": {
+    "interval": 0.5,
+    "frames": [0,1,-1]
+  },
+  "west:idle": {
+    "interval": 1,
+    "frames": [5]
+  },
+  "west:move": {
+    "interval": 0.2,
+    "frames": [6,5,7,5]
+  },
+  "west:attack": {
+    "interval": 0.5,
+    "frames": [4,5,-1]
+  },
+  "east:idle": {
+    "interval": 1,
+    "frames": [9]
+  },
+  "east:move": {
+    "interval": 0.2,
+    "frames": [10,9,11,9]
+  },
+  "east:attack": {
+    "interval": 0.5,
+    "frames": [8,9,-1]
+  },
+  "north:idle": {
+    "interval": 1,
+    "frames": [13]
+  },
+  "north:move": {
+    "interval": 0.2,
+    "frames": [14,12,15,12]
+  },
+  "north:attack": {
+    "interval": 0.5,
+    "frames": [12,13,-1]
+  }
+}
+
