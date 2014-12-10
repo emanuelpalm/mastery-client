@@ -1,6 +1,7 @@
 (function () {
   "use strict";
 
+  var GameEntity = require("../game/GameEntity.js");
   var server = require("../model/server.js");
 
   /**
@@ -9,23 +10,76 @@
    * The scene is created with the current player's account object.
    */
   function WorldScene(account) {
-    var entities = [];
     var srv = {};
+    var tiles = [];
+    var entities = [];
+    var userPlayer = null;
   
     this.load = function (assetLoader, done, failed) {
       assetLoader.load("/assets/batches/world.json")
         .then(function (batch) {
           console.log(batch);
           server.connect(account)
-            .then(function (s) {
-              srv = s;
+            .then(function (data) {
+              srv = data.server;
+              createGroundEntitiesUsing(batch);
+              createPlayerEntitiesUsing(batch, data.partyData);
               done();
             }, failed);
         }, failed);
     };
 
+    function createGroundEntitiesUsing(batch) {
+      tiles = new Array(20);
+      for (var i = tiles.length; i-- !== 0;) {
+        tiles[i] = new GameEntity(batch.environment.ground);
+      }
+      tiles[ 0].setPosition(0,   0);
+      tiles[ 1].setPosition(64,  0);
+      tiles[ 2].setPosition(128, 0);
+      tiles[ 3].setPosition(192, 0);
+      tiles[ 4].setPosition(256, 0);
+      tiles[ 5].setPosition(0,   64);
+      tiles[ 6].setPosition(64,  64);
+      tiles[ 7].setPosition(128, 64);
+      tiles[ 8].setPosition(192, 64);
+      tiles[ 9].setPosition(256, 64);
+      tiles[10].setPosition(0,   128);
+      tiles[11].setPosition(64,  128);
+      tiles[12].setPosition(128, 128);
+      tiles[13].setPosition(192, 128);
+      tiles[14].setPosition(256, 128);
+      tiles[15].setPosition(0,   192);
+      tiles[16].setPosition(64,  192);
+      tiles[17].setPosition(128, 192);
+      tiles[18].setPosition(192, 192);
+      tiles[19].setPosition(256, 192);
+    }
+
+    function createPlayerEntitiesUsing(batch, partyData) {
+      partyData.forEach(function (playerData, index) {
+        var player = new GameEntity(batch.players[index]);
+        if (playerData.id === account.id) {
+          player.skip = true;
+          userPlayer = player;
+        }
+        entities.push(player);
+      });
+    }
+
     this.setup = function () {
-        
+      srv.on("message", function (data) {
+        data.forEach(function (entry, index) {
+          var entity = entities[index];
+          if (entity && entity.skip !== true) {
+            entity.synchronize(entry);
+          }
+        });
+      });
+
+      return function (evt) {
+        userPlayer.offerEvent(evt);
+      };
     };
   
     this.update = function (dt) {
@@ -35,6 +89,7 @@
     };
   
     this.record = function (camera) {
+      tiles.forEach(camera.record);
       entities.forEach(camera.record);
     };
   }
