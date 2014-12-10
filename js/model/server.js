@@ -119,7 +119,7 @@
   /**
    * Add server event listener.
    *
-   * The emitted events are "state", and "party".
+   * The emitted events are "message", "state", and "party".
    *
    * Registering the same event twice causes the old event to be overwritten.
    */
@@ -132,6 +132,15 @@
    */
   Server.prototype.clearCallbacks = function () {
     this.callbacks = {};
+  };
+
+  /**
+   * Sends state of player to server.
+   */
+  Server.prototype.sendPlayerState = function (player) {
+    var bounds = player.getBounds();
+    var data = [[bounds.x, bounds.y],[bounds.dx, bounds.dy]];
+    this.socket.send(data);
   };
 
   /**
