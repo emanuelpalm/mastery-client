@@ -1,0 +1,10 @@
+{
+  "sprite": "url:/assets/sprites/environments/forest/ground.json",
+  "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 64,
+    "height": 64
+  }
+}
+
