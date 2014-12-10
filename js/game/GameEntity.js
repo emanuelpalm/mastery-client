@@ -10,7 +10,7 @@
    * An entity is anything which may be populate a game scene, such as a player,
    * a button, a map, etc.
    *
-   * Entities are created with type data, which determines the its type.
+   * Entities are created with type data, which determines their type.
    */
   function GameEntity(type) {
     this.type = type;
@@ -93,6 +93,22 @@
     }
     return (!(a.x + (a.width | 0) < b.x || b.x + (b.width | 0) < a.x ||
                 a.y + (a.height | 0) < b.y || b.y + (b.height | 0) < a.y));
+  };
+
+  /**
+   * Updates entity in relation to given data.
+   *
+   * This method exists primarily to allow convenient entity synchronization
+   * across hosts.
+   */
+  GameEntity.prototype.synchronize = function (data) {
+    this.bounds.x = data[0][0];
+    this.bounds.y = data[0][1];
+
+    if (data.length >= 1) {
+      this.bounds.dx = data[1][0];
+      this.bounds.dy = data[1][1];
+    }
   };
 
   module.exports = GameEntity;
