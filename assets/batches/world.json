@@ -1,0 +1,15 @@
+{
+  "players": [
+    "url:/assets/entities/players/purple.json",
+    "url:/assets/entities/players/blue.json",
+    "url:/assets/entities/players/red.json",
+    "url:/assets/entities/players/green.json",
+    "url:/assets/entities/players/orange.json",
+    "url:/assets/entities/players/teal.json",
+    "url:/assets/entities/players/yellow.json",
+    "url:/assets/entities/players/black.json"
+  ],
+  "environment": {
+    "ground": "url:/assets/entities/environments/forest/ground.json"
+  }
+}
