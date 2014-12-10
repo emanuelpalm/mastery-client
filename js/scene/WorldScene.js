@@ -13,10 +13,14 @@
     var srv = {};
   
     this.load = function (assetLoader, done, failed) {
-      server.connect(account)
-        .then(function (s) {
-          srv = s;
-          done();
+      assetLoader.load("/assets/batches/world.json")
+        .then(function (batch) {
+          console.log(batch);
+          server.connect(account)
+            .then(function (s) {
+              srv = s;
+              done();
+            }, failed);
         }, failed);
     };
 
