@@ -17,7 +17,10 @@
       var port = 8081;
 
       if (auth.mode === "debug") {
-        fulfill(new Account({ id: 123, avatarUrl: null }, host, port));
+        fulfill(new Account({
+          id: (Math.random() * 65536) | 0,
+          avatarUrl: null
+        }, host, port));
       } else {
         httpGetMe(auth.token, host, port)
           .then(function (data) {

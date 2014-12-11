@@ -58,11 +58,10 @@
 
     function createPlayerEntitiesUsing(batch, partyData) {
       partyData.forEach(function (playerData, index) {
-        var player;
+        var player = new Player(batch.players[index]);
         if (playerData.id === account.id) {
-          player = userPlayer = new Player(batch.players[index]);
-        } else {
-          player = new GameEntity(batch.players[index]);
+          userPlayer = player;
+          userPlayer.skip = true;
         }
         entities.push(player);
       });
@@ -71,9 +70,8 @@
     this.setup = function () {
       srv.on("message", function (data) {
         data.forEach(function (entry, index) {
-          console.log(entry);
           var entity = entities[index];
-          if (entity) {
+          if (entity && entity.skip !== true) {
             entity.synchronize(entry);
           }
         });
