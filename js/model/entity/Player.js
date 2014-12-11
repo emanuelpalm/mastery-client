@@ -52,38 +52,41 @@
         (player.keyStates.up   + player.keyStates.down)  * 50
       );
     }
-
-    function updateWalkingAnimation(player) {
-      var isWalking = true;
-      var direction = player.direction;
-
-      var vertical = player.keyStates.up + player.keyStates.down;
-      if (vertical < 0) {
-        direction = "north";
-
-      } else if (vertical > 0) {
-        direction = "south";
-
-      } else {
-        var horizontal = player.keyStates.left + player.keyStates.right;
-        if (horizontal < 0) {
-          direction = "west";
-          
-        } else if (horizontal > 0) {
-          direction = "east";
-
-        } else {
-          isWalking = false;
-        }
-      }
-      if (direction !== player.direction || isWalking !== player.isWalking) {
-        player.animation.setProgram(direction + ":" + ((isWalking) ? "move" : "idle"));
-        player.direction = direction;
-        player.isWalking = isWalking;
-      }
-    }
   };
 
+  function updateWalkingAnimation(player) {
+    var isWalking = true;
+    var direction = player.direction;
+
+    var bounds = player.getBounds();
+    if (bounds.dy < 0) {
+      direction = "north";
+
+    } else if (bounds.dy > 0) {
+      direction = "south";
+
+    } else {
+      if (bounds.dx < 0) {
+        direction = "west";
+        
+      } else if (bounds.dx > 0) {
+        direction = "east";
+
+      } else {
+        isWalking = false;
+      }
+    }
+    if (direction !== player.direction || isWalking !== player.isWalking) {
+      player.animation.setProgram(direction + ":" + ((isWalking) ? "move" : "idle"));
+      player.direction = direction;
+      player.isWalking = isWalking;
+    }
+  }
+
+  Player.prototype.synchronize = function (data) {
+    GameEntity.prototype.synchronize.call(this, data);
+    updateWalkingAnimation(this);
+  };
   module.exports = Player;
 }());
 
