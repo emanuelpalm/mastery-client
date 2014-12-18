@@ -2,6 +2,7 @@
   "use strict";
 
   var Player = require("../model/entity/Player.js");
+  var Image = require("../model/entity/Image.js");
   var GameEntity = require("../game/GameEntity.js");
   var server = require("../model/server.js");
 
@@ -14,6 +15,7 @@
     var srv = {};
     var tiles = [];
     var entities = [];
+    var avatars = [];
     var userPlayer = null;
   
     this.load = function (assetLoader, done, failed) {
@@ -21,10 +23,18 @@
         .then(function (batch) {
           server.connect(account)
             .then(function (data) {
-              srv = data.server;
-              createGroundEntitiesUsing(batch);
-              createPlayerEntitiesUsing(batch, data.partyData);
-              done();
+              assetLoader.load(data.partyData)
+                .then(function (partyData) {
+                  srv = data.server;
+                  try {
+                    createGroundEntitiesUsing(batch);
+                    createPlayerEntitiesUsing(batch, data.partyData);
+                    createAvatarEntitiesUsing(batch, data.partyData);
+                    done();
+                  } catch (e) {
+                    failed(e);
+                  }
+                }, failed);
             }, failed);
         }, failed);
     };
@@ -67,6 +77,17 @@
       });
     }
 
+    function createAvatarEntitiesUsing(batch, partyData) {
+      avatars = new Array(partyData.length);
+      partyData.forEach(function (playerData, index) {
+        var avatar = new Image(playerData.avatar);
+        avatar.setSize(batch.avatar.size.width, batch.avatar.size.height);
+        var position = batch.avatar.positions[index];
+        avatar.setPosition(position[0], position[1]);
+        avatars[index] = avatar;
+      });
+    }
+
     this.setup = function () {
       srv.on("message", function (data) {
         data.forEach(function (entry, index) {
@@ -95,6 +116,7 @@
     this.record = function (camera) {
       tiles.forEach(camera.record);
       entities.forEach(camera.record);
+      avatars.forEach(camera.record);
     };
   }
 
