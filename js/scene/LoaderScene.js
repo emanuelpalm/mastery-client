@@ -15,8 +15,7 @@
         .then(function (batch) {
           loader = new GameEntity(batch.loader);
           done();
-        })
-        .catch(failed);
+        }, failed);
     };
 
     this.setup = function (toScene, load) {
@@ -29,9 +28,9 @@
         promise.timeout(450).then(function () {
           toScene(nextScene);
         });
-      })
-      .catch(function () {
-        console.log("Failed to load scene.");
+      }, function (error) {
+        console.log(error);
+        alert("Failed to load scene.");
       });
     };
 
