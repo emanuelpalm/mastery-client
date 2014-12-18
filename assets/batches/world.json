@@ -11,5 +11,21 @@
   ],
   "environment": {
     "ground": "url:/assets/entities/environments/forest/ground.json"
+  },
+  "avatar": {
+    "size": {
+      "width": 28,
+      "height": 28
+    },
+    "positions": [
+      [  4, 4],
+      [ 36, 4],
+      [ 68, 4],
+      [100, 4],
+      [132, 4],
+      [164, 4],
+      [192, 4],
+      [224, 4]
+    ]
   }
 }
