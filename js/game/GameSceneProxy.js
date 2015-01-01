@@ -4,7 +4,6 @@
   var GameAssetLoader = require("./GameAssetLoader.js");
   var Promise = require("promise");
   var History = require("../utils/History.js");
-  var LoaderScene = require("../scene/LoaderScene.js");
 
   /**
    * Manages a current scene and its transitions to other scenes.
