@@ -4,6 +4,7 @@
   var GameAssetLoader = require("./GameAssetLoader.js");
   var Promise = require("promise");
   var History = require("../utils/History.js");
+  var LoaderScene = require("../scene/LoaderScene.js");
 
   /**
    * Manages a current scene and its transitions to other scenes.
@@ -47,12 +48,15 @@
         eventCallback = unhandledEvent;
       }
       scene = nextScene;
-      saveHistory(nextScene);
+      if (nextScene.isHistoric !== true) {
+        saveHistory(nextScene);
+      }
 
       function saveHistory(nextScene) {
         var sceneName = nextScene.constructor.name;
         if (sceneName !== "LoaderScene" && sceneName !== "IntroScene") {
-          history.pushState(sceneName, "#" + sceneName.toLowerCase().replace(/scene$/, ""));
+          var url = "#" + sceneName.toLowerCase().replace(/scene$/, ""); 
+          history.pushState(nextScene, url);
         }
       }
     }
@@ -69,8 +73,9 @@
       });
     }
 
-    function handleHistoryChange(sceneName) {
-      console.log(sceneName);
+    function handleHistoryChange(scene) {
+      scene.isHistoric = true;
+      toScene(scene);
     }
 
     /**

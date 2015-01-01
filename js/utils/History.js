@@ -5,7 +5,8 @@
    * Represents the current site user's site navigation history.
    */
   function History() {
-    Object.freeze(this);
+    this.entries = {}; 
+    Object.seal(this);
   }
 
   /**
@@ -15,15 +16,16 @@
    */
   History.prototype.addPopStateListener = isBrowser() ? function (f) {
     window.addEventListener("popstate", function (evt) {
-        f(evt.state);
-    });
+        f(this.entries[evt.state]);
+    }.bind(this));
   } : function () {};
 
   /**
    * Pushes arbitrary data as history state.
    */
   History.prototype.pushState = isBrowser() ? function (data, path) {
-    window.history.pushState(data, "", path);
+    this.entries[path] = data;
+    window.history.pushState(path, "", path);
   } : function () {};
 
   function isBrowser() {
