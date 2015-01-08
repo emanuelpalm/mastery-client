@@ -44,6 +44,8 @@
 
     var $result = new Image();
     $result.src = $canvas.toDataURL("image/png");
+    $result.width = w;
+    $result.height = h;
     return $result;
   } : function (image) {
     return image;
