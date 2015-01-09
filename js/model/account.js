@@ -126,7 +126,7 @@
         } else {
           reject("Unable to send avatar to server.");
         }
-      }).end(data);
+      }).end(JSON.stringify(data));
     });
   }
 
