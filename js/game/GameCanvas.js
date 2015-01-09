@@ -71,6 +71,9 @@
       w.addKeyboardListener(function (type, key) {
         f(new GameEvent(type, key));
       });
+      w.addHistoryPopListener(function (type) {
+        f(new GameEvent(type, null));
+      });
     };
       
     Object.seal(this);

@@ -89,6 +89,25 @@
     }
   } : function () {};
 
+  Window.prototype.addHistoryState = isBrowser() ? function (f, args) {
+    window.history.pushState(args);
+    window.addEventListener("popstate", function () {
+      
+    });
+
+  } : function () {};
+
+  /**
+   * Registers function to be called when the user hits the "Back" button in
+   * the browser.
+   */
+  Window.prototype.addHistoryPopListener = isBrowser ? function (f) {
+    window.history.pushState(true);
+    window.addEventListener("popstate", function () {
+      f("popstate");
+    });
+  } : function () {};
+
   /**
    * Clears window of all visible elements and displays an error indicator.
    */

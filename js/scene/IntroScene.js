@@ -32,18 +32,23 @@
 
     this.setup = function (toScene, load) {
       promise.starve([
-        determineAndLoadNextScene(),
-        promise.expire(2000),
-      ])
-      .then(function (nextScene) {
-        loader.animation.setProgram("stop");
-        promise.timeout(450).then(function () {
-          toScene(nextScene);
+          determineAndLoadNextScene(),
+          promise.expire(2000),
+        ])
+        .then(function (nextScene) {
+          loader.animation.setProgram("stop");
+          promise.timeout(450).then(function () {
+            toScene(nextScene);
+          });
+        })
+        .catch(function () {
+          console.log("Failed to setup application.");
         });
-      })
-      .catch(function () {
-        console.log("Failed to setup application.");
-      });
+      return function (evt) {
+        if (evt.type === "popstate") {
+          alert("Pop!");
+        }
+      };
 
       function determineAndLoadNextScene() {
         if (gameMode === "debug") {
