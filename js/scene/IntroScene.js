@@ -41,8 +41,9 @@
             toScene(nextScene);
           });
         })
-        .catch(function () {
-          console.log("Failed to setup application.");
+        .catch(function (error) {
+          console.log(error.stack);
+          alert("Failed to authenticate.");
         });
       return function (evt) {
         if (evt.type === "popstate") {
