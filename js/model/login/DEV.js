@@ -17,7 +17,9 @@
     return new Promise(function (fulfill) {
       fulfill({
         isLoggedIn: true,
-        auth: { mode: "debug" },
+        auth: {
+          mode: "debug"
+        },
       });
     });
   };
