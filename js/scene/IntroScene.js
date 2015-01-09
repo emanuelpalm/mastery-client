@@ -61,6 +61,9 @@
               return account.authenticate(response.auth)
                 .then(function (account) {
                   return load(new HomeScene(account));
+                }, function (error) {
+                  FB.logout();
+                  return promise.reject(error);
                 });
             }
             return load(new LoginScene(gameMode));

@@ -85,4 +85,16 @@
     });
   }
 
+  /**
+   * Logs the user out from Facebook.
+   */
+  exports.logout = function () {
+    return new Promise(function (fulfill) {
+      FB.logout(function (response) {
+        console.log(response);
+        fulfill();
+      });
+    });
+  }
+
 }());
