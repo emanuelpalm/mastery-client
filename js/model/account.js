@@ -4,6 +4,7 @@
   var Promise = require("promise");
   var CanvasFactory = require("../utils/CanvasFactory.js");
   var http = require("http");
+  var browser = require("../utils/browser.js");
 
   /**
    * Authenticates current user with account service using data received from a
@@ -13,30 +14,29 @@
    */
   exports.authenticate = function (auth) {
     return new Promise(function (fulfill, reject) {
-      var host = "localhost"; // TODO: ?
-      var port = 8081;
+      var host = browser.getAddressFieldHost();
 
       if (auth.mode === "debug") {
         fulfill(new Account({
           id: (Math.random() * 65536) | 0,
           avatarUrl: null
-        }, host, port));
+        }, host));
       } else {
-        httpGetMe(auth.accessToken, host, port)
+        httpGetMe(auth.accessToken, host)
           .then(function (data) {
-            fulfill(new Account(data, host, port, auth.accessToken));
+            fulfill(new Account(data, host, auth.accessToken));
           }, reject);
       }
     });
   };
 
-  function httpGetMe(token, host, port) {
+  function httpGetMe(token, host) {
     return new Promise(function (fulfill, reject) {
       http.request({
         host: host,
-        port: port,
+        port: browser.getAddressFieldPort(),
         method: "GET",
-        path: "/me?token=" + token,
+        path: "/account/me?token=" + token,
       }, function (res) {
         if (res.statusCode === 200) {
           res.on("data", function (data) {
@@ -52,13 +52,11 @@
   /**
    * Represents a users connection to his/her Mastery account.
    */
-  function Account(data, host, port, token) {
+  function Account(data, host, token) {
     this.id = data.id;
     this.avatarUrl = data["avatar-url"];
     this.host = host;
-    this.port = port;
     this.token = token;
-    this.serverHost = "http://localhost:8082"; // TODO: ?
   }
 
   /**
@@ -101,7 +99,7 @@
       var $resizedImage = canvasFactory.resizeImage($image, 60, 60);
       var data = canvasFactory.imageToDataObject($resizedImage);
 
-      httpPostAvatars(data, that.host, that.port, that.token)
+      httpPostAvatars(data, that.host, that.token)
         .then(function (location) {
           that.avatarUrl = location;
           fulfill($resizedImage);
@@ -109,13 +107,13 @@
     });
   };
 
-  function httpPostAvatars(data, host, port, token) {
+  function httpPostAvatars(data, host, port) {
     return new Promise(function (fulfill, reject) {
       http.request({
         host: host,
-        port: port,
+        port: browser.getAddressFieldPort(),
         method: "POST",
-        path: "/avatars",
+        path: "/account/avatars",
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + token,
