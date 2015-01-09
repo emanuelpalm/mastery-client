@@ -3,8 +3,8 @@
 
   var Promise = require("promise");
   var CanvasFactory = require("../utils/CanvasFactory.js");
-  var http = require("http");
   var browser = require("../utils/browser.js");
+  var http = require("http");
 
   /**
    * Authenticates current user with account service using data received from a
@@ -22,7 +22,7 @@
           avatarUrl: null
         }, host));
       } else {
-        httpGetMe(auth.accessToken, host)
+        httpGetAccountMe(auth.accessToken, host)
           .then(function (data) {
             fulfill(new Account(data, host, auth.accessToken));
           }, reject);
@@ -30,7 +30,7 @@
     });
   };
 
-  function httpGetMe(token, host) {
+  function httpGetAccountMe(token, host) {
     return new Promise(function (fulfill, reject) {
       http.request({
         host: host,
@@ -71,12 +71,12 @@
       if (!that.avatarUrl) {
         fulfill(null);
       }
-      httpGetAvatarsName(that.avatarUrl)
+      httpGetAccountAvatarsName(that.avatarUrl)
         .then(fulfill, reject);
     });
   };
 
-  function httpGetAvatarsName(url) {
+  function httpGetAccountAvatarsName(url) {
     return new Promise(function (fulfill, reject) {
       var $image = new Image();
       $image.addEventListener("load", function () {
@@ -99,7 +99,7 @@
       var $resizedImage = canvasFactory.resizeImage($image, 60, 60);
       var data = canvasFactory.imageToDataObject($resizedImage);
 
-      httpPostAvatars(data, that.host, that.token)
+      httpPostAccountAvatars(data, that.host, that.token)
         .then(function (location) {
           that.avatarUrl = location;
           fulfill($resizedImage);
@@ -107,7 +107,7 @@
     });
   };
 
-  function httpPostAvatars(data, host, port) {
+  function httpPostAccountAvatars(data, host, token) {
     return new Promise(function (fulfill, reject) {
       http.request({
         host: host,
