@@ -24,7 +24,7 @@
       } else {
         httpGetMe(auth.accessToken, host, port)
           .then(function (data) {
-            fulfill(new Account(data, host, port));
+            fulfill(new Account(data, host, port, auth.accessToken));
           }, reject);
       }
     });
@@ -52,11 +52,12 @@
   /**
    * Represents a users connection to his/her Mastery account.
    */
-  function Account(data, host, port) {
+  function Account(data, host, port, token) {
     this.id = data.id;
     this.avatarUrl = data["avatar-url"];
     this.host = host;
     this.port = port;
+    this.token = token;
     this.serverHost = "http://localhost:8082"; // TODO: ?
   }
 
@@ -100,7 +101,7 @@
       var $resizedImage = canvasFactory.resizeImage($image, 60, 60);
       var data = canvasFactory.imageToDataObject($resizedImage);
 
-      httpPostAvatars(data, that.host, that.port)
+      httpPostAvatars(data, that.host, that.port, that.token)
         .then(function (location) {
           that.avatarUrl = location;
           fulfill($resizedImage);
@@ -108,7 +109,7 @@
     });
   };
 
-  function httpPostAvatars(data, host, port) {
+  function httpPostAvatars(data, host, port, token) {
     return new Promise(function (fulfill, reject) {
       http.request({
         host: host,
@@ -117,6 +118,7 @@
         path: "/avatars",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": "Bearer " + token,
         },
       }, function (res) {
         if (res.statusCode === 204) {
