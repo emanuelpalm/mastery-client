@@ -32,7 +32,7 @@
       $facebookScript.id = "facebook-jssdk";
       $facebookScript.src = "//connect.facebook.net/en_GB/sdk.js";
       $facebookScript.addEventListener("load", function () {
-        window.fbAsyncInit = function() {
+        window.fbAsyncInit = function () {
           FB.init({
             appId: "881132155233080",
             xfbml: true,
@@ -77,7 +77,10 @@
   function loginToFacebook() {
     return new Promise(function (fulfill) {
       FB.login(function (response) {
-        fulfill(response.status === "connected", response.authResponse);
+        fulfill({
+          isLoggedIn: response.status === "connected",
+          auth: response.authResponse
+        });
       });
     });
   }

@@ -22,7 +22,7 @@
           avatarUrl: null
         }, host, port));
       } else {
-        httpGetMe(auth.token, host, port)
+        httpGetMe(auth.accessToken, host, port)
           .then(function (data) {
             fulfill(new Account(data, host, port));
           }, reject);
