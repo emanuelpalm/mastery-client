@@ -4,6 +4,7 @@
   var GameEntity = require("../game/GameEntity.js");
   var FileDialog = require("../utils/FileDialog.js");
   var Button = require("../model/entity/Button.js");
+  var Image = require("../model/entity/Image.js");
   var LoaderScene = require("./LoaderScene.js");
   var WorldScene = require("./WorldScene.js");
 
@@ -28,7 +29,7 @@
           done();
         }, failed);
     };
-  
+
     this.setup = function (toScene) {
       buttonAvatar.onPress(function () {
         fileDialog.selectImage()
@@ -37,6 +38,7 @@
             if (avatar) {
               entities.splice(entities.indexOf(avatar), 1);
             }
+            a = new Image(a);
             a.setPosition(130, 34);
             entities.push(a);
             avatar = a;
@@ -58,13 +60,13 @@
         buttonPlay.offerEvent(evt);
       };
     };
-  
+
     this.update = function (dt) {
       entities.forEach(function (e) {
         e.update(dt);
       });
     };
-  
+
     this.record = function (camera) {
       entities.forEach(camera.record);
     };
