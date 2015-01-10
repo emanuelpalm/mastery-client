@@ -14,10 +14,6 @@ TESTER       = ./$(NODE_MODULES)/.bin/nodeunit
 HTMLT_INPUT  = templates/index.t.html
 HTMLT_OUTPUT = $(PATH_BASE)index.html
 
-# Dockerfile template.
-DOCKR_INPUT  = templates/Dockerfile.t
-DOCKR_OUTPUT = $(PATH_BASE)Dockerfile
-
 # GNU tools.
 RM           = rm -f
 MKDIR        = mkdir -p
@@ -74,13 +70,6 @@ test:
 run: debug
 	cd build/debug/ && $(HTTPD)
 
-docker:
-ifeq (,$(shell which docker))
-	@echo "Docker not installed. Please install it and try again."
-else
-	@$(MAKE) auto-docker PATH_BASE="$(PATH_RELEASE)" --no-print-directory
-endif
-
 help:
 	@echo "make release - Builds using release configuration."
 	@echo "make debug   - Builds using development configuration."
@@ -88,7 +77,6 @@ help:
 	@echo "make version - Prints current application version."
 	@echo "make test    - Runs unit tests."
 	@echo "make run     - Serves development version of game on port 8080."
-	@echo "make docker  - Creates docker image of game release version."
 	@echo "make help    - Displays this help message."
 
 # Automatic commands. Don't use these directly.
@@ -99,9 +87,6 @@ auto-debug: $(BUNDLE) $(HTMLT_OUTPUT)
 
 auto-clean:
 	$(foreach FILE,$(wildcard $(GARBAGE)),$(RM) $(FILE)$(\n))
-
-auto-docker: auto-clean auto-release $(DOCKR_OUTPUT)
-	cd $(PATH_BASE) && sudo docker build -t mastery-client:v$(VERSION) .
 
 $(PATH_BASE):
 	@$(MKDIR) $@
@@ -115,9 +100,6 @@ $(NODE_MODULES):
 
 $(HTMLT_OUTPUT): $(HTMLT_INPUT) $(PATH_BASE) $(BUNDLE)
 	$(SED) 's/{{script.attributes}}/$(subst /,\/,$(SCRIPT_ATTRIBUTES))/' < $< > $@
-
-$(DOCKR_OUTPUT): $(DOCKR_INPUT) $(PATH_BASE)
-	$(CP) $< $@
 
 $(BUNDLE_DIR):
 	$(MKDIR) $@
