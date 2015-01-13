@@ -26,23 +26,39 @@
           entities.push(new GameEntity(batch.frame));
           entities.push(buttonAvatar = new Button(batch.avatar));
           entities.push(buttonPlay = new Button(batch.play));
-          done();
-        }, failed);
+
+        })
+        .then(function () {
+          if (!account.avatarUrl) {
+            done();
+            return;
+          }
+          assetLoader.load("/account/avatars/" + account.avatarUrl)
+            .then(function (a) {
+              if (a) {
+                setAvatarFromImage(a);
+              }
+              done();
+            }, failed);
+        });
     };
+
+    function setAvatarFromImage(a) {
+      if (avatar) {
+        entities.splice(entities.indexOf(avatar), 1);
+      }
+      a = new Image(a);
+      a.setPosition(130, 34);
+      entities.push(a);
+      avatar = a;
+    }
 
     this.setup = function (toScene) {
       buttonAvatar.onPress(function () {
         fileDialog.selectImage()
           .then(setAvatarImage)
           .then(function (a) {
-            if (avatar) {
-              entities.splice(entities.indexOf(avatar), 1);
-            }
-            a = new Image(a);
-            a.setPosition(130, 34);
-            entities.push(a);
-            avatar = a;
-
+            setAvatarFromImage(a);
           }, function (e) {
             console.log(e.stack);
             alert(e);
