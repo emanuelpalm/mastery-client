@@ -40,7 +40,7 @@
       }, function (res) {
         if (res.statusCode === 200) {
           res.on("data", function (data) {
-            fulfill(data);
+            fulfill(JSON.parse(data));
           });
         } else {
           reject("Failed to retrieve account data.");
