@@ -33,7 +33,7 @@
             done();
             return;
           }
-          assetLoader.load("/account/avatars/" + account.avatarUrl)
+          assetLoader.load(account.avatarUrl)
             .then(function (a) {
               if (a) {
                 setAvatarFromImage(a);
