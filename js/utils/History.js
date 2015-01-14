@@ -6,6 +6,9 @@
    */
   function History() {
     this.entries = {}; 
+    if (isBrowser()) {
+      window.location = (window.location + "").split("#")[0] + "#";
+    }
     Object.seal(this);
   }
 
@@ -23,9 +26,9 @@
   /**
    * Pushes arbitrary data as history state.
    */
-  History.prototype.pushState = isBrowser() ? function (data, path) {
+  History.prototype.pushState = isBrowser() ? function (data, name, path) {
     this.entries[path] = data;
-    window.history.pushState(path, "", path);
+    window.history.pushState(path, name, path);
   } : function () {};
 
   function isBrowser() {

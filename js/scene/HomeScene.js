@@ -15,6 +15,8 @@
    * to be able to manages his/her account or join games.
    */
   function HomeScene(account) {
+    this.name = "home";
+
     var entities = [];
     var buttonAvatar, buttonPlay, avatar = null;
     var fileDialog;

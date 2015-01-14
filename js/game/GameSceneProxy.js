@@ -52,10 +52,8 @@
       }
 
       function saveHistory(nextScene) {
-        var sceneName = nextScene.constructor.name;
-        if (sceneName !== "LoaderScene" && sceneName !== "IntroScene") {
-          var url = "#" + sceneName.toLowerCase().replace(/scene$/, ""); 
-          history.pushState(nextScene, url);
+        if (nextScene.name) {
+          history.pushState(nextScene, nextScene.name, "#" + nextScene.name);
         }
       }
     }

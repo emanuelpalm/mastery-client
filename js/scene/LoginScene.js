@@ -17,6 +17,8 @@
    * available.
    */
   function LoginScene(gameMode) {
+    this.name = "login";
+
     var entities = [];
     var button, auth;
 

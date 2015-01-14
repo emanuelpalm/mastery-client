@@ -12,6 +12,8 @@
    * The scene is created with the current player's account object.
    */
   function WorldScene(account) {
+    this.name = "world";
+
     var srv = {};
     var tiles = [];
     var entities = [];
@@ -28,8 +30,8 @@
                   srv = data.server;
                   try {
                     createGroundEntitiesUsing(batch);
-                    createPlayerEntitiesUsing(batch, data.partyData);
-                    createAvatarEntitiesUsing(batch, data.partyData);
+                    createPlayerEntitiesUsing(batch, partyData);
+                    createAvatarEntitiesUsing(batch, partyData);
                     done();
                   } catch (e) {
                     failed(e);
