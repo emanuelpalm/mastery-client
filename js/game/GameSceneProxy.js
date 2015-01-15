@@ -2,6 +2,7 @@
   "use strict";
 
   var GameAssetLoader = require("./GameAssetLoader.js");
+  var GameEvent = require("./GameEvent.js");
   var Promise = require("promise");
   var History = require("../utils/History.js");
 
@@ -72,6 +73,7 @@
 
     function handleHistoryChange(scene) {
       scene.isHistoric = true;
+      eventCallback(new GameEvent("back"));
       toScene(scene);
     }
 

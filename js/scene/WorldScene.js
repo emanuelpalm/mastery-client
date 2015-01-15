@@ -106,6 +106,9 @@
 
       return function (evt) {
         userPlayer.offerEvent(evt);
+        if (evt.type === "back") {
+          srv.disconnect();
+        }
       };
     };
   
