@@ -11,7 +11,7 @@
    */
   exports.connect = function (account) {
     return new Promise(function (fulfill, reject) {
-      var socket = IO("/");
+      var socket = IO("/", { forceNew: true });
       socket.on("connect", function () {
         var server = new Server(socket);
         waitForEntranceState(server)
