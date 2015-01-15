@@ -85,7 +85,7 @@
     window.addEventListener("keyup", handleKeyboardEvent);
 
     function handleKeyboardEvent(evt) {
-      f(evt.type, evt.key || evt.keyCode);
+      f(evt.type, evt.keyCode);
     }
   } : function () {};
 
